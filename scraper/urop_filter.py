@@ -94,6 +94,7 @@ for eachListing in urop_list:
     prereqs = "None"
     contact = ""
     relevant_url = ""
+    contactString = ""
 
     last_section_header = ""
     for eachLine in eachListing.split('\n'):
@@ -132,11 +133,12 @@ for eachListing in urop_list:
         elif ("Contact:" in eachLine):
             index = eachLine.index(":")
             contact = eachLine[index+2:]
-
             contactArray = contact.split()
-            contact = [c for c in contactArray if "@" in c]
 
-            contact = contact[1:-1]
+            for contactText in contactArray:
+                if "@" in contactText:
+                    my_string = contactText.rstrip('.')
+                    contactString += my_string[1:-1]
 
         else:
             if (last_section_header == "project_desc"):
@@ -160,7 +162,7 @@ for eachListing in urop_list:
     urop_dict["project_title"] = project_title
     urop_dict["project_desc"] = project_desc
     urop_dict["prereqs"] = prereqs
-    urop_dict["contact"] = contact
+    urop_dict["contact"] = contactString
     urop_dict["relevant_url"] = relevant_url
 
     # sql = "INSERT INTO `urop_info` (`id`, `scrape_time`, `date_posted`, `term`, `department`, `supervisor`, `project_title`, `project_desc`, `prereqs`, `contact`, `relevant_url`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
