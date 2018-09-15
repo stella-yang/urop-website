@@ -4,6 +4,20 @@ from dateutil.parser import parse
 import sys
 import pymysql
 
+import os
+
+def toRelPath(origPath):
+	"""Converts path to path relative to current script
+
+	origPath:	path to convert
+	"""
+	try:
+		if not hasattr(toRelPath, "__location__"):
+			toRelPath.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+		return os.path.join(toRelPath.__location__, origPath)
+	except NameError:
+		return origPath
+
 # connection = pymysql.connect(host='fireurop.cc96yktz1lib.us-east-2.rds.amazonaws.com',
 #                              user='fishyfishpotato',
 #                              password='fireurop13579',
@@ -14,7 +28,7 @@ import pymysql
 # cursor.execute("TRUNCATE TABLE urop_info")
 
 orig_stdout = sys.stdout
-f = open('../website/data.js', 'w')
+f = open(toRelPath('../website/data.js'), 'w')
 sys.stdout = f
 
 print("var data = ")
