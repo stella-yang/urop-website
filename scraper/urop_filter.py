@@ -133,8 +133,8 @@ for eachListing in urop_list:
             index = eachLine.index(":")
             contact = eachLine[index+2:]
 
-            contactArray = contact.split()
-            contact = [c for c in contactArray if "@mit.edu" in c]
+            # contactArray = contact.split()
+            # contact = [c for c in contactArray if "@mit.edu" in c]
 
         else:
             if (last_section_header == "project_desc"):
@@ -147,12 +147,12 @@ for eachListing in urop_list:
 
     term_string = ""
     for each_term in term:
-        term_string += "each_term "
+        term_string += "each_term, "
 
-    term_string = term_string[:-1]
+    term_string = term_string[:-2]
 
     urop_dict["date"] = date
-    urop_dict["term"] = term
+    urop_dict["term"] = term_string
     urop_dict["department"] = department
     urop_dict["supervisor"] = supervisor
     urop_dict["project_title"] = project_title
