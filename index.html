@@ -1,0 +1,80 @@
+<head>
+  <title>Urop Guide</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+  <!-- Jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src=data.js></script>
+
+  <!-- Datatables -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+
+<body>
+  <h1 class="title-text">Urop Listings</h1>
+  <div class="content-wrapper">
+    <div class="table-div">
+      <table id="urop-table" class="display" style="table-layout: fixed;">
+        <thead>
+        	<tr>
+        	  <th style="width: 10%">Date Posted</th>
+        	  <th style="width: 10%">Semester</th>
+        	  <th style="width: 40%">Urop Title</th>
+        	  <th style="width: 20%">Urop Department</th>
+        	  <th style="width: 20%">Contact</th>
+        	</tr>
+        </thead>
+        <tbody id="urop-tbody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+<script>
+  $(document).ready( function () {
+
+    function format ( d ) {
+        return d;
+    }
+
+    var table = $('#urop-table').DataTable( {
+        data: data,
+        "lengthChange": false,
+        "bAutoWidth": false,
+        columns: [
+            { data: 'date' },
+            { data: 'term' },
+            { data: 'project_title' },
+            { data: 'department'},
+            { data: 'contact' }
+        ]
+    } );
+
+    // Add event listener for opening and closing details
+    $('#urop-table tbody').on('click', 'tr', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            var description = row.data()[0];
+            row.child(format(row.data()["project_desc"])).show();
+            tr.addClass('shown');
+        }
+    } );
+
+  } );
+</script>

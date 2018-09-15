@@ -1,0 +1,12 @@
+.content-wrapper {
+  display: flex;
+}
+
+.title-text {
+  text-align: center;
+}
+
+.table-div {
+  text-align: center;
+  justify-content: center;
+}
