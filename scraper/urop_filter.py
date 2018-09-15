@@ -4,22 +4,20 @@ from dateutil.parser import parse
 import sys
 import pymysql
 
-connection = pymysql.connect(host='fireurop.cc96yktz1lib.us-east-2.rds.amazonaws.com',
-                             user='fishyfishpotato',
-                             password='fireurop13579',
-                             db='fireurop')
-
-cursor = connection.cursor()
-
-cursor.execute("TRUNCATE TABLE urop_info")
+# connection = pymysql.connect(host='fireurop.cc96yktz1lib.us-east-2.rds.amazonaws.com',
+#                              user='fishyfishpotato',
+#                              password='fireurop13579',
+#                              db='fireurop')
+#
+# cursor = connection.cursor()
+#
+# cursor.execute("TRUNCATE TABLE urop_info")
 
 orig_stdout = sys.stdout
-f = open('data.js', 'w')
+f = open('../website/data.js', 'w')
 sys.stdout = f
 
 print("var data = ")
-
-
 
 def is_date(string):
     try:
@@ -135,6 +133,9 @@ for eachListing in urop_list:
             index = eachLine.index(":")
             contact = eachLine[index+2:]
 
+            contactArray = contact.split()
+            contact = [c for c in contactArray if "@mit.edu" in c]
+
         else:
             if (last_section_header == "project_desc"):
                 project_desc += eachLine
@@ -150,22 +151,22 @@ for eachListing in urop_list:
 
     term_string = term_string[:-1]
 
-    # urop_dict["date"] = date
-    # urop_dict["term"] = term
-    # urop_dict["department"] = department
-    # urop_dict["supervisor"] = supervisor
-    # urop_dict["project_title"] = project_title
-    # urop_dict["project_desc"] = project_desc
-    # urop_dict["prereqs"] = prereqs
-    # urop_dict["contact"] = contact
-    # urop_dict["relevant_url"] = relevant_url
+    urop_dict["date"] = date
+    urop_dict["term"] = term
+    urop_dict["department"] = department
+    urop_dict["supervisor"] = supervisor
+    urop_dict["project_title"] = project_title
+    urop_dict["project_desc"] = project_desc
+    urop_dict["prereqs"] = prereqs
+    urop_dict["contact"] = contact
+    urop_dict["relevant_url"] = relevant_url
 
-    sql = "INSERT INTO `urop_info` (`id`, `scrape_time`, `date_posted`, `term`, `department`, `supervisor`, `project_title`, `project_desc`, `prereqs`, `contact`, `relevant_url`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    # sql = "INSERT INTO `urop_info` (`id`, `scrape_time`, `date_posted`, `term`, `department`, `supervisor`, `project_title`, `project_desc`, `prereqs`, `contact`, `relevant_url`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-    print(sql, (1, 1, date, term, department, supervisor, project_title, project_desc, prereqs, contact, relevant_url))
-    cursor.execute(sql, (1, 1, date, term_string, department, supervisor, project_title, project_desc, prereqs, contact, relevant_url))
-
-    connection.commit()
+    # print(sql, (1, 1, date, term, department, supervisor, project_title, project_desc, prereqs, contact, relevant_url))
+    # cursor.execute(sql, (1, 1, date, term_string, department, supervisor, project_title, project_desc, prereqs, contact, relevant_url))
+    #
+    # connection.commit()
 
     urop_dictionary_list.append(urop_dict)
 print (urop_dictionary_list)
@@ -174,4 +175,4 @@ print (';')
 sys.stdout = orig_stdout
 f.close()
 
-connection.close()
+# connection.close()
