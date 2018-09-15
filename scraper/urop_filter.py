@@ -163,7 +163,7 @@ for eachListing in urop_list:
     else:
         term_string = "No Term Specified"
 
-    urop_dict["date"] = date
+    urop_dict["date"] = date.rstrip(' ')
     urop_dict["term"] = term_string
     urop_dict["department"] = department
     urop_dict["supervisor"] = supervisor
