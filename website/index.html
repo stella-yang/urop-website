@@ -31,6 +31,38 @@
         	  <th style="width: 20%">Contact</th>
         	</tr>
         </thead>
+        <tfoot>
+          <tr>
+            <th class="select-date">
+              <select>
+                <option value="today">Today</option>
+                <option value="week">Past Week</option>
+                <option value="month">Past Month</option>
+                <option value="3month">Past 3 Months</ooption>
+                <option value="year">Past Year</option>
+                <option value="" selected>All Time</option>
+              </select>
+            </th>
+            <th class="select-term">
+              <select>
+                <option value="" selected>Any</option>
+                <option value="fall">Fall</option>
+                <option value="iap">IAP</option>
+                <option value="spring">Spring</option>
+                <option value="summer">Summer</option>
+              </select>
+            </th>
+            <th class="search-text">
+              <input type="text" placeholder="Search Title" />
+            </th>
+            <th class="search-text">
+              <input type="text" placeholder="Search Department" />
+            </th>
+            <th class="search-text">
+              <input type="text" placeholder="Search Contact" />
+            </th>
+          </tr>
+        </tfoot>
         <tbody id="urop-tbody">
         </tbody>
       </table>
@@ -39,6 +71,33 @@
 </body>
 
 <script>
+  const DAY_MS = 1000 * 3600 * 24;
+  const WEEK_MS = DAY_MS * 7;
+  const MONTH_MS = DAY_MS * 30;
+  const YEAR_MS = MONTH_MS * 12;
+  var now = new Date();
+  var filterType = "";
+
+  $.fn.dataTable.ext.search.push(
+      function( settings, data, dataIndex ) {
+        var date = new Date(data[0]);
+        switch(filterType) {
+          case "today":
+            return now.getTime() === date.getTime();
+          case "week":
+            return now.getTime() - date.getTime() <= WEEK_MS;
+          case "month":
+            return now.getTime() - date.getTime() <= MONTH_MS;
+          case "3month":
+            return now.getTime() - date.getTime() <= 3 * MONTH_MS;
+          case "year":
+            return now.getTime() - date.getTime() <= YEAR_MS;
+          default:
+            return true;
+        }
+      }
+  );
+
   $(document).ready( function () {
 
     function format ( d ) {
@@ -55,7 +114,48 @@
             { data: 'project_title' },
             { data: 'department'},
             { data: 'contact' }
-        ]
+        ],
+        initComplete: function() {
+          this.api().columns().every(function() {
+            var column = this;
+            var columnType = column.footer().className;
+
+            switch(columnType) {
+              case "select-date":
+                $(column.footer())
+                  .find('select')
+                  .on('change', function() {
+                    now = new Date();
+                    filterType = this.value;
+                    column.draw();
+                  });
+                break;
+
+              case "select-term":
+                $(column.footer())
+                  .find('select')
+                  .on('change', function() {
+                    column
+                      .search(this.value ? this.value : "", true, false)
+                      .draw();
+                  });
+                break;
+
+              case "search-text":
+                $('input', column.footer()).on('keyup change', function() {
+                  if (column.search() !== this.value) {
+                    column
+                      .search(this.value)
+                      .draw();
+                  }
+                });
+                break;
+
+              default:
+                break;
+            }
+          });
+        }
     } );
 
     // Add event listener for opening and closing details
