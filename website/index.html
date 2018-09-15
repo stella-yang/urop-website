@@ -39,7 +39,6 @@
                 <option value="today">Today</option>
                 <option value="week">Past Week</option>
                 <option value="month">Past Month</option>
-                <option value="3month">Past 3 Months</ooption>
                 <option value="year">Past Year</option>
                 <option value="" selected>All Time</option>
               </select>
@@ -79,6 +78,16 @@
   var now = new Date();
   var filterType = "";
 
+  // Convert date strings for sorting
+  data.forEach(function(d) {
+    var date = new Date(d.date);
+    var month = date.getMonth() + 1;
+    var monthStr = date.getMonth() < 10 ? `0${month}` : month;
+    var day = date.getDate();
+    var dayStr = day < 10 ? `0${day}` : day;
+    d.sortable_date = `${date.getFullYear()}/${monthStr}/${dayStr}`
+  })
+
   $.fn.dataTable.ext.search.push(
       function( settings, data, dataIndex ) {
         var date = new Date(data[0]);
@@ -89,8 +98,6 @@
             return now.getTime() - date.getTime() <= WEEK_MS;
           case "month":
             return now.getTime() - date.getTime() <= MONTH_MS;
-          case "3month":
-            return now.getTime() - date.getTime() <= 3 * MONTH_MS;
           case "year":
             return now.getTime() - date.getTime() <= YEAR_MS;
           default:
@@ -109,17 +116,24 @@
         data: data,
         "lengthChange": false,
         "bAutoWidth": false,
+        "order": [[ 0, "desc" ]],
+        "columnDefs": [
+          {"orderData": 5, "targets": 0},
+          {"visible": false, "targets": 5}
+        ],
+        "pageLength": 20,
         columns: [
             { data: 'date' },
             { data: 'term' },
             { data: 'project_title' },
             { data: 'department'},
-            { data: 'contact' }
+            { data: 'contact' },
+            { data: 'sortable_date'}
         ],
         initComplete: function() {
           this.api().columns().every(function() {
             var column = this;
-            var columnType = column.footer().className;
+            var columnType = column.footer() ? column.footer().className : "";
 
             switch(columnType) {
               case "select-date":
