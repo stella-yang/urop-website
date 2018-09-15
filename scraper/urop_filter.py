@@ -151,7 +151,7 @@ for eachListing in urop_list:
 
     term_string = ""
     for each_term in term:
-        term_string += "each_term, "
+        term_string += each_term + ", "
 
     term_string = term_string[:-2]
 
