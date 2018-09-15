@@ -16,6 +16,10 @@ body {
   justify-content: center;
 }
 
+#urop-table td {
+  overflow-x: scroll;
+}
+
 #urop-table tfoot {
   display: table-header-group;
 }
