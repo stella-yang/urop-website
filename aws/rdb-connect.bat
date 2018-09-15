@@ -1,0 +1,1 @@
+start mysqlsh --sql --dbuser=fishyfishpotato --host=fireurop.cc96yktz1lib.us-east-2.rds.amazonaws.com --password=fireurop13579 --database=fireurop
