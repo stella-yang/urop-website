@@ -133,8 +133,10 @@ for eachListing in urop_list:
             index = eachLine.index(":")
             contact = eachLine[index+2:]
 
-            # contactArray = contact.split()
-            # contact = [c for c in contactArray if "@mit.edu" in c]
+            contactArray = contact.split()
+            contact = [c for c in contactArray if "@" in c]
+
+            contact = contact[1:-1]
 
         else:
             if (last_section_header == "project_desc"):
