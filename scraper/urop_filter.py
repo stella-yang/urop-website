@@ -154,10 +154,14 @@ for eachListing in urop_list:
 
 
     term_string = ""
-    for each_term in term:
-        term_string += each_term + ", "
 
-    term_string = term_string[:-2]
+    if term != "No Term Specified":
+        for each_term in term:
+            term_string += each_term + ", "
+
+        term_string = term_string[:-2]
+    else:
+        term_string = "No Term Specified"
 
     urop_dict["date"] = date
     urop_dict["term"] = term_string
