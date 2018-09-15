@@ -35,13 +35,13 @@ def parse_terms(string):
     s = string.lower()
     ret_list = []
     if ("summer" in s):
-        ret_list.append("summer")
+        ret_list.append("Summer")
     if ("fall" in s):
-        ret_list.append("fall")
+        ret_list.append("Fall")
     if ("spring" in s):
-        ret_list.append("spring")
+        ret_list.append("Spring")
     if ("iap" in s):
-        ret_list.append("iap")
+        ret_list.append("IAP")
     return ret_list
 
 def is_dept(string):
