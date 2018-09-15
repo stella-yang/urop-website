@@ -5,7 +5,7 @@ import sys
 import pymysql
 
 orig_stdout = sys.stdout
-f = open('../website/data.js', 'w')
+f = open(toRelPath('../website/data.js'), 'w')
 sys.stdout = f
 
 print("var data = ")
