@@ -1,1 +1,1 @@
-python3 urop_filter.py
+python3 /home/ubuntu/urop-website/scraper/urop_filter.py
