@@ -2,7 +2,6 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from dateutil.parser import parse
 import sys
-import pymysql
 import os
 
 def toRelPath(origPath):
@@ -96,7 +95,6 @@ for eachListing in urop_list:
     project_title = "No Title"
     project_desc = ""
     prereqs = "None"
-    contact = ""
     relevant_url = ""
     contactString = ""
 
@@ -142,7 +140,7 @@ for eachListing in urop_list:
             for contactText in contactArray:
                 if "@" in contactText:
                     my_string = contactText.rstrip('.')
-                    contactString += my_string[1:-1]
+                    contactString += my_string
 
         else:
             if (last_section_header == "project_desc"):
@@ -174,10 +172,8 @@ for eachListing in urop_list:
     urop_dict["relevant_url"] = relevant_url
 
     urop_dictionary_list.append(urop_dict)
-print (urop_dictionary_list)
+print (str(urop_dictionary_list).encode("utf-8"))
 print (';')
 
 sys.stdout = orig_stdout
 f.close()
-
-# connection.close()
