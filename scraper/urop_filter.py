@@ -90,7 +90,7 @@ urop_dictionary_list = []
 for eachListing in urop_list:
     urop_dict = {}
     date = ""
-    term = "No Term Specified"
+    term = "Unspecified"
     department = "Department Unlisted"
     supervisor = ""
     project_title = "No Title"
@@ -155,15 +155,15 @@ for eachListing in urop_list:
 
     term_string = ""
 
-    if term != "No Term Specified":
+    if term != "Unspecified":
         for each_term in term:
             term_string += each_term + ", "
 
         term_string = term_string[:-2]
     else:
-        term_string = "No Term Specified"
+        term_string = "Unspecified"
 
-    urop_dict["date"] = date.rstrip(' ')
+    urop_dict["date"] = date.rstrip()
     urop_dict["term"] = term_string
     urop_dict["department"] = department
     urop_dict["supervisor"] = supervisor
