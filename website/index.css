@@ -17,7 +17,7 @@ body {
 }
 
 #urop-table td {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 #urop-table tfoot {

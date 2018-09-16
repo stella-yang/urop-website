@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from dateutil.parser import parse
 import sys
 import os
+import re
 
 def toRelPath(origPath):
 	'''Converts path to path relative to current script
@@ -90,7 +91,7 @@ for eachListing in urop_list:
     project_desc = ''
     prereqs = 'None'
     relevant_url = ''
-    contactString = ''
+    contacts = []
 
     last_section_header = ''
     for eachLine in eachListing.split('\n'):
@@ -134,7 +135,7 @@ for eachListing in urop_list:
             for contactText in contactArray:
                 if '@' in contactText:
                     my_string = contactText.rstrip('.')
-                    contactString += my_string
+                    contacts.append(my_string)
 
         else:
             if (last_section_header == 'project_desc'):
@@ -155,6 +156,13 @@ for eachListing in urop_list:
     else:
         term_string = 'Unspecified'
 
+    #clean/concatenate contacts into a string
+    contact_str = ''
+    for contact in contacts:
+        m = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', contact)
+        contact_str += m.group(0) + ', '
+    contact_str = contact_str[:-2]
+
     urop_dict['date'] = date.rstrip()
     urop_dict['term'] = term_string
     urop_dict['department'] = department
@@ -162,7 +170,7 @@ for eachListing in urop_list:
     urop_dict['project_title'] = project_title
     urop_dict['project_desc'] = project_desc
     urop_dict['prereqs'] = prereqs
-    urop_dict['contact'] = contactString
+    urop_dict['contact'] = contact_str
     urop_dict['relevant_url'] = relevant_url
 
     urop_dictionary_list.append(urop_dict)
