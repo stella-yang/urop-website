@@ -79,6 +79,8 @@ for eachLine in body_text.split('\n'):
 
 urop_list = urop_list[1:]
 
+print(urop_list)
+
 urop_dictionary_list = []
 
 for eachListing in urop_list:
@@ -113,9 +115,10 @@ for eachListing in urop_list:
             project_title = eachLine[index+2:]
 
         elif ('Project Description' in eachLine):
-            index = eachLine.index(':')
-            project_desc = eachLine[index+2:]
-            last_section_header = 'project_desc'
+            if (':' in eachLine):
+                index = eachLine.index(':')
+                project_desc = eachLine[index+2:]
+                last_section_header = 'project_desc'
 
         elif ('Prerequisites:' in eachLine or 'Requirements:' in eachLine):
             index = eachLine.index(':')
