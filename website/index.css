@@ -1,11 +1,12 @@
 body {
   font-family: 'Open Sans', sans-serif;
   padding: 20px;
-  
+
 }
 
 .content-wrapper {
   display: flex;
+  justify-content: center;
 }
 
 .title-text {
@@ -15,6 +16,7 @@ body {
 .table-div {
   text-align: center;
   justify-content: center;
+  width: 85%;
 }
 
 #urop-table td {

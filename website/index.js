@@ -42,13 +42,14 @@ $(document).ready( function () {
   var table = $('#urop-table').DataTable( {
 	  data: data,
 	  "lengthChange": false,
+    "orderCellsTop": true,
 	  "bAutoWidth": false,
 	  "order": [[ 0, "desc" ]],
 	  "columnDefs": [
 		{"orderData": 5, "targets": 0},
 		{"visible": false, "targets": 5}
 	  ],
-	  "pageLength": 20,
+	  "pageLength": 8,
 	  columns: [
 		  { data: 'date' },
 		  { data: 'term' },
