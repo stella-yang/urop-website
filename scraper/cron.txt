@@ -1,3 +1,2 @@
-* * * * * ./scraper.sh
-
+* * * * * /home/ubuntu/urop-website/scraper/scraper.sh
 
