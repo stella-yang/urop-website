@@ -36,7 +36,11 @@ $.fn.dataTable.ext.search.push(
 $(document).ready( function () {
 
   function format ( d ) {
-	  return d;
+		let tmp = d.split('\n').join('<br/><br/>');
+		while (tmp.slice(-5) == '<br/>') {
+			tmp = tmp.slice(0, -5);
+		}
+		return tmp;
   }
 
   var table = $('#urop-table').DataTable( {

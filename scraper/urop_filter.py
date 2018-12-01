@@ -117,7 +117,7 @@ for eachListing in urop_list:
         elif ('Project Description' in eachLine):
             if (':' in eachLine):
                 index = eachLine.index(':')
-                project_desc = eachLine[index+2:]
+                project_desc = eachLine[index+2:] + '\n'
                 last_section_header = 'project_desc'
 
         elif ('Prerequisites:' in eachLine or 'Requirements:' in eachLine):
@@ -142,7 +142,7 @@ for eachListing in urop_list:
 
         else:
             if (last_section_header == 'project_desc'):
-                project_desc += eachLine
+                project_desc += eachLine + '\n'
             elif (last_section_header == 'prereqs'):
                 prereqs += eachLine
             elif (last_section_header == 'relevant_url'):
