@@ -36,7 +36,7 @@ $.fn.dataTable.ext.search.push(
 $(document).ready( function () {
 
   function format ( d ) {
-	  return d;
+		return d.split('\n').join('<br/><br/>').split('<br/><br/><br/><br/>').join('<br/><br/>');
   }
 
   var table = $('#urop-table').DataTable( {
@@ -47,7 +47,7 @@ $(document).ready( function () {
 	  "order": [[ 0, "desc" ]],
 	  "columnDefs": [
 		{"orderData": 5, "targets": 0},
-		{"visible": false, "targets": 5}
+		{"visible": false, "targets": [5, 6]}
 	  ],
 	  "pageLength": 8,
 	  columns: [
@@ -56,7 +56,8 @@ $(document).ready( function () {
 		  { data: 'project_title' },
 		  { data: 'department'},
 		  { data: 'contact' },
-		  { data: 'sortable_date'}
+			{ data: 'sortable_date'},
+			{ data: 'search_text' }
 	  ],
 	  initComplete: function() {
 		this.api().columns().every(function() {
@@ -93,6 +94,15 @@ $(document).ready( function () {
 				}
 			  });
 			  break;
+
+			case "search-title":
+				$('input', column.footer()).on('keyup change', function() {
+					column
+					.column(6)
+					.search(this.value)
+					.draw();
+				});
+				break;
 
 			default:
 			  break;
