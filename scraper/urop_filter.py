@@ -79,8 +79,6 @@ for eachLine in body_text.split('\n'):
 
 urop_list = urop_list[1:]
 
-print(urop_list)
-
 urop_dictionary_list = []
 
 for eachListing in urop_list:
