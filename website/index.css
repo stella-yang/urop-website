@@ -20,7 +20,7 @@ body {
 }
 
 #urop-table td {
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 #urop-table tfoot {

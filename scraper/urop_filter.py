@@ -144,7 +144,7 @@ for eachListing in urop_list:
             if (last_section_header == 'project_desc'):
                 project_desc += eachLine + '\n'
             elif (last_section_header == 'prereqs'):
-                prereqs += eachLine
+                prereqs += eachLine + '\n'
             elif (last_section_header == 'relevant_url'):
                 relevant_url += eachLine
 
@@ -171,10 +171,13 @@ for eachListing in urop_list:
     urop_dict['department'] = department
     urop_dict['supervisor'] = supervisor
     urop_dict['project_title'] = project_title
-    urop_dict['project_desc'] = project_desc
+    # todo: fix this in the js
+    urop_dict['project_desc'] = project_desc + 'Prerequisites: ' + prereqs
     urop_dict['prereqs'] = prereqs
     urop_dict['contact'] = contact_str
     urop_dict['relevant_url'] = relevant_url
+    # todo: fix this in the js
+    urop_dict['search_text'] = project_title + ' ' + project_desc + prereqs + contact_str
 
     urop_dictionary_list.append(urop_dict)
 
