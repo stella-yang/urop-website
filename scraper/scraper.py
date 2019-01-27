@@ -6,7 +6,8 @@ import os
 import re
 
 def toRelPath(origPath):
-	'''Converts path to path relative to current script
+	'''
+    Converts path to path relative to current script
 
 	origPath:	path to convert
 	'''

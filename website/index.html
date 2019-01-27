@@ -1,78 +1,37 @@
+<html>
+
 <head>
   <title>MIT UROP Listings</title>
 
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-
-  <!-- Jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-  <!-- Datatables -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
   <link rel="stylesheet" type="text/css" href="index.css">
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
   <script type="text/javascript" src="data.js"></script>
   <script type="text/javascript" src="index.js"></script>
-  <link rel="shortcut icon" href="http://uroplistings.guide/favicon.ico"/>
+  <link rel="shortcut icon" href="http://uroplistings.guide/favicon.ico" />
 
 </head>
 
 <body>
-  <h1 class="title-text">MIT UROP Listings</h1>
-  <div style="text-align: center; margin-bottom: 0.8%;"> Data pulled from the <a href=http://uaap.mit.edu/research-exploration/urop/apply/urop-advertised-opportunities>advertised UROP postings</a> <br>
-    Click on a listing to view its description
-  </div>
-  <div class="content-wrapper">
-    <div class="table-div">
-      <table id="urop-table" class="display" style="table-layout: fixed;">
-        <thead>
-        	<tr>
-        	  <th style="width: 9%">Date Posted</th>
-        	  <th style="width: 12%">Semester</th>
-        	  <th style="width: 45%">UROP Title</th>
-        	  <th style="width: 20%">UROP Department</th>
-        	  <th style="width: 20%">Contact</th>
-        	</tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <th class="select-date">
-              <select>
-                <option value="week">Past Week</option>
-                <option value="month">Past Month</option>
-                <option value="year">Past Year</option>
-                <option value="" selected>All Time</option>
-              </select>
-            </th>
-            <th class="select-term">
-              <select>
-                <option value="" selected>Any</option>
-                <option value="fall">Fall</option>
-                <option value="iap">IAP</option>
-                <option value="spring">Spring</option>
-                <option value="summer">Summer</option>
-              </select>
-            </th>
-            <th class="search-title">
-              <input type="text" placeholder="Search Title or Description" />
-            </th>
-            <th class="search-text">
-              <input type="text" placeholder="Search Department" />
-            </th>
-            <th class="search-text">
-              <input type="text" placeholder="Search Contact" />
-            </th>
-          </tr>
-        </tfoot>
-        <tbody id="urop-tbody">
-        </tbody>
-      </table>
+  <div id="header">
+    <div id="header-title">UROP.guide</div>
+    <input id="header-search" class="nofocus" placeholder="Search...">
+    <div id="header-terms">
+      <div id="header-terms-fall" class="header-terms-all nofocus noselect">Fall</div>
+      <div id="header-terms-iap" class="header-terms-all nofocus noselect">IAP</div>
+      <div id="header-terms-spring" class="header-terms-all nofocus noselect">Spring</div>
+      <div id="header-terms-summer" class="header-terms-all nofocus noselect">Summer</div>
+    </div>
+    <div id="header-acknowledgements">
+      Data pulled from <a href="http://uaap.mit.edu/research-exploration/urop/apply/urop-advertised-opportunities">advertised UROP postings</a>.<br>
+      Questions? Email <a href="mailto:uroplistings@mit.edu">uroplistings@mit.edu</a>.<br>
+      Made with ❤️ by Stella Yang, Gilbert Yan, Alisa Ono, and Angela Cai.
     </div>
   </div>
-  <div style="text-align: center; font-size: 9px; color: gray; margin-top: 0.5%;"> Questions? Email <a href="mailto:uroplistings@mit.edu">uroplistings@mit.edu</a> <br>
-  Made with <3 by Stella Yang, Gilbert Yan, Alisa Ono, and Angela Cai</div>
+  <div id="viewer">
+  </div>
+  <div id="end">
+    No more UROPs :')
+  </div>
 </body>
+
+</html>

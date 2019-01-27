@@ -1,131 +1,143 @@
-const DAY_MS = 1000 * 3600 * 24;
-const WEEK_MS = DAY_MS * 7;
-const MONTH_MS = DAY_MS * 30;
-const YEAR_MS = MONTH_MS * 12;
-var now = new Date();
-var filterType = "";
+window.onload = function () {
+	//elements
+	let viewer = document.getElementById("viewer");
+	for (let a = 0; a < data.length; a++) {
 
-// Convert date strings for sorting
-data.forEach(function(d) {
-  var date = new Date(d.date);
-  var month = date.getMonth() + 1;
-  var monthStr = date.getMonth() < 10 ? `0${month}` : month;
-  var day = date.getDate();
-  var dayStr = day < 10 ? `0${day}` : day;
-  d.sortable_date = `${date.getFullYear()}/${monthStr}/${dayStr}`
-})
+		let elem = document.createElement("div");
+		viewer.appendChild(elem);
+		elem.setAttribute("name", "viewer-elem-" + a);
+		elem.className = "viewer-elem";
 
-$.fn.dataTable.ext.search.push(
-	function( settings, data, dataIndex ) {
-	  var date = new Date(data[0]);
-	  switch(filterType) {
-		case "today":
-		  return now.getTime() === date.getTime();
-		case "week":
-		  return now.getTime() - date.getTime() <= WEEK_MS;
-		case "month":
-		  return now.getTime() - date.getTime() <= MONTH_MS;
-		case "year":
-		  return now.getTime() - date.getTime() <= YEAR_MS;
-		default:
-		  return true;
-	  }
+		let summary = document.createElement("div");
+		let main = document.createElement("div");
+		elem.appendChild(summary);
+		elem.appendChild(main);
+		summary.className = "viewer-elem-summary";
+		main.className = "viewer-elem-main";
+
+		let date = document.createElement("div");
+		let term = document.createElement("div");
+		let contact = document.createElement("div");
+		summary.appendChild(date);
+		summary.appendChild(term);
+		summary.appendChild(contact);
+		date.className = "viewer-elem-date";
+		term.className = "viewer-elem-term";
+		contact.className = "viewer-elem-contact";
+
+		let title = document.createElement("div");
+		let full = document.createElement("div");
+		main.appendChild(title);
+		main.appendChild(full);
+		title.className = "viewer-elem-title";
+		full.className = "viewer-elem-full";
+
+		date.innerHTML = data[a].date;
+		contact.innerHTML = "<a href=\"mailto:" + data[a].contact + "\">" + data[a].contact + "</a>";
+		title.origHTML = data[a].project_title;
+		full.origHTML = data[a].project_desc + "<br>" +
+			"<br>" +
+			"<b>Prerequisites:</b> " + data[a].prereqs;
+		title.innerHTML = title.origHTML;
+		full.innerHTML = full.origHTML;
+
+		//parsing for terms
+		let termList = data[a].term.split(",");
+		data[a].termSplit = [];
+		for (let b = 0; b < termList.length; b++) {
+			let tag = termList[b].trim().toLowerCase();
+			data[a].termSplit.push(tag);
+
+			if (tag == "fall" || tag == "iap" || tag == "spring" || tag == "summer") {
+				let tagNode = document.createElement("div");
+				term.appendChild(tagNode);
+				tagNode.className = "header-terms-all viewer-elem-term-elem nofocus noselect";
+				tagNode.textContent = termList[b].trim();
+				tagNode.style.borderColor = "var(--" + tag + ")";
+				tagNode.style.backgroundColor = "var(--" + tag + ")";
+			} else {
+				//error processing terms, just display string instead
+				let tagNode = document.createElement("div");
+				term.appendChild(tagNode);
+
+				tagNode.innerText = tag;
+				console.log("Error parsing term tags for UROP:", data[a].project_title);
+			}
+		}
 	}
-);
 
-$(document).ready( function () {
+	//search bar
+	let search = document.getElementById("header-search");
+	search.oninput = function () {
+		let text = search.value;
 
-  function format ( d ) {
-		return d.split('\n').join('<br/><br/>').split('<br/><br/><br/><br/>').join('<br/><br/>');
-  }
+		if (text == "") {
+			return;
+		}
 
-  var table = $('#urop-table').DataTable( {
-	  data: data,
-	  "lengthChange": false,
-    "orderCellsTop": true,
-	  "bAutoWidth": false,
-	  "order": [[ 0, "desc" ]],
-	  "columnDefs": [
-		{"orderData": 5, "targets": 0},
-		{"visible": false, "targets": [5, 6]}
-	  ],
-	  "pageLength": 8,
-	  columns: [
-		  { data: 'date' },
-		  { data: 'term' },
-		  { data: 'project_title' },
-		  { data: 'department'},
-		  { data: 'contact' },
-			{ data: 'sortable_date'},
-			{ data: 'search_text' }
-	  ],
-	  initComplete: function() {
-		this.api().columns().every(function() {
-		  var column = this;
-		  var columnType = column.footer() ? column.footer().className : "";
+		//hide all elements which don't match
+		for (let a = 0; a < data.length; a++) {
+			let elem = document.getElementsByName("viewer-elem-" + a)[0];
+			let title = elem.getElementsByClassName("viewer-elem-title")[0];
+			let full = elem.getElementsByClassName("viewer-elem-full")[0];
+			let show = data[a].project_desc.includes(text) |
+				data[a].project_title.includes(text);
+			if (!show) {
+				elem.classList.add("hidden");
 
-		  switch(columnType) {
-			case "select-date":
-			  $(column.footer())
-				.find('select')
-				.on('change', function() {
-				  now = new Date();
-				  filterType = this.value;
-				  column.draw();
-				});
-			  break;
+				//unhighlight text
+			} else {
+				elem.classList.remove("hidden");
 
-			case "select-term":
-			  $(column.footer())
-				.find('select')
-				.on('change', function() {
-				  column
-					.search(this.value ? this.value : "", true, false)
-					.draw();
-				});
-			  break;
+				//highlight text from search in both title and full
+				title.innerHTML = title.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
+				full.innerHTML = full.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
+			}
+		}
+	}
 
-			case "search-text":
-			  $('input', column.footer()).on('keyup change', function() {
-				if (column.search() !== this.value) {
-				  column
-					.search(this.value)
-					.draw();
-				}
-			  });
-			  break;
+	//term filter
+	let termNodes = document.getElementById("header").getElementsByClassName("header-terms-all");
+	for (let a = 0; a < termNodes.length; a++) {
+		let node = termNodes[a];
+		let tag = node.textContent.toLowerCase();
+		termNodes[a].onclick = function () {
+			if (node.classList.contains("selected")) {
+				node.classList.remove("selected");
+			} else {
+				node.classList.add("selected");
+			}
 
-			case "search-title":
-				$('input', column.footer()).on('keyup change', function() {
-					column
-					.column(6)
-					.search(this.value)
-					.draw();
-				});
+			updateTermFilters();
+		}
+	}
+	updateTermFilters();
+}
+
+function updateTermFilters() {
+	let selected = document.getElementsByClassName("selected");
+	let tags = [];
+	for (let a = 0; a < selected.length; a++) {
+		tags.push(selected[a].id.split("header-terms-")[1]);
+	}
+	if (tags.length == 0) {
+		tags = ["fall", "iap", "spring", "summer"];
+	}
+
+	//hide all elements which don't match
+	for (let a = 0; a < data.length; a++) {
+		let elem = document.getElementsByName("viewer-elem-" + a)[0];
+		let show = false;
+		for (let b = 0; b < data[a].termSplit.length; b++) {
+			if (tags.includes(data[a].termSplit[b])) {
+				show = true;
 				break;
-
-			default:
-			  break;
-		  }
-		});
-	  }
-  } );
-
-  // Add event listener for opening and closing details
-  $('#urop-table tbody').on('click', 'tr', function () {
-	  var tr = $(this).closest('tr');
-	  var row = table.row( tr );
-
-	  if ( row.child.isShown() ) {
-		  // This row is already open - close it
-		  row.child.hide();
-		  tr.removeClass('shown');
-	  }
-	  else {
-		  // Open this row
-		  var description = row.data()[0];
-		  row.child(format(row.data()["project_desc"])).show();
-		  tr.addClass('shown');
-	  }
-  } );
-} );
+			}
+		}
+		if (!show) {
+			elem.classList.add("hidden");
+		} else {
+			elem.classList.remove("hidden");
+		}
+	}
+}

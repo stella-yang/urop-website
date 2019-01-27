@@ -1,38 +1,228 @@
+:root {
+  --fall: rgb(255, 212, 182);
+  --iap: rgb(180, 230, 255);
+  --spring: rgb(255, 212, 244);
+  --summer: rgb(194, 255, 212);
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+									supported by Chrome and Opera */
+}
+
+.nofocus {
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.highlighted {
+  background-color: yellow;
+}
+
 body {
-  font-family: 'Open Sans', sans-serif;
-  padding: 20px;
-
-}
-
-.content-wrapper {
   display: flex;
-  justify-content: center;
-}
+  flex-flow: column nowrap;
 
-.title-text {
-  text-align: center;
-}
+  overflow-y: auto;
 
-.table-div {
-  text-align: center;
-  justify-content: center;
-  width: 85%;
-}
-
-#urop-table td {
-  overflow-x: hidden;
-}
-
-#urop-table tfoot {
-  display: table-header-group;
-}
-
-#urop-table tfoot input, select {
   width: 100%;
-  padding: 3px;
-  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+
+  background-color: rgb(244, 244, 244);
 }
 
-#urop-table_filter {
-  display: none;
+#header {
+  flex: 0 0 auto;
+
+  display: flex;
+  flex-flow: column nowrap;
+
+  background-color: white;
+}
+
+#header-title {
+  margin: 15px auto;
+  flex: 0 0 auto;
+  font-size: 30px;
+}
+
+#header-search {
+  margin: 0 auto 15px auto;
+  width: 45%;
+  border-radius: 7px;
+  height: 35px;
+  border: 1px black solid;
+
+  padding: 10px;
+}
+
+.header-terms-all {
+  min-width: 60px;
+  border-radius: 5px;
+  margin: 0 7px;
+  padding: 7px;
+  text-align: center;
+  background-color: white;
+  border-width: 2px;
+  border-style: solid;
+
+  cursor: pointer;
+}
+
+#header-terms {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 0 auto 15px auto;
+}
+
+#header-terms-fall {
+  border-color: var(--fall);
+}
+
+#header-terms-fall.selected {
+  background-color: var(--fall);
+}
+
+#header-terms-iap {
+  border-color: var(--iap);
+}
+
+#header-terms-iap.selected {
+  background-color: var(--iap);
+}
+
+#header-terms-spring {
+  border-color: var(--spring);
+}
+
+#header-terms-spring.selected {
+  background-color: var(--spring);
+}
+
+#header-terms-summer {
+  border-color: var(--summer);
+}
+
+#header-terms-summer.selected {
+  background-color: var(--summer);
+}
+
+#header-acknowledgements {
+  text-align: center;
+  margin: 0 auto 15px auto;
+  font-size: 10px;
+  color: gray;
+
+  line-height: 1.5;
+}
+
+#viewer {
+  display: flex;
+  flex-flow: column nowrap;
+
+  padding: 5px 15%;
+
+  width: calc(70%);
+  flex: 0 0 auto;
+
+  background-color: rgb(244, 244, 244);
+}
+
+.viewer-elem {
+  background-color: white;
+
+  width: 100%;
+  margin: 10px 0;
+  flex: 0 0 auto;
+
+  display: flex;
+  flex-flow: row nowrap;
+
+  border-radius: 7px;
+  border: 1px solid black;
+}
+
+.viewer-elem-summary {
+  width: calc(150px - 30px);
+  flex: 0 0 auto;
+
+  background-color: transparent;
+  border-right: 1px solid black;
+
+  padding: 15px;
+}
+
+.viewer-elem-date {}
+
+.viewer-elem-term {
+  padding-top: 10px;
+  margin: 0 -5px;
+
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.viewer-elem-contact {
+  padding-top: 10px;
+
+  word-wrap: break-word;
+}
+
+.viewer-elem-main {
+  width: calc(100% - 150px - 30px);
+  flex: 0 0 auto;
+  padding: 15px;
+
+  background-color: transparent;
+}
+
+.viewer-elem-title {
+  border-bottom: 1px rgb(0, 113, 188) solid;
+  color: rgb(0, 113, 188);
+  font-weight: bold;
+
+  padding-bottom: 15px;
+}
+
+.viewer-elem-full {
+  height: auto;
+
+  padding-top: 15px;
+}
+
+.viewer-elem-term-elem {
+  cursor: default;
+
+  margin: 5px;
+  min-width: 0;
+  border-radius: 3px;
+  margin: 4px 4px;
+  padding: 4px;
+}
+
+#end {
+  text-align: center;
+
+  margin: 0 0 15px 0;
 }
