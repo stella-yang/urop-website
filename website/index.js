@@ -35,9 +35,9 @@ window.onload = function () {
 		date.innerHTML = data[a].date;
 		contact.innerHTML = "<a href=\"mailto:" + data[a].contact + "\">" + data[a].contact + "</a>";
 		title.origHTML = data[a].project_title;
-		full.origHTML = data[a].project_desc + "<br>" +
-			"<br>" +
-			"<b>Prerequisites:</b> " + data[a].prereqs;
+		full.origHTML = data[a].project_desc;
+		full.origHTML = full.origHTML.replace("\n", "<br><br>");
+		full.origHTML = full.origHTML.replace("Prerequisites:", "<b>Prerequisites:</b>");
 		title.innerHTML = title.origHTML;
 		full.innerHTML = full.origHTML;
 
@@ -61,7 +61,7 @@ window.onload = function () {
 				term.appendChild(tagNode);
 
 				tagNode.innerText = tag;
-				console.log("Error parsing term tags for UROP:", data[a].project_title);
+				console.log("Error parsing term tags for UROP:", data[a].project_title + ":", termList[b]);
 			}
 		}
 	}
