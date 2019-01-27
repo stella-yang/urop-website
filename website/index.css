@@ -149,7 +149,7 @@ body {
   background-color: rgb(244, 244, 244);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   #viewer {
     padding: 5px 15px;
     width: calc(100% - 30px);
