@@ -143,10 +143,17 @@ body {
 
   padding: 5px 15%;
 
-  width: calc(70%);
+  width: 70%;
   flex: 0 0 auto;
 
   background-color: rgb(244, 244, 244);
+}
+
+@media (max-width: 700px) {
+  #viewer {
+    padding: 5px 15px;
+    width: calc(100% - 30px);
+  }
 }
 
 .viewer-elem {
@@ -164,7 +171,8 @@ body {
 }
 
 .viewer-elem-summary {
-  width: calc(150px - 30px);
+  max-width: calc(150px - 30px);
+  width: 20%;
   flex: 0 0 auto;
 
   background-color: transparent;
