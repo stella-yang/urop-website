@@ -209,6 +209,8 @@ body {
   height: auto;
 
   padding-top: 15px;
+
+  word-wrap: break-word;
 }
 
 .viewer-elem-term-elem {
