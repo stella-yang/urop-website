@@ -26,8 +26,9 @@ def is_date(string):
 
 def is_term(string):
     s = string.lower()
-    term_list = ['summer', 'fall', 'spring', 'iap']
-    return (('term:' in s) or ('term urop is offered: ' in s) or (s in term_list))
+
+    if ('summer' in s) or ('fall' in s) or ('spring' in s) or ('iap' in s):
+        return True
 
 def parse_terms(string):
     s = string.lower()
@@ -82,6 +83,7 @@ for urop_entry in urop_delinations:
             if(current_element.name == "h4"):
                 for c in current_text.split("\n"):
                     current_text = c
+                    # print(current_text)
 
                     if (is_date(current_text)):
                         date = current_text
@@ -95,6 +97,10 @@ for urop_entry in urop_delinations:
                     elif ('MIT Faculty Supervisor' in current_text):
                         split = current_text.split(':')
                         supervisor = split[1]
+
+                    elif ('Project Title' in current_text):
+                        index = current_text.index(':')
+                        project_title = current_text[index+2:]
 
             elif ('Project Title' in current_text):
                 index = current_text.index(':')
@@ -110,7 +116,10 @@ for urop_entry in urop_delinations:
                         my_string = contactText.rstrip('.')
                         contacts.append(my_string)
             else:
-                project_desc += str(current_element)
+                if ("Below are currently advertised UROP projects available to eligible undergraduates." in current_text or "These projects do not represent all available UROPs" in current_text or current_element.name == "h3"):
+                    break
+                else:
+                    project_desc += str(current_element)
 
             current_element = current_element.find_next_sibling()
             if (current_element == None):
