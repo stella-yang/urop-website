@@ -41,7 +41,10 @@ window.onload = function () {
 
 		//parsing for terms
 		let termList = data[a].term.split(",");
+
+		//the term element split by commas
 		data[a].termSplit = [];
+
 		for (let b = 0; b < termList.length; b++) {
 			let tag = termList[b].trim().toLowerCase();
 			data[a].termSplit.push(tag);
@@ -59,7 +62,7 @@ window.onload = function () {
 				term.appendChild(tagNode);
 
 				tagNode.innerText = tag;
-				console.log("Error parsing term tags for UROP:", data[a].project_title + ":", termList[b]);
+				console.log("Error parsing term tags for UROP:", data[a].project_title + ":", termList[b] + ".", "This UROP post will only be shown if no term filters are selected.");
 			}
 		}
 	}
@@ -123,10 +126,15 @@ window.onload = function () {
 function updateTermFilters() {
 	let selected = document.getElementsByClassName("selected");
 	let tags = [];
+
+	//this variable is set when no tags are clicked; i.e. all posts should be shown
+	let noTagsSelected = false;
+
 	for (let a = 0; a < selected.length; a++) {
 		tags.push(selected[a].id.split("header-terms-")[1]);
 	}
 	if (tags.length == 0) {
+		noTagsSelected = true;
 		tags = ["fall", "iap", "spring", "summer"];
 	}
 
@@ -140,6 +148,20 @@ function updateTermFilters() {
 				break;
 			}
 		}
+
+		//if the term split tags contain any terms not of the four terms and also no tags are selected, then show the post
+		if (noTagsSelected) {
+			for (let b = 0; b < data[a].termSplit.length; b++) {
+				if (data[a].termSplit[b] != "fall" &&
+					data[a].termSplit[b] != "iap" &&
+					data[a].termSplit[b] != "spring" &&
+					data[a].termSplit[b] != "summer") {
+					show = true;
+					break;
+				}
+			}
+		}
+
 		if (!show) {
 			elem.classList.add("hidden-term");
 		} else {
