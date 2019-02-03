@@ -217,6 +217,7 @@ body {
   border-bottom: 1px rgb(0, 113, 188) solid;
   color: rgb(0, 113, 188);
   font-weight: bold;
+  font-size: 16px;
 
   padding-bottom: 15px;
 }
@@ -224,9 +225,8 @@ body {
 .viewer-elem-full {
   height: auto;
 
-  padding-top: 15px;
-
   word-wrap: break-word;
+  margin-bottom: -15;
 }
 
 .viewer-elem-term-elem {
