@@ -31,6 +31,14 @@
   display: none !important;
 }
 
+.hidden-search {
+  display: none !important;
+}
+
+.hidden-term {
+  display: none !important;
+}
+
 .highlighted {
   background-color: yellow;
 }

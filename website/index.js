@@ -1,5 +1,5 @@
 window.onload = function () {
-	//elements
+	//create all the elements for the UROPs
 	let viewer = document.getElementById("viewer");
 	for (let a = 0; a < data.length; a++) {
 
@@ -36,8 +36,6 @@ window.onload = function () {
 		contact.innerHTML = "<a href=\"mailto:" + data[a].contact + "\">" + data[a].contact + "</a>";
 		title.origHTML = data[a].project_title;
 		full.origHTML = data[a].project_desc;
-		//full.origHTML = full.origHTML.replace("\n", "<br><br>");
-		//full.origHTML = full.origHTML.replace("Prerequisites:", "<b>Prerequisites:</b>");
 		title.innerHTML = title.origHTML;
 		full.innerHTML = full.origHTML;
 
@@ -66,32 +64,34 @@ window.onload = function () {
 		}
 	}
 
-	//search bar
+	//search bar and its handler
 	let search = document.getElementById("header-search");
 	search.oninput = function () {
 		let text = search.value;
-
-		if (text == "") {
-			return;
-		}
 
 		//hide all elements which don't match
 		for (let a = 0; a < data.length; a++) {
 			let elem = document.getElementsByName("viewer-elem-" + a)[0];
 			let title = elem.getElementsByClassName("viewer-elem-title")[0];
 			let full = elem.getElementsByClassName("viewer-elem-full")[0];
-			let show = data[a].project_desc.includes(text) |
-				data[a].project_title.includes(text);
-			if (!show) {
-				elem.classList.add("hidden");
 
-				//unhighlight text
+			//whenever hidden is removed, we'll also unhighlight the text, so it should be okay
+			if (text == "") {
+				elem.classList.remove("hidden-search");
+				title.innerHTML = title.origHTML;
+				full.innerHTML = full.origHTML;
 			} else {
-				elem.classList.remove("hidden");
+				let show = data[a].project_desc.includes(text) |
+					data[a].project_title.includes(text);
+				if (!show) {
+					elem.classList.add("hidden-search");
+				} else {
+					elem.classList.remove("hidden-search");
 
-				//highlight text from search in both title and full
-				title.innerHTML = title.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
-				full.innerHTML = full.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
+					//highlight text from search in both title and full
+					title.innerHTML = title.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
+					full.innerHTML = full.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
+				}
 			}
 		}
 	}
@@ -100,7 +100,6 @@ window.onload = function () {
 	let termNodes = document.getElementById("header").getElementsByClassName("header-terms-all");
 	for (let a = 0; a < termNodes.length; a++) {
 		let node = termNodes[a];
-		let tag = node.textContent.toLowerCase();
 		termNodes[a].onclick = function () {
 			if (node.classList.contains("selected")) {
 				node.classList.remove("selected");
@@ -114,6 +113,7 @@ window.onload = function () {
 	updateTermFilters();
 }
 
+//function which is called every time one of the term filters is clicked to filter out the urop cells
 function updateTermFilters() {
 	let selected = document.getElementsByClassName("selected");
 	let tags = [];
@@ -135,9 +135,9 @@ function updateTermFilters() {
 			}
 		}
 		if (!show) {
-			elem.classList.add("hidden");
+			elem.classList.add("hidden-term");
 		} else {
-			elem.classList.remove("hidden");
+			elem.classList.remove("hidden-term");
 		}
 	}
 }
