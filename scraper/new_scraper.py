@@ -79,6 +79,7 @@ for urop_entry in urop_delinations:
         while(current_element.name != "hr"):
 
             current_text = current_element.get_text()
+            print(current_text)
 
             if(current_element.name == "h4"):
                 for c in current_text.split("\n"):
@@ -116,10 +117,7 @@ for urop_entry in urop_delinations:
                         my_string = contactText.rstrip('.')
                         contacts.append(my_string)
             else:
-                if ("Below are currently advertised UROP projects available to eligible undergraduates." in current_text or "These projects do not represent all available UROPs" in current_text or current_element.name == "h3"):
-                    break
-                else:
-                    project_desc += str(current_element)
+                project_desc += str(current_element)
 
             current_element = current_element.find_next_sibling()
             if (current_element == None):
@@ -133,7 +131,7 @@ for urop_entry in urop_delinations:
 
         term_string = term_string[:-2]
     else:
-        term_string = 'Unspecified'
+        term_string = 'Unspecified Term'
 
     #clean/concatenate contacts into a string
     contact_str = ''
