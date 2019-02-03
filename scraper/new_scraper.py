@@ -79,18 +79,22 @@ for urop_entry in urop_delinations:
 
             current_text = current_element.get_text()
 
-            if (is_date(current_text)):
-                date = current_text
+            if(current_element.name == "h4"):
+                for c in current_text.split("\n"):
+                    current_text = c
 
-            elif (is_term(current_text)):
-                term = parse_terms(current_text)
+                    if (is_date(current_text)):
+                        date = current_text
 
-            elif (is_dept(current_text)):
-                department = parse_dept(current_text)
+                    elif (is_term(current_text)):
+                        term = parse_terms(current_text)
 
-            elif ('MIT Faculty Supervisor' in current_text):
-                split = current_text.split(':')
-                supervisor = split[1]
+                    elif (is_dept(current_text)):
+                        department = parse_dept(current_text)
+
+                    elif ('MIT Faculty Supervisor' in current_text):
+                        split = current_text.split(':')
+                        supervisor = split[1]
 
             elif ('Project Title' in current_text):
                 index = current_text.index(':')
@@ -139,14 +143,12 @@ for urop_entry in urop_delinations:
 
     urop_dictionary_list.append(urop_dict)
 
-# print(urop_dictionary_list)
+orig_stdout = sys.stdout
+f = open(toRelPath('../website/data.js'), 'w', encoding='utf-8')
+sys.stdout = f
 
-# orig_stdout = sys.stdout
-# f = open(toRelPath('../website/data.js'), 'w', encoding='utf-8')
-# sys.stdout = f
-#
-# print('var data = ')
-# print(str(urop_dictionary_list), end=';')
-#
-# sys.stdout = orig_stdout
-# f.close()
+print('var data = ')
+print(str(urop_dictionary_list), end=';')
+
+sys.stdout = orig_stdout
+f.close()
