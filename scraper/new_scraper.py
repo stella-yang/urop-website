@@ -106,7 +106,7 @@ for urop_entry in urop_delinations:
                         my_string = contactText.rstrip('.')
                         contacts.append(my_string)
             else:
-                project_desc += current_text + '<br>'
+                project_desc += str(current_element)
 
             current_element = current_element.find_next_sibling()
             if (current_element == None):
@@ -139,12 +139,14 @@ for urop_entry in urop_delinations:
 
     urop_dictionary_list.append(urop_dict)
 
-orig_stdout = sys.stdout
-f = open(toRelPath('../website/data.js'), 'w', encoding='utf-8')
-sys.stdout = f
+# print(urop_dictionary_list)
 
-print('var data = ')
-print(str(urop_dictionary_list), end=';')
-
-sys.stdout = orig_stdout
-f.close()
+# orig_stdout = sys.stdout
+# f = open(toRelPath('../website/data.js'), 'w', encoding='utf-8')
+# sys.stdout = f
+#
+# print('var data = ')
+# print(str(urop_dictionary_list), end=';')
+#
+# sys.stdout = orig_stdout
+# f.close()
