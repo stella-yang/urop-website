@@ -33,7 +33,15 @@ window.onload = function () {
 		full.className = "viewer-elem-full";
 
 		date.innerHTML = data[a].date;
-		contact.innerHTML = "<a href=\"mailto:" + data[a].contact + "\">" + data[a].contact + "</a>";
+
+		let contactSplit = data[a].contact.split(",");
+		for (let b = 0;b < contactSplit.length;b++) {
+			contact.innerHTML += "<a href=\"mailto:" + contactSplit[b] + "\">" + contactSplit[b] + "</a>";
+			if (b < contactSplit.length - 1) {
+				contact.innerHTML += "<br>";
+			}
+		}
+
 		title.origHTML = data[a].project_title;
 		full.origHTML = data[a].project_desc;
 		title.innerHTML = title.origHTML;
