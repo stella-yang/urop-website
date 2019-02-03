@@ -81,16 +81,22 @@ window.onload = function () {
 				title.innerHTML = title.origHTML;
 				full.innerHTML = full.origHTML;
 			} else {
-				let show = data[a].project_desc.includes(text) |
-					data[a].project_title.includes(text);
+				let reg = new RegExp("(" + text.replace(
+						/[\[\]\\{}()+*?.$^|]/g,
+						function (match) {
+							return '\\' + match;
+						}) +
+					")", "gi");
+				let show = reg.test(data[a].project_desc) | reg.test(data[a].project_title);
 				if (!show) {
 					elem.classList.add("hidden-search");
 				} else {
 					elem.classList.remove("hidden-search");
 
 					//highlight text from search in both title and full
-					title.innerHTML = title.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
-					full.innerHTML = full.origHTML.replace(text, "<span class=\"highlighted\">" + text + "</span>");
+					//highlight all capitalizations of the search term
+					title.innerHTML = title.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");;
+					full.innerHTML = full.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");
 				}
 			}
 		}
