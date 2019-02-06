@@ -62,6 +62,7 @@ soup = BeautifulSoup(page, 'html.parser')
 urop_delinations= soup.find_all("hr")
 
 urop_dictionary_list = []
+my_index = 0
 
 for urop_entry in urop_delinations:
     urop_dict = {}
@@ -75,55 +76,60 @@ for urop_entry in urop_delinations:
 
     current_element = urop_entry.find_next_sibling()
 
-    if (current_element != None):
-        while(current_element.name != "hr"):
+    if (my_index == 0):
+        current_element = current_element.find_next_sibling()
+        current_element = current_element.find_next_sibling()
+        current_element = current_element.find_next_sibling()
 
-            current_text = current_element.get_text()
-            print(current_text)
+    if (current_element == None):
+        current_element = soup.find_all("h4")[1]
 
-            if(current_element.name == "h4"):
-                for c in current_text.split("\n"):
-                    current_text = c
-                    # print(current_text)
+    while(current_element.name != "hr"):
+        current_text = current_element.get_text()
 
-                    if (is_date(current_text)):
-                        date = current_text
+        if(current_element.name == "h4"):
+            for c in current_text.split("\n"):
+                current_text = c
+                # print(current_text)
 
-                    elif (is_term(current_text)):
-                        term = parse_terms(current_text)
+                if (is_date(current_text)):
+                    date = current_text
 
-                    elif (is_dept(current_text)):
-                        department = parse_dept(current_text)
+                elif (is_term(current_text)):
+                    term = parse_terms(current_text)
 
-                    elif ('MIT Faculty Supervisor' in current_text):
-                        split = current_text.split(':')
-                        supervisor = split[1]
+                elif (is_dept(current_text)):
+                    department = parse_dept(current_text)
 
-                    elif ('Project Title' in current_text):
-                        index = current_text.index(':')
-                        project_title = current_text[index+2:]
+                elif ('MIT Faculty Supervisor' in current_text):
+                    split = current_text.split(':')
+                    supervisor = split[1]
 
-            elif ('Project Title' in current_text):
-                index = current_text.index(':')
-                project_title = current_text[index+2:]
+                elif ('Project Title' in current_text):
+                    index = current_text.index(':')
+                    project_title = current_text[index+2:]
 
-            elif ('Contact:' in current_text):
-                index = current_text.index(':')
-                contact = current_text[index+2:]
-                contactArray = contact.split()
+        elif ('Project Title' in current_text):
+            index = current_text.index(':')
+            project_title = current_text[index+2:]
 
-                for contactText in contactArray:
-                    if '@' in contactText:
-                        my_string = contactText.rstrip('.')
-                        contacts.append(my_string)
-            else:
-                project_desc += str(current_element)
+        elif ('Contact:' in current_text):
+            index = current_text.index(':')
+            contact = current_text[index+2:]
+            contactArray = contact.split()
 
-            current_element = current_element.find_next_sibling()
-            if (current_element == None):
-                break
+            for contactText in contactArray:
+                if '@' in contactText:
+                    my_string = contactText.rstrip('.')
+                    contacts.append(my_string)
+        else:
+            project_desc += str(current_element)
 
-        term_string = ''
+        current_element = current_element.find_next_sibling()
+        if (current_element == None):
+            break
+
+    term_string = ''
 
     if term != 'Unspecified':
         for each_term in term:
@@ -149,6 +155,7 @@ for urop_entry in urop_delinations:
     urop_dict['contact'] = contact_str
 
     urop_dictionary_list.append(urop_dict)
+    my_index += 1
 
 orig_stdout = sys.stdout
 f = open(toRelPath('../website/data.js'), 'w', encoding='utf-8')
