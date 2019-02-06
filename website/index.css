@@ -264,11 +264,11 @@ body {
   display: none;
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: calc(6% - 10px);
   z-index: 99;
   border: none;
   outline: none;
-  background-color: rgba(0, 0, 255, 0.144);
+  background-color: rgba(124, 124, 124, 0.39);
 
   color: white;
   cursor: pointer;
