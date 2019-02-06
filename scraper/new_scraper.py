@@ -70,7 +70,7 @@ for urop_entry in urop_delinations:
     term = 'Unspecified'
     department = 'Department Unlisted'
     supervisor = ''
-    project_title = 'No Title'
+    project_title = 'No Title Provided for this UROP'
     project_desc = ''
     contacts = []
 
