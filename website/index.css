@@ -205,6 +205,10 @@ body {
   word-wrap: break-word;
 }
 
+.viewer-elem-department {
+  padding-top: 15px;
+}
+
 .viewer-elem-main {
   width: calc(100% - 150px - 30px);
   flex: 0 0 auto;
@@ -232,9 +236,16 @@ body {
 .viewer-elem-term-elem {
   cursor: default;
 
-  margin: 5px;
   min-width: 0;
   border-radius: 3px;
+  margin: 4px 4px;
+  padding: 4px;
+}
+
+.viewer-elem-term-elem-text {
+  cursor: default;
+
+  min-width: 0;
   margin: 4px 4px;
   padding: 4px;
 }

@@ -18,12 +18,15 @@ window.onload = function () {
 		let date = document.createElement("div");
 		let term = document.createElement("div");
 		let contact = document.createElement("div");
+		let department = document.createElement("div");
 		summary.appendChild(date);
 		summary.appendChild(term);
 		summary.appendChild(contact);
+		summary.appendChild(department);
 		date.className = "viewer-elem-date";
 		term.className = "viewer-elem-term";
 		contact.className = "viewer-elem-contact";
+		department.className = "viewer-elem-department";
 
 		let title = document.createElement("div");
 		let full = document.createElement("div");
@@ -35,13 +38,15 @@ window.onload = function () {
 		date.innerHTML = data[a].date;
 
 		let contactSplit = data[a].contact.split(",");
-		for (let b = 0;b < contactSplit.length;b++) {
+		for (let b = 0; b < contactSplit.length; b++) {
 			contact.innerHTML += "<a href=\"mailto:" + contactSplit[b] + "\">" + contactSplit[b] + "</a>";
 			if (b < contactSplit.length - 1) {
 				contact.innerHTML += "<br>";
 			}
 		}
 
+		department.origHTML = data[a].department;
+		department.innerHTML = department.origHTML;
 		title.origHTML = data[a].project_title;
 		full.origHTML = data[a].project_desc;
 		title.innerHTML = title.origHTML;
@@ -68,6 +73,7 @@ window.onload = function () {
 				//error processing terms, just display string instead
 				let tagNode = document.createElement("div");
 				term.appendChild(tagNode);
+				tagNode.className = "viewer-elem-term-elem-text nofocus noselect";
 
 				tagNode.innerText = tag;
 				console.log("Error parsing term tags for UROP:", data[a].project_title + ":", termList[b] + ".", "This UROP post will only be shown if no term filters are selected.");
@@ -85,12 +91,14 @@ window.onload = function () {
 			let elem = document.getElementsByName("viewer-elem-" + a)[0];
 			let title = elem.getElementsByClassName("viewer-elem-title")[0];
 			let full = elem.getElementsByClassName("viewer-elem-full")[0];
+			let department = elem.getElementsByClassName("viewer-elem-department")[0];
 
 			//whenever hidden is removed, we'll also unhighlight the text, so it should be okay
 			if (text == "") {
 				elem.classList.remove("hidden-search");
 				title.innerHTML = title.origHTML;
 				full.innerHTML = full.origHTML;
+				department.innerHTML = department.origHTML;
 			} else {
 				let reg = new RegExp("(" + text.replace(
 						/[\[\]\\{}()+*?.$^|]/g,
@@ -98,7 +106,9 @@ window.onload = function () {
 							return '\\' + match;
 						}) +
 					")", "gi");
-				let show = reg.test(data[a].project_desc) | reg.test(data[a].project_title);
+				let show = reg.test(data[a].project_desc) |
+					reg.test(data[a].project_title) |
+					reg.test(data[a].department);
 				if (!show) {
 					elem.classList.add("hidden-search");
 				} else {
@@ -106,8 +116,9 @@ window.onload = function () {
 
 					//highlight text from search in both title and full
 					//highlight all capitalizations of the search term
-					title.innerHTML = title.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");;
+					title.innerHTML = title.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");
 					full.innerHTML = full.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");
+					department.innerHTML = department.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");
 				}
 			}
 		}
