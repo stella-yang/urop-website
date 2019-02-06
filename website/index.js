@@ -88,39 +88,49 @@ window.onload = function () {
 
 		//hide all elements which don't match
 		for (let a = 0; a < data.length; a++) {
-			let elem = document.getElementsByName("viewer-elem-" + a)[0];
-			let title = elem.getElementsByClassName("viewer-elem-title")[0];
-			let full = elem.getElementsByClassName("viewer-elem-full")[0];
-			let department = elem.getElementsByClassName("viewer-elem-department")[0];
-
-			//whenever hidden is removed, we'll also unhighlight the text, so it should be okay
-			if (text == "") {
-				elem.classList.remove("hidden-search");
-				title.innerHTML = title.origHTML;
-				full.innerHTML = full.origHTML;
-				department.innerHTML = department.origHTML;
-			} else {
-				let reg = new RegExp("(" + text.replace(
-						/[\[\]\\{}()+*?.$^|]/g,
-						function (match) {
-							return '\\' + match;
-						}) +
-					")", "gi");
-				let show = reg.test(data[a].project_desc) |
-					reg.test(data[a].project_title) |
-					reg.test(data[a].department);
-				if (!show) {
-					elem.classList.add("hidden-search");
-				} else {
-					elem.classList.remove("hidden-search");
-
-					//highlight text from search in both title and full
-					//highlight all capitalizations of the search term
-					title.innerHTML = title.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");
-					full.innerHTML = full.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");
-					department.innerHTML = department.origHTML.replace(reg, "<span class=\"highlighted\">$1</span>");
+			setTimeout(function () {
+				//only keep on processing if the current text is the same as the search bar still, which might not be the case if they type too fast
+				if (text != search.value) {
+					return;
 				}
-			}
+
+				let elem = document.getElementsByName("viewer-elem-" + a)[0];
+				let title = elem.getElementsByClassName("viewer-elem-title")[0];
+				let full = elem.getElementsByClassName("viewer-elem-full")[0];
+				let department = elem.getElementsByClassName("viewer-elem-department")[0];
+	
+				//whenever hidden is removed, we'll also unhighlight the text, so it should be okay
+				if (text.length == 0) {
+					elem.classList.remove("hidden-search");
+					title.innerHTML = title.origHTML;
+					full.innerHTML = full.origHTML;
+					department.innerHTML = department.origHTML;
+				} else {
+					let reg = new RegExp("(" + text.replace(
+							/[\[\]\\{}()+*?.$^|]/g,
+							function (match) {
+								return '\\' + match;
+							}) +
+						")", "gi");
+					let show = reg.test(data[a].project_desc) |
+						reg.test(data[a].project_title) |
+						reg.test(data[a].department);
+					if (!show) {
+						elem.classList.add("hidden-search");
+					} else {
+						elem.classList.remove("hidden-search");
+	
+						//highlight text from search in both title and full
+						//highlight all capitalizations of the search term
+						title.innerHTML = title.origHTML;
+						full.innerHTML = full.origHTML;
+						department.innerHTML = department.origHTML;
+						replaceInText(title, reg, "<span class=\"highlighted\">$1</span>");
+						replaceInText(full, reg, "<span class=\"highlighted\">$1</span>");
+						replaceInText(department, reg, "<span class=\"highlighted\">$1</span>");
+					}
+				}
+			}, 0);
 		}
 	}
 
@@ -139,6 +149,22 @@ window.onload = function () {
 		}
 	}
 	updateTermFilters();
+}
+
+//replace text in textnodes
+function replaceInText(element, pattern, replacement) {
+    for (let node of element.childNodes) {
+        switch (node.nodeType) {
+            case Node.ELEMENT_NODE:
+                replaceInText(node, pattern, replacement);
+                break;
+			case Node.TEXT_NODE:
+				let newNode = document.createElement("div");
+				newNode.innerHTML = node.textContent.replace(pattern, replacement);
+				node.replaceWith(newNode);
+                return;
+        }
+    }
 }
 
 //function which is called every time one of the term filters is clicked to filter out the urop cells
