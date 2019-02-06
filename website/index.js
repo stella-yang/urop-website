@@ -98,7 +98,7 @@ window.onload = function () {
 				let title = elem.getElementsByClassName("viewer-elem-title")[0];
 				let full = elem.getElementsByClassName("viewer-elem-full")[0];
 				let department = elem.getElementsByClassName("viewer-elem-department")[0];
-	
+
 				//whenever hidden is removed, we'll also unhighlight the text, so it should be okay
 				if (text.length == 0) {
 					elem.classList.remove("hidden-search");
@@ -119,7 +119,7 @@ window.onload = function () {
 						elem.classList.add("hidden-search");
 					} else {
 						elem.classList.remove("hidden-search");
-	
+
 						//highlight text from search in both title and full
 						//highlight all capitalizations of the search term
 						title.innerHTML = title.origHTML;
@@ -153,18 +153,18 @@ window.onload = function () {
 
 //replace text in textnodes
 function replaceInText(element, pattern, replacement) {
-    for (let node of element.childNodes) {
-        switch (node.nodeType) {
-            case Node.ELEMENT_NODE:
-                replaceInText(node, pattern, replacement);
-                break;
+	for (let node of element.childNodes) {
+		switch (node.nodeType) {
+			case Node.ELEMENT_NODE:
+				replaceInText(node, pattern, replacement);
+				break;
 			case Node.TEXT_NODE:
 				let newNode = document.createElement("div");
 				newNode.innerHTML = node.textContent.replace(pattern, replacement);
 				node.replaceWith(newNode);
-                return;
-        }
-    }
+				return;
+		}
+	}
 }
 
 //function which is called every time one of the term filters is clicked to filter out the urop cells
@@ -213,4 +213,19 @@ function updateTermFilters() {
 			elem.classList.remove("hidden-term");
 		}
 	}
+}
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function () {
+	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+		document.getElementById("top-button").style.display = "block";
+	} else {
+		document.getElementById("top-button").style.display = "none";
+	}
+};
+
+// When the user clicks on the button, scroll to the top of the document
+function scrollToTop() {
+	document.body.scrollTop = 0;
+	document.documentElement.scrollTop = 0;
 }
