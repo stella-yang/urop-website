@@ -1,3 +1,5 @@
+let isMobile = false;
+
 window.onload = function () {
 	//create all the elements for the UROPs
 	let viewer = document.getElementById("viewer");
@@ -215,7 +217,7 @@ function updateTermFilters() {
 	}
 }
 
-// When the user scrolls down 20px from the top of the document, show the button
+//when the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function () {
 	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
 		document.getElementById("top-button").style.display = "block";
@@ -224,8 +226,15 @@ window.onscroll = function () {
 	}
 };
 
-// When the user clicks on the button, scroll to the top of the document
+//when the user clicks on the button, scroll to the top of the document
 function scrollToTop() {
 	document.body.scrollTop = 0;
 	document.documentElement.scrollTop = 0;
+}
+
+//detect if mobile
+window.ontouchstart = function () {
+	isMobile = true;
+
+	document.getElementById("viewer").classList.add("viewer-mobile");
 }
