@@ -43,6 +43,10 @@
   background-color: yellow;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   display: flex;
   flex-flow: column nowrap;
@@ -254,4 +258,25 @@ body {
   text-align: center;
 
   margin: 0 0 15px 0;
+}
+
+#top-button {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: calc(6% - 10px);
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: rgba(124, 124, 124, 0.39);
+
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+#top-button>img {
+  width: 20px;
+  height: 20px;
 }
