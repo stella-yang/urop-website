@@ -45,6 +45,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -79,6 +80,10 @@ body {
   font-size: 240%;
 }
 
+#header-title.mobile {
+  font-size: 300%;
+}
+
 #header-search {
   margin: 0 auto 15px auto;
   width: 45%;
@@ -87,6 +92,12 @@ body {
   border: 1px black solid;
 
   padding: 10px;
+}
+
+#header-search.mobile {
+  width: 80%;
+  height: 55px;
+  font-size: 150%;
 }
 
 .header-terms-all {
@@ -106,6 +117,11 @@ body {
   display: flex;
   flex-flow: row nowrap;
   margin: 0 auto 15px auto;
+}
+
+#header-terms.mobile>div {
+  min-width: 110px;
+  font-size: 170%;
 }
 
 #header-terms-fall {
@@ -149,6 +165,10 @@ body {
   line-height: 1.5;
 }
 
+#header-acknowledgements.mobile {
+  font-size: 110%;
+}
+
 #viewer {
   display: flex;
   flex-flow: column nowrap;
@@ -161,9 +181,11 @@ body {
   background-color: rgb(244, 244, 244);
 }
 
-.viewer-mobile {
+#viewer.mobile {
   padding: 5px 15px;
   width: calc(100% - 30px);
+
+  font-size: 120%;
 }
 
 .viewer-elem {
@@ -228,6 +250,10 @@ body {
   padding-bottom: 15px;
 }
 
+#viewer.mobile>.viewer-elem-title {
+  font-size: 150%;
+}
+
 .viewer-elem-full {
   height: auto;
 
@@ -262,7 +288,7 @@ body {
   display: none;
   position: fixed;
   bottom: 20px;
-  right: calc(6% - 10px);
+  right: calc(6.5% - 15px);
   z-index: 99;
   border: none;
   outline: none;
@@ -274,7 +300,17 @@ body {
   border-radius: 30px;
 }
 
+#top-button.mobile {
+  bottom: 20px;
+  right: 20px;
+}
+
 #top-button>img {
   width: 20px;
   height: 20px;
+}
+
+#top-button.mobile>img {
+  width: 30px;
+  height: 30px;
 }
