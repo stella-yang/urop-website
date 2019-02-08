@@ -133,9 +133,9 @@ window.onload = function () {
 								return '\\' + match;
 							}) +
 						")", "gi");
-					let show = reg.test(data[a].project_desc) |
-						reg.test(data[a].project_title) |
-						reg.test(data[a].department);
+					let show = reg.test(title.textContent) |
+						reg.test(full.textContent) |
+						reg.test(department.textContent);
 					if (!show) {
 						elem.classList.add("hidden-search");
 					} else {
@@ -212,7 +212,7 @@ function replaceInText(element, pattern, replacement) {
 				let newNode = document.createElement("span");
 				newNode.innerHTML = node.textContent.replace(pattern, replacement);
 				node.replaceWith(newNode);
-				return;
+				break;
 		}
 	}
 }
