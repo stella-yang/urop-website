@@ -60,6 +60,13 @@ body {
   font-size: 100%;
 
   background-color: var(--body);
+
+  transition: opacity 0s;
+  opacity: 1;
+}
+
+body.loading {
+  opacity: 0;
 }
 
 #header {

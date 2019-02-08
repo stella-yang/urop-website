@@ -156,6 +156,9 @@ window.onload = function () {
 		}
 	}
 	updateTermFilters();
+
+	//we are done loading the website, so reveal it now
+	document.body.classList.remove("loading");
 }
 
 //replace text in textnodes
