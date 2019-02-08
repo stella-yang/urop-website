@@ -136,13 +136,19 @@ body.mobile #header-terms>div {
   line-height: 1;
   font-size: 240%;
 
-  color: rgb(245, 245, 0);
+  color: rgb(237, 240, 60);
 
   margin: -5px 5px 0 0;
 }
 
-body.mobile > .header-terms-star {
-  font-size: 270%;
+body.mobile #header-terms-star {
+  text-align: center;
+  margin: auto 0 auto 0;
+}
+
+body.mobile #header-terms>#header-terms-star {
+  min-width: 50px;
+  font-size: 250%;
 }
 
 .header-terms-star:hover {
@@ -250,7 +256,10 @@ body.mobile #viewer {
 }
 
 body.mobile .viewer-elem-star {
-  font-size: 230%;
+  font-size: 160%;
+  margin: 0;
+  top: 12px;
+  right: 12px;
 }
 
 .viewer-elem-date {}
