@@ -1,3 +1,4 @@
 /aws/
+/certs/
 /website/js/data.js
 *.DS_Store
