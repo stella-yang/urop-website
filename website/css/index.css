@@ -36,6 +36,10 @@
   display: none !important;
 }
 
+.hidden-star {
+  display: none !important;
+}
+
 .highlighted {
   background-color: yellow;
 }
@@ -128,6 +132,23 @@ body.mobile #header-terms>div {
   font-size: 170%;
 }
 
+.header-terms-star {
+  line-height: 1;
+  font-size: 240%;
+
+  color: rgb(245, 245, 0);
+
+  margin: -5px 5px 0 0;
+}
+
+body.mobile > .header-terms-star {
+  font-size: 270%;
+}
+
+.header-terms-star:hover {
+  cursor: pointer;
+}
+
 #header-terms-fall {
   border-color: var(--fall);
 }
@@ -215,6 +236,21 @@ body.mobile #viewer {
   border-right: 1px solid black;
 
   padding: 15px;
+
+  position: relative;
+}
+
+.viewer-elem-star {
+  font-size: 200%;
+
+  position: absolute;
+  margin: 0;
+  right: 9px;
+  top: 9px;
+}
+
+body.mobile .viewer-elem-star {
+  font-size: 230%;
 }
 
 .viewer-elem-date {}

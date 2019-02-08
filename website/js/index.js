@@ -34,6 +34,20 @@ window.onload = function () {
 		contact.className = "viewer-elem-contact";
 		department.className = "viewer-elem-department";
 
+		let star = document.createElement("div");
+		summary.appendChild(star);
+		star.className = "header-terms-star viewer-elem-star noselect nofocus";
+		star.innerText = "☆";
+		star.onclick = function () {
+			if (star.classList.contains("filled")) {
+				star.innerText = "☆";
+				star.classList.remove("filled");
+			} else {
+				star.innerText = "★";
+				star.classList.add("filled");
+			}
+		}
+
 		let title = document.createElement("div");
 		let full = document.createElement("div");
 		main.appendChild(title);
@@ -156,6 +170,32 @@ window.onload = function () {
 		}
 	}
 	updateTermFilters();
+
+	//star filter
+	let starFilter = document.getElementById("header-terms-star");
+	starFilter.onclick = function () {
+		if (starFilter.classList.contains("header-terms-star-filled")) {
+			starFilter.innerHTML = "☆";
+			starFilter.classList.remove("header-terms-star-filled");
+
+			for (let a = 0; a < data.length; a++) {
+				document.getElementsByName("viewer-elem-" + a)[0].classList.remove("hidden-star");
+			}
+		} else {
+			starFilter.innerHTML = "★";
+			starFilter.classList.add("header-terms-star-filled");
+
+			//hide all elements which don't match
+			for (let a = 0; a < data.length; a++) {
+				let elem = document.getElementsByName("viewer-elem-" + a)[0];
+				if (!elem.getElementsByClassName("viewer-elem-star")[0].classList.contains("filled")) {
+					elem.classList.add("hidden-star");
+				} else {
+					elem.classList.remove("hidden-star");
+				}
+			}
+		}
+	};
 
 	//we are done loading the website, so reveal it now
 	document.body.classList.remove("loading");
