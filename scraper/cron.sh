@@ -1,1 +1,1 @@
-python3 /home/ubuntu/urop-website/scraper/new_scraper.py
+python3 /home/ubuntu/urop-website/scraper/scrape.py
