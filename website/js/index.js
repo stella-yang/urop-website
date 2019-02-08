@@ -209,7 +209,7 @@ function replaceInText(element, pattern, replacement) {
 				replaceInText(node, pattern, replacement);
 				break;
 			case Node.TEXT_NODE:
-				let newNode = document.createElement("div");
+				let newNode = document.createElement("span");
 				newNode.innerHTML = node.textContent.replace(pattern, replacement);
 				node.replaceWith(newNode);
 				return;
