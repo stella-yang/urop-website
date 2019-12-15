@@ -7,7 +7,7 @@ import time
 import scrape
 
 PORT = 61000
-SCRAPE_INTERVAL = 300  # 5 minutes
+SCRAPE_INTERVAL = 600  # 10 minutes
 
 running = True
 data = ""

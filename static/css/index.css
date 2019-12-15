@@ -307,7 +307,7 @@ body.mobile #viewer>.viewer-elem-title {
   height: auto;
 
   word-wrap: break-word;
-  margin-bottom: -15;
+  margin: 10px 0 0;
 }
 
 .viewer-elem-term-elem {
