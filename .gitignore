@@ -1,2 +1,2 @@
-/static/js/data.js
-*.DS_Store
+**/__pycache__/
+**.DS_Store
