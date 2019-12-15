@@ -1,173 +1,66 @@
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-from dateutil.parser import parse
-import sys
-import os
-import re
+import requests
+import bs4
+import datetime
 
-def toRelPath(origPath):
-	'''Converts path to path relative to current script
-
-	origPath:	path to convert
-	'''
-	try:
-		if not hasattr(toRelPath, '__location__'):
-			toRelPath.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-		return os.path.join(toRelPath.__location__, origPath)
-	except NameError:
-		return origPath
-
-def is_date(string):
-    try:
-        parse(string)
-        return True
-    except ValueError:
-        return False
-
-def is_term(string):
-    s = string.lower()
-
-    if ('summer' in s) or ('fall' in s) or ('spring' in s) or ('iap' in s):
-        return True
-
-def parse_terms(string):
-    s = string.lower()
-    ret_list = []
-    if ('summer' in s):
-        ret_list.append('Summer')
-    if ('fall' in s):
-        ret_list.append('Fall')
-    if ('spring' in s):
-        ret_list.append('Spring')
-    if ('iap' in s):
-        ret_list.append('IAP')
-    return ret_list
-
-def is_dept(string):
-    return (('UROP Department, Lab or Center: ' in string) or ('Department/Lab/Center' in string))
-
-def parse_dept(string):
-    if ('UROP Department, Lab or Center: ' in string):
-        return string[32:]
-    else:
-        return string[23:]
 
 def run():
-    print("Scraping!")
-    return ["test"]
+    """
+    run returns a list of urops, each a dictionary with the fields
 
-    if __name__=="main":
-        #Website URL
-        link = 'http://uaap.mit.edu/research-exploration/urop/apply/urop-advertised-opportunities'
+    detail_url
+    title
+    term
+    supervisor
+    department
+    email
+    apply
+    contact
+    description
+    prereqs
+    """
+    JOBS_BOARD = "https://urop.mit.edu/jobs-board"
+    UROP_FIELDS = ["term", "department",
+                   "supervisor", "email", "apply", "contact"]
 
-        #Query the website and return the html to the variable 'page'
-        page = urlopen(link)
-        soup = BeautifulSoup(page, 'html.parser')
+    urop_infos = []
 
-        urop_delinations= soup.find_all("hr")
+    print("[" + str(datetime.datetime.now()) + "] Running scraper...", end="\r")
 
-        urop_dictionary_list = []
-        my_index = 0
+    # query the general jobs board
+    board_soup = bs4.BeautifulSoup(requests.get(
+        JOBS_BOARD, timeout=60).text, "html.parser")
+    urop_entries = board_soup.select("div.site-search-contact")
+    for urop_entry in urop_entries:
+        # for each urop entry, go to its detail page and get relevant info
+        more_info_dom = urop_entry.select("div.site-search-button>a")[0]
+        more_info_url = "https://urop.mit.edu" + more_info_dom["href"]
+        urop_soup = bs4.BeautifulSoup(requests.get(
+            more_info_url, timeout=60).text, "html.parser")
+        info_soup = urop_soup.select("div.page-intro")[0]
 
-        for urop_entry in urop_delinations:
-            urop_dict = {}
-            date = ''
-            term = 'Unspecified'
-            department = 'Department Unlisted'
-            supervisor = ''
-            project_title = 'No Title Provided for this UROP'
-            project_desc = ''
-            contacts = []
+        urop_infos.append({})
+        urop_infos[-1]["detail_url"] = more_info_url
 
-            current_element = urop_entry.find_next_sibling()
+        # parse the detail page
+        urop_infos[-1]["title"] = str(info_soup.select("h2")
+                                      [0].decode_contents()).strip()
+        urop_content_soups = info_soup.select("div.urop-content")
+        for field_soup in urop_content_soups:
+            unparsed_field_name = field_soup.select(
+                "h3")[0].decode_contents().strip().lower()
+            field_name = ""
 
-            if (my_index == 0):
-                current_element = current_element.find_next_sibling()
-                current_element = current_element.find_next_sibling()
-                current_element = current_element.find_next_sibling()
-
-            if (current_element == None):
-                current_element = soup.find_all("h4")[1]
-
-            while(current_element.name != "hr"):
-                current_text = current_element.get_text()
-
-                if(current_element.name == "h4"):
-                    for c in current_text.split("\n"):
-                        current_text = c
-                        # print(current_text)
-
-                        if (is_date(current_text)):
-                            date = current_text
-
-                        elif (is_term(current_text)):
-                            term = parse_terms(current_text)
-
-                        elif (is_dept(current_text)):
-                            department = parse_dept(current_text)
-
-                        elif ('MIT Faculty Supervisor' in current_text):
-                            split = current_text.split(':')
-                            supervisor = split[1]
-
-                        elif ('Project Title' in current_text):
-                            index = current_text.index(':')
-                            project_title = current_text[index+2:]
-
-                elif ('Project Title' in current_text):
-                    index = current_text.index(':')
-                    project_title = current_text[index+2:]
-
-                elif ('Contact:' in current_text):
-                    index = current_text.index(':')
-                    contact = current_text[index+2:]
-                    contactArray = contact.split()
-
-                    for contactText in contactArray:
-                        if '@' in contactText:
-                            my_string = contactText.rstrip('.')
-                            contacts.append(my_string)
-                else:
-                    project_desc += str(current_element)
-
-                current_element = current_element.find_next_sibling()
-                if (current_element == None):
+            # find the field this unparsed field name corresponds to
+            for field in UROP_FIELDS:
+                if field in unparsed_field_name:
+                    field_name = field
                     break
 
-            term_string = ''
+            field_content = field_soup.select("p")[0].decode_contents().strip()
+            urop_infos[-1][field_name] = field_content
+        urop_infos[-1]["description"] = info_soup.select(
+            "div.row+h3+p")[0].decode_contents().strip()
+        urop_infos[-1]["prereqs"] = info_soup.select("div.row+h3+p+h3+p")[
+            0].decode_contents().strip()
 
-            if term != 'Unspecified':
-                for each_term in term:
-                    term_string += each_term + ', '
-
-                term_string = term_string[:-2]
-            else:
-                term_string = 'Unspecified Term'
-
-            #clean/concatenate contacts into a string
-            contact_str = ''
-            for contact in contacts:
-                m = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', contact)
-                contact_str += m.group(0) + ', '
-            contact_str = contact_str[:-2]
-
-            urop_dict['date'] = date.rstrip()
-            urop_dict['term'] = term_string
-            urop_dict['department'] = department
-            urop_dict['supervisor'] = supervisor
-            urop_dict['project_title'] = project_title
-            urop_dict['project_desc'] = project_desc
-            urop_dict['contact'] = contact_str
-
-            urop_dictionary_list.append(urop_dict)
-            my_index += 1
-
-        orig_stdout = sys.stdout
-        f = open(toRelPath('../static/js/data.js'), 'w', encoding='utf-8')
-        sys.stdout = f
-
-        print('let data = ')
-        print(str(urop_dictionary_list), end=';')
-
-        sys.stdout = orig_stdout
-        f.close()
+    return urop_infos

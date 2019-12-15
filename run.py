@@ -3,10 +3,11 @@ import json
 import waitress
 import threading
 import time
+
 import scrape
 
 PORT = 61000
-SCRAPE_INTERVAL = 60
+SCRAPE_INTERVAL = 300  # 5 minutes
 
 running = True
 data = ""
@@ -35,12 +36,17 @@ def run_scraper():
     while running:
         time.sleep(SCRAPE_INTERVAL)
 
-        # scrape the website!
-        data = scrape.run()
+        # scrape the website! preserve old data if failure
+        try:
+            new_data = scrape.run()
+        except:
+            pass
+        data = new_data
 
 
 # run it once so we have some info
 data = scrape.run()
+print()
 
 scraper = threading.Thread(target=run_scraper)
 scraper.daemon = True
@@ -51,7 +57,7 @@ scraper.start()
 waitress.serve(app, host="0.0.0.0", port=PORT)
 
 # stop the scraper!
-print("Stopping scraper (up to", SCRAPE_INTERVAL, "seconds)...")
+print("\nStopping scraper...")
 running = False
 
 # scraper.join()
