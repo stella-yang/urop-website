@@ -1,5 +1,7 @@
-# urop-website
+# urop.guide
 
-Urop.guide is a much more usable UROP website for MIT students. You can easily filter UROP opportunities by term and search for keywords. 
+Yang Yan, Stella Yang, Alisa Ono, Angela Cai
 
-Email us at uropguide@mit.edu for any feedback, questions, or concerns.
+<urop.guide> is a different view of the UROP website for MIT students!
+
+Please email us at uropguide@mit.edu with any feedback, questions, or concerns.

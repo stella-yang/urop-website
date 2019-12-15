@@ -158,7 +158,7 @@ for urop_entry in urop_delinations:
     my_index += 1
 
 orig_stdout = sys.stdout
-f = open(toRelPath('../website/js/data.js'), 'w', encoding='utf-8')
+f = open(toRelPath('../static/js/data.js'), 'w', encoding='utf-8')
 sys.stdout = f
 
 print('let data = ')

@@ -1,2 +1,0 @@
-* * * * * /home/ubuntu/urop-website/scraper/cron.sh
-
