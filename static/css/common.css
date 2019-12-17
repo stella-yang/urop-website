@@ -56,7 +56,5 @@
 }
 
 .natural-word-break {
-  /* These are technically the same, but use both */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
+  word-break: break-word;
 }
