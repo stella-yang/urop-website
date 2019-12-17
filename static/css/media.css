@@ -1,5 +1,5 @@
-@media screen and (max-width: 860px) {
-  .header {
+@media screen and (max-width: 890px) {
+  .header>.stack {
     flex-wrap: wrap;
   }
 

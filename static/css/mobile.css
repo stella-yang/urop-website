@@ -2,12 +2,8 @@
   --size: 26px;
 }
 
-body.mobile {
-  overflow-y: scroll;
-}
-
 @media screen and (max-width: 1818.75px) {
-  .mobile .header {
+  .mobile .header>.stack {
     flex-wrap: wrap;
   }
 

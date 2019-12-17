@@ -1,8 +1,8 @@
 .filter {
   flex: 1000 0 auto;
   order: 2;
-  padding-left: calc(var(--size) * 1.25);
-  padding-right: calc(var(--size) * 1.25);
+  padding-left: calc(var(--size) * 2);
+  padding-right: calc(var(--size) * 2);
 
   display: flex;
 
@@ -45,11 +45,11 @@
   display: none;
 }
 
-.filter>.stack>.star-terms>.star.filled>.unfilled {
+.filter>.stack>.star-terms>.star.selected>.unfilled {
   display: none;
 }
 
-.filter>.stack>.star-terms>.star.filled>.filled {
+.filter>.stack>.star-terms>.star.selected>.filled {
   display: block;
 }
 
@@ -60,7 +60,7 @@
 
 .filter>.stack>.star-terms>.term {
   width: var(--term-width);
-  padding: calc(var(--size) * 0.3125);
+  padding: calc(var(--size) * 0.3125) calc(var(--size) * 0.625);
   margin: calc(var(--size) * 0.625) calc(var(--size) * 0.3125) 0;
 
   text-align: center;
@@ -85,18 +85,18 @@
   border-color: var(--summer);
 }
 
-.filter>.stack>.star-terms>.term.fall.filled {
+.filter>.stack>.star-terms>.term.fall.selected {
   background-color: var(--fall);
 }
 
-.filter>.stack>.star-terms>.term.iap.filled {
+.filter>.stack>.star-terms>.term.iap.selected {
   background-color: var(--iap);
 }
 
-.filter>.stack>.star-terms>.term.spring.filled {
+.filter>.stack>.star-terms>.term.spring.selected {
   background-color: var(--spring);
 }
 
-.filter>.stack>.star-terms>.term.summer.filled {
+.filter>.stack>.star-terms>.term.summer.selected {
   background-color: var(--summer);
 }

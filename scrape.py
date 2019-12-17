@@ -29,7 +29,7 @@ def run():
 
     term
     department
-    faculty_supervisor
+    faculty_supervisor & supervisor
     faculty_email
     apply_by
     contact

@@ -2,6 +2,22 @@
   display: none !important;
 }
 
+.highlighted {
+  background-color: yellow;
+}
+
+.hidden-by-search {
+  display: none !important;
+}
+
+.hidden-by-term {
+  display: none !important;
+}
+
+.hidden-by-star {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -15,6 +31,7 @@ body {
   margin: 0;
   padding: 0;
 
+  overflow-y: scroll;
   min-width: calc(var(--size) * 36);
 
   font-family: 'Montserrat', Helvetica, sans-serif;
@@ -32,7 +49,6 @@ body.loading {
 
 .header {
   display: flex;
-  flex-flow: row nowrap;
 
   width: calc(100% - var(--size) * 4);
   padding: calc(var(--size) * 1) calc(var(--size) * 2);
@@ -42,7 +58,15 @@ body.loading {
   box-shadow: 0 calc(var(--size) * 0.2) calc(var(--size) * 0.3) rgba(0, 0, 0, 40%);
 }
 
-.header>div {
+.header>.stack {
+  max-width: calc(var(--size) * 75);
+  margin: 0 auto;
+
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.header>.stack>div {
   padding-top: calc(var(--size) * 1);
   padding-bottom: calc(var(--size) * 1);
 }

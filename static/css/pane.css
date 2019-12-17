@@ -1,6 +1,6 @@
 .pane {
   width: calc(100% - var(--size) * 3.2);
-  max-width: 1100px;
+  max-width: calc(var(--size) * 75);
   margin: calc(var(--size) * 1.25) auto;
   padding: calc(var(--size) * 1.6);
 
@@ -13,8 +13,10 @@
 }
 
 .pane.starred {
-  border: calc(var(--size) * 0.15) solid var(--star-yellow);
-  padding: calc(var(--size) * 0.95);
+  border: calc(var(--size) * 0.2) solid var(--star-yellow);
+  padding: calc(var(--size) * 1.4);
+
+  box-shadow: none;
 }
 
 .pane>.left {
@@ -31,7 +33,6 @@
   font-size: 175%;
   color: #0400d0;
   text-decoration: none;
-  word-wrap: break-word;
 }
 
 .pane>.left>.detail-link>img {
@@ -40,19 +41,17 @@
 
 .pane>.left>.description {
   line-height: 1.6;
-  word-wrap: break-word;
 }
 
 .pane>.left>.divider {
   width: 60%;
   margin: calc(var(--size) * 1.25) auto;
-  
+
   border: 1px solid black;
 }
 
 .pane>.left>.prereqs {
   line-height: 1.6;
-  word-wrap: break-word;
 }
 
 .pane>.right {
@@ -108,14 +107,12 @@
 
   line-height: 1.6;
   text-align: right;
-  word-wrap: break-word;
 }
 
 .pane>.right>.top>.department {
   line-height: 1.6;
   font-style: italic;
   text-align: right;
-  word-wrap: break-word;
 }
 
 .pane>.right>.bottom {
@@ -128,12 +125,8 @@
 
 .pane>.right>.bottom>.contact {
   margin-bottom: calc(var(--size) * 0.625);
-
-  word-wrap: break-word;
 }
 
 .pane>.right>.bottom>.due {
   margin-bottom: calc(var(--size) * 0.625);
-
-  word-wrap: break-word;
 }
