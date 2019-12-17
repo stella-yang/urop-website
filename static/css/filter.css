@@ -14,6 +14,7 @@
 
   display: flex;
   flex-flow: column nowrap;
+  justify-content: space-between;
 }
 
 .filter>.stack>.search {
@@ -27,7 +28,7 @@
 }
 
 .filter>.stack>.star-terms {
-  margin: auto auto 0;
+  margin: 0 auto;
 
   display: flex;
   flex-flow: row nowrap;
@@ -35,6 +36,8 @@
 
 .filter>.stack>.star-terms>.star {
   display: flex;
+
+  cursor: pointer;
 }
 
 .filter>.stack>.star-terms>.star>.unfilled {
@@ -55,18 +58,25 @@
 
 .filter>.stack>.star-terms>.star>img {
   height: calc(var(--size) * 1.5625);
-  margin: auto calc(var(--size) * 0.625) calc(var(--size) * 0.3125) 0;
+  margin: auto calc(var(--size) * 0.625) auto 0;
 }
 
 .filter>.stack>.star-terms>.term {
   width: var(--term-width);
   padding: calc(var(--size) * 0.3125) calc(var(--size) * 0.625);
-  margin: calc(var(--size) * 0.625) calc(var(--size) * 0.3125) 0;
+  margin: 0 calc(var(--size) * 0.3125);
 
   text-align: center;
   border-style: solid;
   border-width: 2px;
   border-radius: calc(var(--size) * 0.3125);
+  box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 40%);
+
+  cursor: pointer;
+}
+
+.filter>.stack>.star-terms>.term.selected {
+  box-shadow: none;
 }
 
 .filter>.stack>.star-terms>.term.fall {
