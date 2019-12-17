@@ -31,6 +31,7 @@
   font-size: 175%;
   color: #0400d0;
   text-decoration: none;
+  word-wrap: break-word;
 }
 
 .pane>.left>.detail-link>img {
@@ -39,6 +40,7 @@
 
 .pane>.left>.description {
   line-height: 1.6;
+  word-wrap: break-word;
 }
 
 .pane>.left>.divider {
@@ -50,6 +52,7 @@
 
 .pane>.left>.prereqs {
   line-height: 1.6;
+  word-wrap: break-word;
 }
 
 .pane>.right {
@@ -105,12 +108,14 @@
 
   line-height: 1.6;
   text-align: right;
+  word-wrap: break-word;
 }
 
 .pane>.right>.top>.department {
   line-height: 1.6;
   font-style: italic;
   text-align: right;
+  word-wrap: break-word;
 }
 
 .pane>.right>.bottom {
@@ -123,8 +128,12 @@
 
 .pane>.right>.bottom>.contact {
   margin-bottom: calc(var(--size) * 0.625);
+
+  word-wrap: break-word;
 }
 
 .pane>.right>.bottom>.due {
   margin-bottom: calc(var(--size) * 0.625);
+
+  word-wrap: break-word;
 }
