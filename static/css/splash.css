@@ -1,0 +1,32 @@
+.splash {
+  flex: 1 0 auto;
+  order: 1;
+
+  display: flex;
+}
+
+.splash>.stack {
+  margin: 0 auto;
+
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.splash>.stack>.logo {
+  font-size: 150%;
+}
+
+.splash>.stack>.logo>.blue {
+  color: var(--logo-blue);
+}
+
+.splash>.stack>.logo>.red {
+  color: var(--logo-red);
+}
+
+.splash>.stack>.acknowledgements {
+  padding: calc(var(--size) * 0.625) 0 0;
+
+  font-size: 50%;
+  line-height: 1.6;
+}

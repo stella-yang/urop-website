@@ -3,61 +3,56 @@ import json
 import waitress
 import threading
 import time
+import datetime
 
 import scrape
 
-PORT = 61000
-SCRAPE_INTERVAL = 600  # 10 minutes
 
-running = True
-data = ""
+if __name__ == "__main__":
+    PORT = 61000
+    SCRAPE_INTERVAL = 900  # 15 minutes
 
-app = flask.Flask(__name__, static_url_path="")
+    running = True
+    data = ""
 
+    app = flask.Flask(__name__, static_url_path="")
 
-@app.route("/")
-def index_bypass():
-    return flask.send_from_directory("static", "index.html")
+    @app.route("/")
+    def index_bypass():
+        return flask.send_from_directory("static", "index.html")
 
+    @app.route("/data.json")
+    def send_data():
+        return flask.Response(json.dumps(data), status=200, mimetype="application/json")
 
-@app.route("/data.json")
-def send_data():
-    return flask.Response(json.dumps(data), status=200, mimetype="application/json")
+    @app.route("/<path:path>")
+    def send_static(path):
+        return flask.send_from_directory("static", path)
 
+    def run_scraper():
+        while running:
+            time.sleep(SCRAPE_INTERVAL)
 
-@app.route("/<path:path>")
-def send_static(path):
-    return flask.send_from_directory("static", path)
+            # scrape the website! preserve old data if failure
+            try:
+                new_data = scrape.run()
+            except:
+                pass
+            data = new_data
+            print("[" + str(datetime.datetime.now()) +
+                  "] Finished running scraper.", end="\r")
 
-# prep the scraper to run in the background
+    # run scraper once so we have some info
+    data = scrape.run()
 
+    scraper = threading.Thread(target=run_scraper)
+    scraper.daemon = True
+    scraper.start()
 
-def run_scraper():
-    while running:
-        time.sleep(SCRAPE_INTERVAL)
+    # app.run()
+    # app.run(host="0.0.0.0", port=PORT)
+    waitress.serve(app, host="0.0.0.0", port=PORT)
 
-        # scrape the website! preserve old data if failure
-        try:
-            new_data = scrape.run()
-        except:
-            pass
-        data = new_data
-
-
-# run it once so we have some info
-data = scrape.run()
-print()
-
-scraper = threading.Thread(target=run_scraper)
-scraper.daemon = True
-scraper.start()
-
-# app.run()
-# app.run(host="0.0.0.0", port=61000)
-waitress.serve(app, host="0.0.0.0", port=PORT)
-
-# stop the scraper!
-print("\nStopping scraper...")
-running = False
-
-# scraper.join()
+    # stop the scraper!
+    print("\nStopping scraper...")
+    running = False

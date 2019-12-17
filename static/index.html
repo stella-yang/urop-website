@@ -5,46 +5,98 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-134164060-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'UA-134164060-1');
   </script>
 
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="img/favicon.ico" />
   <base target="_blank">
   <title>urop.guide</title>
 
+  <link rel="stylesheet" type="text/css" href="css/common.css">
+  <link rel="stylesheet" type="text/css" href="css/constants.css">
   <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/splash.css">
+  <link rel="stylesheet" type="text/css" href="css/filter.css">
+  <link rel="stylesheet" type="text/css" href="css/subscribe.css">
+  <link rel="stylesheet" type="text/css" href="css/media.css">
+  <link rel="stylesheet" type="text/css" href="css/mobile.css">
+  <link rel="stylesheet" type="text/css" href="css/pane.css">
   <script type="text/javascript" src="js/index.js"></script>
 </head>
 
 <body class="loading">
-  <button onclick="scrollToTop()" id="top-button"><img src="img/double-up-arrow.png"></button>
-  <div id="header">
-    <div id="header-title">urop.guide</div>
-    <input id="header-search" class="nofocus" placeholder="Search...">
-    <div id="header-terms">
-      <div id="header-terms-star" class="header-terms-star nofocus noselect">☆</div>
-      <div id="header-terms-fall" class="header-terms-all nofocus noselect">Fall</div>
-      <div id="header-terms-iap" class="header-terms-all nofocus noselect">IAP</div>
-      <div id="header-terms-spring" class="header-terms-all nofocus noselect">Spring</div>
-      <div id="header-terms-summer" class="header-terms-all nofocus noselect">Summer</div>
+  <!-- <button onclick="scrollToTop()" id="top-button"><img src="img/double-up-arrow.png"></button> -->
+  <div class="header">
+    <div class="splash">
+      <div class="stack">
+        <div class="logo">
+          <span class="red">urop</span>.<span class="blue">guide</span>
+        </div>
+        <div class="acknowledgements">
+          Data pulled from <a href="https://urop.mit.edu/jobs-board" target="_blank">official
+            UROP postings</a>.<br>
+          Feedback? Email <a href="mailto:urop-guide@mit.edu" target="_blank">urop-guide@mit.edu</a>.
+        </div>
+      </div>
     </div>
-    <div id="header-acknowledgements">
-      Data pulled from <a href="https://urop.mit.edu/jobs-board"
-        target="_blank">advertised
-        UROP postings</a>.<br>
-      Feedback? Email <a href="mailto:uroplistings@mit.edu" target="_blank">uroplistings@mit.edu</a>.
+    <div class="filter">
+      <div class="stack">
+        <input class="search nofocus" placeholder="Search...">
+        <div class="star-terms">
+          <div class="star nofocus noselect">
+            <img class="unfilled" src="/img/star-unfilled.png">
+            <img class="filled" src="/img/star-filled.png">
+          </div>
+          <div class="term fall nofocus noselect">Fall</div>
+          <div class="term iap nofocus noselect">IAP</div>
+          <div class="term spring nofocus noselect">Spring</div>
+          <div class="term summer nofocus noselect">Summer</div>
+        </div>
+      </div>
+    </div>
+    <div class="subscribe">
+      <div class="stack">
+        <input class="nofocus" placeholder="Email">
+        <button>Subscribe to postings!</button>
+      </div>
     </div>
   </div>
-  <div id="viewer">
+  <div class="notifications">
+    The listings are accurate now, but most functionality is still WIP. Please give it a few days.
   </div>
-  <div id="end">
+  <div class="viewer">
+    <div class="template pane">
+      <div class="left">
+        <a class="detail-link">
+          <span class="title"></span> →
+        </a>
+        <div class="description"></div>
+        <div class="divider"></div>
+        <div class="prereqs"></div>
+      </div>
+      <div class="right">
+        <div class="top">
+          <div class="terms"></div>
+          <div class="faculty"></div>
+          <div class="department"></div>
+        </div>
+        <div class="bottom">
+          <div class="contact"></div>
+          <div class="due"></div>
+          <div class="posted"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="end">
     No more UROPs :')<br>
-    Made with ❤️ by <b>Stella Yang</b> and <b>Gilbert Yan</b>.
+    Built with ❤️ by <b>Stella Yang</b>, <b>Gilbert Yan</b>, <b>Alisa Ono</b>, and <b>Angela Cai</b>.
   </div>
 </body>
 

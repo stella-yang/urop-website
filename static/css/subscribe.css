@@ -1,0 +1,40 @@
+.subscribe {
+  flex: 1 0 auto;
+  order: 3;
+
+  display: flex;
+  
+  font-size: 70%;
+}
+
+.subscribe>.stack {
+  margin: 0 auto;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
+.subscribe>.stack>input {
+  width: 100%;
+  padding: calc(var(--size) * 0.46875);
+
+  font-size: 100%;
+
+  border-radius: calc(var(--size) * 0.3125);
+  border: 1px black solid;
+}
+
+.subscribe>.stack>button {
+  background-color: var(--button-purple);
+  padding: calc(var(--size) * 0.625);
+  margin-top: calc(var(--size) * 0.625);
+
+  font-family: inherit;
+  font-size: 100%;
+
+  border: 2px solid var(--medium);
+  border-top: none;
+  border-bottom: none;
+  border-radius: calc(var(--size) * 0.3125);
+}

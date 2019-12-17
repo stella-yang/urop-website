@@ -13,7 +13,7 @@ pip install -r requirements.txt
 python run.py
 ```
 
-The server will periodically scrape the official UROP postings site at <https://urop.mit.edu/jobs-board>. The default interval is 10 minutes.
+The server will periodically scrape the official UROP postings site at <https://urop.mit.edu/jobs-board>. The default interval is 15 minutes.
 
 The server will run on `:61000` by default. <https://urop.guide> has its DNS pointed to an AWS EC2 instance run by Yang Yan, which is shared with other websites like <https://gilgamesh.cc> and <https://mus.icu>. Ports 80 and 443 run a tunneled HTTP multiplexer. Thus, to point <https://urop.guide> to the local server at `:61000`, run:
 

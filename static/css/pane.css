@@ -1,0 +1,130 @@
+.pane {
+  width: calc(100% - var(--size) * 3.2);
+  max-width: 1100px;
+  margin: calc(var(--size) * 1.25) auto;
+  padding: calc(var(--size) * 1.6);
+
+  display: flex;
+  flex-flow: row;
+
+  background-color: white;
+  border-radius: calc(var(--size) * 0.625);
+  box-shadow: 0 calc(var(--size) * 0.2) calc(var(--size) * 0.3) rgba(0, 0, 0, 40%);
+}
+
+.pane.starred {
+  border: calc(var(--size) * 0.15) solid var(--star-yellow);
+  padding: calc(var(--size) * 0.95);
+}
+
+.pane>.left {
+  flex: 1 1 65%;
+  margin-right: calc(var(--size) * 1.75);
+
+  display: flex;
+  flex-flow: column;
+}
+
+.pane>.left>.detail-link {
+  padding-bottom: calc(var(--size) * 0.9);
+
+  font-size: 175%;
+  color: #0400d0;
+  text-decoration: none;
+}
+
+.pane>.left>.detail-link>img {
+  height: 10px;
+}
+
+.pane>.left>.description {
+  line-height: 1.6;
+}
+
+.pane>.left>.divider {
+  width: 60%;
+  margin: calc(var(--size) * 1.25) auto;
+  
+  border: 1px solid black;
+}
+
+.pane>.left>.prereqs {
+  line-height: 1.6;
+}
+
+.pane>.right {
+  flex: 1 0 calc(var(--size) * 10);
+
+  display: flex;
+  flex-flow: column;
+
+  font-size: 115%;
+}
+
+.pane>.right>.top {
+  margin: 0 0 auto auto;
+
+  display: flex;
+  flex-flow: column;
+}
+
+.pane>.right>.top>.terms {
+  margin: 0 0 calc(var(--size) * 0.625) auto;
+
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.pane>.right>.top>.terms>.term {
+  width: var(--term-width);
+  padding: calc(var(--size) * 0.3125);
+  margin-bottom: calc(var(--size) * 0.625);
+
+  text-align: center;
+  border-radius: calc(var(--size) * 0.3125);
+}
+
+.pane>.right>.top>.terms>.term.fall {
+  background-color: var(--fall);
+}
+
+.pane>.right>.top>.terms>.term.iap {
+  background-color: var(--iap);
+}
+
+.pane>.right>.top>.terms>.term.spring {
+  background-color: var(--spring);
+}
+
+.pane>.right>.top>.terms>.term.summer {
+  background-color: var(--summer);
+}
+
+.pane>.right>.top>.faculty {
+  margin-bottom: calc(var(--size) * 0.625);
+
+  line-height: 1.6;
+  text-align: right;
+}
+
+.pane>.right>.top>.department {
+  line-height: 1.6;
+  font-style: italic;
+  text-align: right;
+}
+
+.pane>.right>.bottom {
+  margin: auto 0 0 auto;
+
+  line-height: 1.6;
+  text-align: right;
+  font-style: italic;
+}
+
+.pane>.right>.bottom>.contact {
+  margin-bottom: calc(var(--size) * 0.625);
+}
+
+.pane>.right>.bottom>.due {
+  margin-bottom: calc(var(--size) * 0.625);
+}

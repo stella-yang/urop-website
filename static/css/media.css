@@ -1,0 +1,21 @@
+@media screen and (max-width: 860px) {
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .splash>.stack {
+    margin-right: calc(var(--size) * 0.625);
+  }
+
+  .filter {
+    order: 3;
+  }
+
+  .subscribe {
+    order: 2;
+  }
+
+  .subscribe>.stack {
+    margin-left: calc(var(--size) * 0.625);
+  }
+}

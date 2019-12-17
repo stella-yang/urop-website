@@ -1,69 +1,26 @@
-:root {
-  --fall: rgb(255, 212, 182);
-  --iap: rgb(180, 230, 255);
-  --spring: rgb(255, 212, 244);
-  --summer: rgb(194, 255, 212);
-
-  --body: rgb(244, 244, 244);
-  --title: rgb(102, 20, 25);
-  --top-button: rgba(124, 124, 124, 0.39);
-}
-
-.noselect {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.nofocus {
-  outline-style: none;
-  box-shadow: none;
-  border-color: transparent;
-}
-
-.hidden {
+.template {
   display: none !important;
-}
-
-.hidden-search {
-  display: none !important;
-}
-
-.hidden-term {
-  display: none !important;
-}
-
-.hidden-star {
-  display: none !important;
-}
-
-.highlighted {
-  background-color: yellow;
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+
+  -webkit-text-size-adjust: 80%;
 }
 
 body {
-  display: flex;
-  flex-flow: column nowrap;
-
-  overflow-y: scroll;
-
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 100%;
+  min-width: calc(var(--size) * 36);
 
-  background-color: var(--body);
+  font-family: 'Montserrat', Helvetica, sans-serif;
+  font-size: var(--size);
+
+  background-color: var(--viewer-bkgd);
 
   transition: opacity 0s;
   opacity: 1;
@@ -73,298 +30,39 @@ body.loading {
   opacity: 0;
 }
 
-#header {
-  flex: 0 0 auto;
-
-  display: flex;
-  flex-flow: column nowrap;
-
-  background-color: white;
-}
-
-#header-title {
-  margin: 15px auto;
-  flex: 0 0 auto;
-  font-size: 240%;
-}
-
-body.mobile #header-title {
-  font-size: 300%;
-}
-
-#header-search {
-  margin: 0 auto 15px auto;
-  width: 45%;
-  border-radius: 7px;
-  height: 35px;
-  border: 1px black solid;
-
-  padding: 10px;
-}
-
-body.mobile #header-search {
-  width: 80%;
-  height: 55px;
-  font-size: 150%;
-}
-
-.header-terms-all {
-  min-width: 60px;
-  border-radius: 5px;
-  margin: 0 7px;
-  padding: 7px;
-  text-align: center;
-  background-color: white;
-  border-width: 2px;
-  border-style: solid;
-
-  cursor: pointer;
-}
-
-#header-terms {
-  display: flex;
-  flex-flow: row nowrap;
-  margin: 0 auto 15px auto;
-}
-
-body.mobile #header-terms>div {
-  min-width: 110px;
-  font-size: 170%;
-}
-
-.header-terms-star {
-  line-height: 1;
-  font-size: 240%;
-
-  color: #ffea91;
-
-  margin: -5px 5px 0 0;
-}
-
-body.mobile #header-terms-star {
-  text-align: center;
-  margin: auto 0 auto 0;
-}
-
-body.mobile #header-terms>#header-terms-star {
-  min-width: 50px;
-  font-size: 250%;
-}
-
-.header-terms-star:hover {
-  cursor: pointer;
-}
-
-#header-terms-fall {
-  border-color: var(--fall);
-}
-
-#header-terms-fall.selected {
-  background-color: var(--fall);
-}
-
-#header-terms-iap {
-  border-color: var(--iap);
-}
-
-#header-terms-iap.selected {
-  background-color: var(--iap);
-}
-
-#header-terms-spring {
-  border-color: var(--spring);
-}
-
-#header-terms-spring.selected {
-  background-color: var(--spring);
-}
-
-#header-terms-summer {
-  border-color: var(--summer);
-}
-
-#header-terms-summer.selected {
-  background-color: var(--summer);
-}
-
-#header-acknowledgements {
-  text-align: center;
-  margin: 0 auto 15px auto;
-  font-size: 60%;
-  color: gray;
-
-  line-height: 1.5;
-}
-
-body.mobile #header-acknowledgements {
-  font-size: 110%;
-}
-
-#viewer {
-  display: flex;
-  flex-flow: column nowrap;
-
-  padding: 5px 15%;
-
-  width: 70%;
-  flex: 0 0 auto;
-
-  background-color: var(--body);
-}
-
-body.mobile #viewer {
-  padding: 5px 15px;
-  width: calc(100% - 30px);
-
-  font-size: 120%;
-}
-
-.viewer-elem {
-  background-color: white;
-
-  width: 100%;
-  margin: 10px 0;
-  flex: 0 0 auto;
-
+.header {
   display: flex;
   flex-flow: row nowrap;
 
-  border-radius: 7px;
-  border: 1px solid black;
-}
+  width: calc(100% - var(--size) * 4);
+  padding: calc(var(--size) * 1) calc(var(--size) * 2);
 
-.viewer-elem-summary {
-  max-width: calc(150px - 30px);
-  width: 20%;
-  flex: 0 0 auto;
-
-  background-color: transparent;
-  border-right: 1px solid black;
-
-  padding: 15px;
-
-  position: relative;
-}
-
-.viewer-elem-star {
-  font-size: 200%;
-
-  position: absolute;
-  margin: 0;
-  right: 9px;
-  top: 9px;
-}
-
-body.mobile .viewer-elem-star {
+  background-color: white;
   font-size: 160%;
-  margin: 0;
-  top: 12px;
-  right: 12px;
+  box-shadow: 0 calc(var(--size) * 0.2) calc(var(--size) * 0.3) rgba(0, 0, 0, 40%);
 }
 
-.viewer-elem-date {}
-
-.viewer-elem-term {
-  padding-top: 10px;
-  margin: 0 -5px;
-
-  display: flex;
-  flex-flow: row wrap;
+.header>div {
+  padding-top: calc(var(--size) * 1);
+  padding-bottom: calc(var(--size) * 1);
 }
 
-.viewer-elem-contact {
-  padding-top: 10px;
+.notifications {
+  margin: calc(var(--size) * 1.25) auto;
+  order: 4;
 
-  word-wrap: break-word;
-}
-
-.viewer-elem-department {
-  padding-top: 15px;
-}
-
-.viewer-elem-main {
-  width: calc(100% - 150px - 30px);
-  flex: 0 0 auto;
-  padding: 15px;
-
-  background-color: transparent;
-}
-
-.viewer-elem-title {
-  border-bottom: 1px var(--title) solid;
-  color: var(--title);
-  font-weight: bold;
-  font-size: 120%;
-
-  padding-bottom: 15px;
-}
-
-body.mobile #viewer>.viewer-elem-title {
-  font-size: 150%;
-}
-
-.viewer-elem-full {
-  height: auto;
-
-  word-wrap: break-word;
-  margin: 10px 0 0;
-}
-
-.viewer-elem-term-elem {
-  cursor: default;
-
-  min-width: 0;
-  border-radius: 3px;
-  margin: 4px 4px;
-  padding: 4px;
-}
-
-.viewer-elem-term-elem-text {
-  cursor: default;
-
-  min-width: 0;
-  margin: 4px 4px;
-  padding: 4px;
-}
-
-#end {
+  font-size: 100%;
   text-align: center;
-  line-height: 1.5;
-
-  margin: 0 0 30px 0;
 }
 
-body.mobile #end {
-  font-size: 110%;
+.viewer {
+  padding: 0 calc(var(--size) * 1.25);
 }
 
-#top-button {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: calc(6.5% - 15px);
-  z-index: 99;
-  border: none;
-  outline: none;
-  background-color: var(--top-button);
+.end {
+  margin: calc(var(--size) * 1.25);
 
-  color: white;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 30px;
-}
-
-body.mobile #top-button {
-  bottom: 20px;
-  right: 20px;
-}
-
-#top-button>img {
-  width: 20px;
-  height: 20px;
-}
-
-body.mobile #top-button>img {
-  width: 30px;
-  height: 30px;
+  font-size: 100%;
+  text-align: center;
+  line-height: 1.6;
 }
