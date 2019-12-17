@@ -15,6 +15,7 @@
 .pane.starred {
   border: 2px solid var(--star-yellow);
   padding: calc(var(--size) * 1.6 - 2px);
+  width: calc(100% - var(--size) * 2.8);
 
   box-shadow: none;
 }

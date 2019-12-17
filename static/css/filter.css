@@ -5,21 +5,23 @@
   padding-right: calc(var(--size) * 2);
 
   display: flex;
+  justify-content: space-around;
 
   font-size: 70%;
 }
 
 .filter>.stack {
-  margin: 0 auto;
+  margin: auto;
 
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .filter>.stack>.search {
   width: 100%;
-  padding: calc(var(--size) * 0.46875);
+  padding: calc(var(--size) * 0.46875) calc(var(--size) * 0.6);
+  margin-bottom: calc(var(--size) * 0.625);
 
   font-size: 100%;
 

@@ -3,21 +3,22 @@
   order: 3;
 
   display: flex;
+  justify-content: space-around;
   
   font-size: 70%;
 }
 
 .subscribe>.stack {
-  margin: 0 auto;
+  margin: auto;
 
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
 }
 
 .subscribe>.stack>input {
   width: 100%;
   padding: calc(var(--size) * 0.46875);
+  margin-bottom: calc(var(--size) * 0.625);
 
   font-size: 100%;
 
@@ -25,16 +26,21 @@
   border: 1px black solid;
 }
 
-.subscribe>.stack>button {
-  background-color: var(--button-purple);
-  padding: calc(var(--size) * 0.625);
-  margin-top: calc(var(--size) * 0.625);
+.subscribe>.stack>.button {
+  padding: calc(var(--size) * 0.3125);
 
   font-family: inherit;
   font-size: 100%;
+  text-align: center;
 
-  border: 2px solid var(--medium);
-  border-top: none;
-  border-bottom: none;
+  border: 2px solid var(--button-purple);
   border-radius: calc(var(--size) * 0.3125);
+  box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 40%);
+}
+
+.subscribe>.stack>.button.selected {
+  background-color: var(--button-purple);
+
+  border: none;
+  box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 0%);
 }
