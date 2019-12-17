@@ -13,9 +13,8 @@
 }
 
 .pane.starred {
-  border: 2px solid var(--star-yellow);
-  padding: calc(var(--size) * 1.6 - 2px);
-  width: calc(100% - var(--size) * 2.8);
+  border: var(--starred-border-size) solid var(--star-yellow);
+  padding: calc(var(--size) * 1.6 - var(--starred-border-size));
 
   box-shadow: none;
 }

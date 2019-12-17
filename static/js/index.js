@@ -14,6 +14,10 @@ const SEARCHABLE_FIELDS = [
   "contact",
 ];
 
+const TOP_BUTTON_THRESHOLD = 200;
+
+const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
 // send xhr for data
 function requestData(url, onResponse) {
   const xhr = new XMLHttpRequest();
@@ -160,6 +164,12 @@ function handleTermFiltersUpdate(data) {
   console.log(`Applying term filter: ${showingTerms}`);
 
   // if no tags clicked, then all posts are shown, even if the term tags were not parsed
+  // conditionally show hints
+  if (showingTerms.length === 0) {
+    document.querySelector(`.hint-term`).classList.add(`no-display`);
+  } else {
+    document.querySelector(`.hint-term`).classList.remove(`no-display`);
+  }
 
   // hide all elements which don't match
   for (let a = 0; a < data.length; a++) {
@@ -199,10 +209,15 @@ function handleStarFilterClicked(event) {
         pane.classList.add(`hidden-by-star`);
       }
     });
+
+    // show the end hint
+    document.querySelector(`.hint-star`).classList.remove(`no-display`);
   } else {
     document.querySelectorAll(`.pane`).forEach((pane) => {
       pane.classList.remove(`hidden-by-star`);
     });
+
+    document.querySelector(`.hint-star`).classList.add(`no-display`);
   }
 }
 
@@ -210,6 +225,43 @@ function handleStarFilterClicked(event) {
 function scrollToTop() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
+}
+
+function handleSubscribeInput() {
+  const textField = document.querySelector(`.subscribe input`);
+  const subscribeButton = document.querySelector(`.subscribe .button`);
+  const text = textField.value;
+  if (EMAIL_REGEX.test(text)) {
+    // if not disabled, check whether it should be selected or not
+    requestData(`/subscription/check/${text}`, (responseText) => {
+      const inList = JSON.parse(responseText) === 1;
+      subscribeButton.classList.remove(`disabled`);
+
+      if (inList) {
+        subscribeButton.classList.add(`selected`);
+      } else {
+        subscribeButton.classList.remove(`selected`);
+      }
+    });
+  } else {
+    subscribeButton.classList.add(`disabled`);
+  }
+}
+
+function handleSubscribeToggle() {
+  const textField = document.querySelector(`.subscribe input`);
+  const subscribeButton = document.querySelector(`.subscribe .button`);
+  const text = textField.value;
+  if (EMAIL_REGEX.test(text)) {
+    requestData(`/subscription/toggle/${text}`, () => {
+      subscribeButton.classList.toggle(`selected`);
+
+      // reload sub count
+      requestData(`/subscription/count.json`, (responseText) => {
+        document.querySelector(`.subscribe .count`).innerHTML = JSON.parse(responseText);
+      });
+    });
+  }
 }
 
 function handleLoadData(data) {
@@ -236,28 +288,39 @@ function handleLoadData(data) {
   document.querySelector(`.filter .star`).addEventListener(`click`, handleStarFilterClicked);
 
   // when the user scrolls down 100px from the top of the document, show the button
-  // window.addEventListener(`scroll`, () => {
-  //   let scrollBoundary = 100;
-  //   if (document.body.scrollTop > scrollBoundary || document.documentElement.scrollTop > scrollBoundary) {
-  //     document.getElementById(`top-button`).style.display = `block`;
-  //   } else {
-  //     document.getElementById(`top-button`).style.display = `none`;
-  //   }
-  // });
+  document.querySelector(`.top-button`).addEventListener(`click`, scrollToTop);
+  window.addEventListener(`scroll`, () => {
+    if (document.body.scrollTop > TOP_BUTTON_THRESHOLD || document.documentElement.scrollTop > TOP_BUTTON_THRESHOLD) {
+      document.querySelector(`.top-button`).classList.remove(`no-display`);
+    } else {
+      document.querySelector(`.top-button`).classList.add(`no-display`);
+    }
+  });
+
+  // prep the subscription form
+  document.querySelector(`.subscribe input`).addEventListener(`input`, handleSubscribeInput);
+  handleSubscribeInput();
+  document.querySelector(`.subscribe .button`).addEventListener(`click`, handleSubscribeToggle);
 
   // we are done loading the website, so reveal it now
   document.body.classList.remove(`loading`);
-  console.log(`Load complete.`);
+  console.log(`Data load complete.`);
 }
 
 window.addEventListener(`load`, () => {
   testApplyMobileStyling();
 
   // load the urops via a request to /data.json
-  let data = null;
   requestData(`/data.json`, (responseText) => {
-    data = JSON.parse(responseText);
+    const data = JSON.parse(responseText);
     console.log("Received data:", data);
     handleLoadData(data);
+  });
+
+  // load the sub count
+  requestData(`/subscription/count.json`, (responseText) => {
+    const subCount = JSON.parse(responseText);
+    console.log("Loaded subscriber count:", responseText);
+    document.querySelector(`.subscribe .count`).innerHTML = subCount;
   });
 });

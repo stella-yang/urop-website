@@ -47,6 +47,26 @@ body.loading {
   opacity: 0;
 }
 
+.top-button {
+  position: fixed;
+  top: calc(var(--size) * 1.25);
+  right: calc(var(--size) * 1.25);
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: var(--top-button);
+
+  color: white;
+  cursor: pointer;
+  padding: calc(var(--size) * 0.625);
+  border-radius: calc(var(--size) * 0.625);
+}
+
+.top-button>img {
+  width: calc(var(--size) * 1.25);
+  height: calc(var(--size) * 1.25);
+}
+
 .header {
   display: flex;
 

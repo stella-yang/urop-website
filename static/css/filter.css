@@ -20,9 +20,10 @@
 
 .filter>.stack>.search {
   width: 100%;
-  padding: calc(var(--size) * 0.46875) calc(var(--size) * 0.6);
+  padding: calc(var(--size) * 0.46875) calc(var(--size) * 0.7);
   margin-bottom: calc(var(--size) * 0.625);
 
+  font-family: inherit;
   font-size: 100%;
 
   border-radius: calc(var(--size) * 0.3125);
@@ -70,7 +71,7 @@
 
   text-align: center;
   border-style: solid;
-  border-width: 2px;
+  border-width: var(--starred-border-size);
   border-radius: calc(var(--size) * 0.3125);
   box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 40%);
 

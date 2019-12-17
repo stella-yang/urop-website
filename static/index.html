@@ -31,7 +31,7 @@
 </head>
 
 <body class="loading">
-  <!-- <button onclick="scrollToTop()" id="top-button"><img src="img/double-up-arrow.png"></button> -->
+  <button class="top-button no-display"><img src="img/double-up-arrow.png"></button>
   <div class="header">
     <div class="stack">
       <div class="splash">
@@ -48,9 +48,9 @@
       </div>
       <div class="filter">
         <div class="stack">
-          <input class="search nofocus" placeholder="Search...">
+          <input class="search no-focus" placeholder="Search...">
           <div class="star-terms">
-            <div class="star nofocus noselect">
+            <div class="star no-focus no-select">
               <img class="unfilled" src="/img/star-unfilled.png">
               <img class="filled" src="/img/star-filled.png">
             </div>
@@ -63,8 +63,10 @@
       </div>
       <div class="subscribe">
         <div class="stack">
-          <input class="nofocus" placeholder="Email">
-          <div class="button">Subscribe</div>
+          <input class="no-focus" placeholder="Email">
+          <div class="button no-select no-focus disabled">
+            Subscribe<span class="d">d</span> (<span class="count"></span>)
+          </div>
         </div>
       </div>
     </div>
@@ -97,8 +99,10 @@
     </div>
   </div>
   <div class="end">
+    <span class="hint-term no-display"><b>Try clearing the term filters!</b><br></span>
+    <span class="hint-star no-display"><b>Click on a post to star it!</b><br></span>
     No more UROPs :')<br>
-    Built with ❤️ by <a href="https://stella-yang.com/"><b>Stella Yang</b></a>, <a href="https://gilgamesh.cc/"><b>Gilbert Yan</b></a>, <a href="https://www.alisaono.coffee/"><b>Alisa Ono</b></a>, and <b>Angela Cai</b>.
+    Built with ❤️ by <a href="https://stella-yang.com/">Stella Yang</a>, <a href="https://gilgamesh.cc/">Gilbert Yan</a>, <a href="https://www.alisaono.coffee/">Alisa Ono</a>, and Angela Cai.
   </div>
 </body>
 

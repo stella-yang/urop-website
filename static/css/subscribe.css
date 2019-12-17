@@ -17,9 +17,10 @@
 
 .subscribe>.stack>input {
   width: 100%;
-  padding: calc(var(--size) * 0.46875);
+  padding: calc(var(--size) * 0.46875) calc(var(--size) * 0.7);
   margin-bottom: calc(var(--size) * 0.625);
 
+  font-family: inherit;
   font-size: 100%;
 
   border-radius: calc(var(--size) * 0.3125);
@@ -33,14 +34,34 @@
   font-size: 100%;
   text-align: center;
 
-  border: 2px solid var(--button-purple);
+  border: var(--starred-border-size) solid var(--button-purple);
   border-radius: calc(var(--size) * 0.3125);
   box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 40%);
+
+  cursor: pointer;
+}
+
+.subscribe>.stack>.button>.d {
+  display: none;
 }
 
 .subscribe>.stack>.button.selected {
   background-color: var(--button-purple);
+  padding: calc(var(--size) * 0.3125 + var(--starred-border-size));
 
   border: none;
   box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 0%);
+}
+
+.subscribe>.stack>.button.selected>.d {
+  display: initial;
+}
+
+.subscribe>.stack>.button.disabled {
+  border: calc(var(--starred-border-size) / 2) solid black;
+  padding: calc(var(--size) * 0.3125 + var(--starred-border-size) / 2);
+
+  box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 0%);
+  
+  cursor: initial;
 }

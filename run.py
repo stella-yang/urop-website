@@ -14,6 +14,7 @@ if __name__ == "__main__":
 
     running = True
     data = ""
+    subbed = 0
 
     app = flask.Flask(__name__, static_url_path="")
 
@@ -25,9 +26,26 @@ if __name__ == "__main__":
     def send_data():
         return flask.Response(json.dumps(data), status=200, mimetype="application/json")
 
-    @app.route("/<path:path>")
+    @app.route("/<path>")
     def send_static(path):
         return flask.send_from_directory("static", path)
+
+    @app.route("/subscription/count.json")
+    def get_sub_count():
+        return flask.Response(json.dumps(3 + subbed), status=200, mimetype="application/json")
+
+    @app.route("/subscription/check/<email>")
+    def check_sub_email(email):
+        """
+        Returns 0 iff the email is not already subscribed, 1 otherwise.
+        """
+        return flask.Response(json.dumps(subbed), status=200, mimetype="application/json")
+
+    @app.route("/subscription/toggle/<email>")
+    def toggle_sub_email(email):
+        global subbed
+        subbed = (subbed + 1) % 2
+        return flask.Response(status=200)
 
     def run_scraper():
         while running:

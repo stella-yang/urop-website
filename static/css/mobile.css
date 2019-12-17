@@ -1,5 +1,6 @@
 :root.mobile {
   --size: 26px;
+  --starred-border-size: 4px;
 }
 
 @media screen and (max-width: 1818.75px) {
