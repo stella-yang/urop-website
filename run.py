@@ -8,10 +8,10 @@ import datetime
 import scrape
 
 
-def parseDataListFromData(data):
+def parsedata_listFromData(data):
     TODAY = datetime.datetime.today()
 
-    dataList = []
+    data_list = []
 
     # format data dictionary into a list, sorted in the right order
     for url in data:
@@ -19,42 +19,44 @@ def parseDataListFromData(data):
         if data[url]["valid"] == 0:
             continue
 
-        # add the detail_url field once we put it into dataList
-        dataList.append(data[url].copy())
-        dataList[-1]["detail_url"] = url
+        # add the detail_url field once we put it into data_list
+        data_list.append(data[url].copy())
+        data_list[-1]["detail_url"] = url
 
         # if an entry has an apply by date past today, then mark it as not due yet
         # otherwise, it has been due, or is empty
-        if len(dataList[-1]["apply_by"]) > 0 and datetime.datetime.strptime(dataList[-1]["apply_by"], scrape.TIME_FORMAT) < TODAY:
-            dataList[-1]["due_passed"] = 1
+        if len(data_list[-1]["apply_by"]) > 0 and datetime.datetime.strptime(data_list[-1]["apply_by"], scrape.TIME_FORMAT) < TODAY:
+            data_list[-1]["due_passed"] = 1
         else:
-            dataList[-1]["due_passed"] = 0
+            data_list[-1]["due_passed"] = 0
 
-    # sort dataList by apply by, with empty fields assumed to be right now
+    # sort data_list by apply by, with empty fields assumed to be right now
     def compareByApplyBy(this):
         apply_by = this["apply_by"]
         if len(apply_by) == 0:
             return TODAY
         return datetime.datetime.strptime(this["apply_by"], scrape.TIME_FORMAT)
-    dataList.sort(key=compareByApplyBy, reverse=True)
+    data_list.sort(key=compareByApplyBy, reverse=True)
 
-    # then stable sort dataList by date posted (field is always valid)
+    # then stable sort data_list by date posted (field is always valid)
     def compareByPosted(this):
         return datetime.datetime.strptime(this["posted"], scrape.TIME_FORMAT)
-    dataList.sort(key=compareByPosted, reverse=True)
+    data_list.sort(key=compareByPosted, reverse=True)
 
-    return dataList
+    return data_list
 
 
-def scrapeListEmail(data, dataList):
-    data, new_entries = scrape.run(data)
-    dataList = parseDataListFromData(data)
+def scrapeListEmail(old_data):
+    new_data, new_entries = scrape.run(old_data)
+    new_list = parsedata_listFromData(new_data)
 
     # if new_entries is non-empty, send an email to all addresses on the subscriber list with the title of each, and a link to the site
     if len(new_entries) != 0:
         print("Found", len(new_entries), "new postings! Emailing...")
 
         # TODO
+    
+    return (new_data, new_list)
 
 
 if __name__ == "__main__":
@@ -66,8 +68,8 @@ if __name__ == "__main__":
     # data is a dictionary of urop postings, a mapping from the detail_url to a dictionary with more specifics
     data = {}
 
-    # dataList is a view on data, presented in the order necessary for the front-end
-    dataList = []
+    # data_list is a view on data, presented in the order necessary for the front-end
+    data_list = []
 
     # subs is a set of emails
     subs = set()
@@ -79,7 +81,7 @@ if __name__ == "__main__":
         print("Loaded", len(data), "data entries.")
     except:
         print("Failed to load listings data.")
-    dataList = parseDataListFromData(data)
+    data_list = parsedata_listFromData(data)
     try:
         with open("db/subscribers.json", "r") as subFile:
             subs = set(json.load(subFile))
@@ -95,7 +97,7 @@ if __name__ == "__main__":
 
     @app.route("/data.json")
     def send_data():
-        return flask.Response(json.dumps(dataList), status=200, mimetype="application/json")
+        return flask.Response(json.dumps(data_list), status=200, mimetype="application/json")
 
     @app.route("/<path>")
     def send_static(path):
@@ -125,10 +127,10 @@ if __name__ == "__main__":
             time.sleep(SCRAPE_INTERVAL)
 
             # scrape the website!
-            scrapeListEmail(data, dataList)
+            data, data_list = scrapeListEmail(data)
 
     # run scraper once so we have some info
-    scrapeListEmail(data, dataList)
+    data, data_list = scrapeListEmail(data)
 
     scraper = threading.Thread(target=run_scraper)
     scraper.daemon = True
