@@ -140,6 +140,8 @@ if __name__ == "__main__":
         return flask.Response(status=200)
 
     def run_scraper():
+        global data
+        global data_list
         while running:
             time.sleep(SCRAPE_INTERVAL)
 
