@@ -88,7 +88,7 @@ function replaceInText(element, pattern, replacement) {
 
 function curryHandlePaneClicked(pane) {
   return (event) => {
-    console.log(`Pane was clicked.`, event);
+    console.log(`Pane was clicked.`);
 
     pane.classList.toggle(`starred`);
 
@@ -251,7 +251,7 @@ function testApplyMobileStyling() {
 }
 
 function handleStarFilterClicked(event) {
-  console.log(`Star filter clicked.`, event);
+  console.log(`Star filter clicked.`);
   const star = document.querySelector(`.filter .star`);
   star.classList.toggle(`selected`);
 
