@@ -102,17 +102,22 @@
   background-color: var(--summer);
 }
 
-.pane>.right>.top>.faculty {
+.pane>.right>.top>.natural-word-break {
   margin-bottom: calc(var(--size) * 0.625);
 
   line-height: 1.6;
   text-align: right;
+  font-style: italic;
 }
 
-.pane>.right>.top>.department {
-  line-height: 1.6;
-  font-style: italic;
-  text-align: right;
+.pane>.right>.top>.due {
+  font-weight: bold;
+
+  color: green;
+}
+
+.pane>.right>.top>.due.passed {
+  color: red;
 }
 
 .pane>.right>.bottom {
@@ -123,10 +128,6 @@
   font-style: italic;
 }
 
-.pane>.right>.bottom>.contact {
-  margin-bottom: calc(var(--size) * 0.625);
-}
-
-.pane>.right>.bottom>.due {
+.pane>.right>.bottom>div {
   margin-bottom: calc(var(--size) * 0.625);
 }

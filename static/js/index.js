@@ -88,6 +88,9 @@ function createPane(info) {
   } else {
     pane.querySelector(`.due`).innerHTML = "Due: " + info.apply_by;
   }
+  if (info.due_passed === 1) {
+    pane.querySelector(`.due`).classList.add(`passed`);
+  }
   pane.querySelector(`.posted`).innerHTML = "Posted: " + info.posted;
 
   // allow for starring by clicking pane
@@ -245,6 +248,7 @@ function handleSubscribeInput() {
     });
   } else {
     subscribeButton.classList.add(`disabled`);
+    subscribeButton.classList.remove(`selected`);
   }
 }
 
@@ -254,10 +258,9 @@ function handleSubscribeToggle() {
   const text = textField.value;
   if (EMAIL_REGEX.test(text)) {
     requestData(`/subscription/toggle/${text}`, () => {
-      subscribeButton.classList.toggle(`selected`);
-
       // reload sub count
       requestData(`/subscription/count.json`, (responseText) => {
+        subscribeButton.classList.toggle(`selected`);
         document.querySelector(`.subscribe .count`).innerHTML = JSON.parse(responseText);
       });
     });
