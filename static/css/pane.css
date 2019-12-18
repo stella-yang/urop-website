@@ -10,6 +10,8 @@
   background-color: white;
   border-radius: calc(var(--size) * 0.625);
   box-shadow: 0 calc(var(--size) * 0.2) calc(var(--size) * 0.3) rgba(0, 0, 0, 40%);
+
+  cursor: pointer;
 }
 
 .pane.starred {
@@ -125,9 +127,12 @@
 
   line-height: 1.6;
   text-align: right;
-  font-style: italic;
 }
 
 .pane>.right>.bottom>div {
   margin-bottom: calc(var(--size) * 0.625);
+}
+
+.pane .contact {
+  font-style: italic;
 }
