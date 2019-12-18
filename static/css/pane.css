@@ -41,8 +41,8 @@
   text-decoration: none;
 }
 
-.pane .detail-link>img {
-  height: 10px;
+.pane .detail-link:hover {
+  text-decoration: underline;
 }
 
 .pane .description {
