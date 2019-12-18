@@ -7,7 +7,7 @@ from dateutil import parser
 JOBS_BOARD = "https://urop.mit.edu/jobs-board"
 VALID_TERMS = ["fall", "iap", "spring", "summer"]
 TIME_FORMAT = "%m/%d/%y"
-EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+EMAIL_REGEX = "((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))"
 
 
 def br_newlines(s):
@@ -16,6 +16,7 @@ def br_newlines(s):
 
 def hyperlink_links(s):
     return re.sub("((http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?)", "<a href=\"\g<1>\">\g<1></a>", s)
+
 
 def mailto_emails(s):
     return re.sub(EMAIL_REGEX, "<a href=\"mailto: \g<1>\">\g<1></a>", s)
@@ -62,7 +63,7 @@ def run(old_data):
     new_entries = set()
 
     print("[" + str(datetime.datetime.now()) +
-          "]", end=" ")
+          "] Scraping official website...")
 
     try:
         # deepcopy and mark everything as expired
@@ -165,10 +166,14 @@ def run(old_data):
             except:
                 info["contact"] = ""
 
-        print("Successfully scraped new data.")
+        print("[" + str(datetime.datetime.now()) +
+              "] Success.")
     except:
         # something went wrong, preserve the last working state
-        print("Failed to scrape new data.")
+        print("[" + str(datetime.datetime.now()) +
+              "] Failed.")
+        import traceback
+        traceback.print_exc()
         return (old_data, set())
 
     return (urop_infos, new_entries)
