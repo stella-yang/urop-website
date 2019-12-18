@@ -29,30 +29,34 @@
   flex-flow: column;
 }
 
-.pane>.left>.detail-link {
+.pane .title-wrap {
   padding-bottom: calc(var(--size) * 0.9);
 
+  line-height: 1.6;
+}
+
+.pane .detail-link {
   font-size: 175%;
   color: #0400d0;
   text-decoration: none;
 }
 
-.pane>.left>.detail-link>img {
+.pane .detail-link>img {
   height: 10px;
 }
 
-.pane>.left>.description {
+.pane .description {
   line-height: 1.6;
 }
 
-.pane>.left>.divider {
+.pane .divider {
   width: 60%;
   margin: calc(var(--size) * 1.25) auto;
 
   border: 1px solid black;
 }
 
-.pane>.left>.prereqs {
+.pane .prereqs {
   line-height: 1.6;
 }
 
