@@ -302,6 +302,11 @@ function handleLoadData(data) {
 
   // prep the subscription form
   document.querySelector(`.subscribe input`).addEventListener(`input`, handleSubscribeInput);
+  document.querySelector(`.subscribe input`).addEventListener(`keypress`, (event) => {
+    if (event.key === "Enter") {
+      handleSubscribeToggle();
+    }
+  });
   handleSubscribeInput();
   document.querySelector(`.subscribe .button`).addEventListener(`click`, handleSubscribeToggle);
 
