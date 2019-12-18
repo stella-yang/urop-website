@@ -63,7 +63,7 @@ def run(old_data):
     new_entries = set()
 
     print("[" + str(datetime.datetime.now()) +
-          "] Scraping official website...")
+          "] Scraping...")
 
     try:
         # deepcopy and mark everything as expired

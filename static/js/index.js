@@ -18,6 +18,46 @@ const TOP_BUTTON_THRESHOLD = 200;
 
 const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
+// returns the cookie with the given name,
+// or undefined if not found
+function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function setCookie(name, value, options = {}) {
+
+  options = {
+    path: '/',
+    // add other defaults here if necessary
+    ...options
+  };
+
+  if (options.expires && options.expires.toUTCString) {
+    options.expires = options.expires.toUTCString();
+  }
+
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+  for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += "=" + optionValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
+}
+
+function deleteCookie(name) {
+  setCookie(name, "", {
+    'max-age': -1
+  })
+}
+
 // send xhr for data
 function requestData(url, onResponse) {
   const xhr = new XMLHttpRequest();
@@ -51,6 +91,17 @@ function curryHandlePaneClicked(pane) {
     console.log(`Pane was clicked.`, event);
 
     pane.classList.toggle(`starred`);
+
+    // save the starred state
+    let starredUrls = JSON.parse(getCookie(`starred`));
+    const paneUrl = pane.querySelector(`.detail-link`).href;
+    if (starredUrls.includes(paneUrl)) {
+      starredUrls = starredUrls.filter(url => url !== paneUrl);
+    } else {
+      starredUrls.push(paneUrl);
+    }
+    console.log("Set starred cookie:", starredUrls);
+    setCookie(`starred`, JSON.stringify(starredUrls), { "max-age": 2147483647 });
   };
 }
 
@@ -250,6 +301,9 @@ function handleSubscribeInput() {
     subscribeButton.classList.add(`disabled`);
     subscribeButton.classList.remove(`selected`);
   }
+
+  // save state of this input as a cookie
+  setCookie(`subscribe-email`, text, { "max-age": 2147483647 })
 }
 
 function handleSubscribeToggle() {
@@ -274,6 +328,21 @@ function handleLoadData(data) {
     const pane = createPane(data[a]);
     pane.classList.add(`pane-${a}`);
     viewer.appendChild(pane);
+  }
+
+  // get the starred panes and star them
+  const starredCookie = getCookie(`starred`);
+  if (starredCookie !== undefined) {
+    const starredUrls = JSON.parse(starredCookie);
+    console.log("Got starred cookie:", starredUrls);
+    for (let a = 0; a < data.length; a++) {
+      if (starredUrls.includes(data[a].detail_url)) {
+        document.querySelector(`.pane-${a}`).classList.add(`starred`);
+      }
+    }
+  } else {
+    // set the cookie as empty
+    setCookie(`starred`, JSON.stringify([]), { "max-age": 2147483647 });
   }
 
   // search bar and its handler
@@ -307,6 +376,11 @@ function handleLoadData(data) {
       handleSubscribeToggle();
     }
   });
+  const subscribeEmailCookie = getCookie(`subscribe-email`);
+  if (subscribeEmailCookie !== undefined) {
+    console.log("Loaded subscribe email cookie:", subscribeEmailCookie);
+    document.querySelector(`.subscribe input`).value = subscribeEmailCookie;
+  }
   handleSubscribeInput();
   document.querySelector(`.subscribe .button`).addEventListener(`click`, handleSubscribeToggle);
 
