@@ -66,10 +66,10 @@ def scrapeListEmail(old_data):
         smtp_server.starttls()
         smtp_server.login(secrets.SMTP_SERVER_USERNAME, secrets.SMTP_SERVER_PASSWORD)
         email_msg = MIMEMultipart()
-        email_msg["From"] = "urop.guide"
+        email_msg["From"] = "urop-guide"
         email_msg["To"] = ""
         email_msg["Subject"] = "[urop.guide] " + str(len(new_entries)) + " New UROP" + ("s" if len(new_entries) > 1 else "") + " :D"
-        email_msg.attach(MIMEText("Please visit the site at <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + body_main, "html"))
+        email_msg.attach(MIMEText("Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + body_main, "html"))
         smtp_server.sendmail("urop-guide@mit.edu", list(subs), email_msg.as_string())
         smtp_server.quit()
     
