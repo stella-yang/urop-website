@@ -56,7 +56,7 @@ def scrapeListEmail(old_data):
 
     # if new_entries is non-empty, send an email to all addresses on the subscriber list with the title of each, and a link to the site
     if len(new_entries) != 0:
-        print("Found", len(new_entries), "new postings! Emailing...")
+        print("Found", len(new_entries), "new postings! Emailing", len(subs), "subscribers...")
 
         body_main = ""
         for entry in new_entries:
@@ -134,12 +134,25 @@ if __name__ == "__main__":
     @app.route("/subscription/toggle/<email>")
     def toggle_sub_email(email):
         if email in subs:
+            print("Unsubscribed", email)
             subs.remove(email)
         else:
+            print("Subscribed", email)
             subs.add(email)
         return flask.Response(status=200)
 
+    def save_state():
+        global data
+        global subs
+        with open("db/data.json", "w") as data_file:
+            json.dump(data, data_file)
+        with open("db/subscribers.json", "w") as sub_file:
+            json.dump(list(subs), sub_file)
+
     def run_scraper():
+        """
+        Scrape new data, but also autosave the data and subscribers list when this happens.
+        """
         global data
         global data_list
         while running:
@@ -147,6 +160,9 @@ if __name__ == "__main__":
 
             # scrape the website!
             data, data_list = scrapeListEmail(data)
+
+            # autosave data
+            save_state()
 
     # run scraper once so we have some info
     data, data_list = scrapeListEmail(data)
@@ -162,8 +178,4 @@ if __name__ == "__main__":
     # stop the scraper!
     print("Saving data and subscribers...")
     running = False
-
-    with open("db/data.json", "w") as dataFile:
-        json.dump(data, dataFile)
-    with open("db/subscribers.json", "w") as subFile:
-        json.dump(list(subs), subFile)
+    save_state()    
