@@ -1,5 +1,5 @@
 asn1crypto==1.2.0
-beautifulsoup4==4.8.1
+beautifulsoup4==4.8.2
 certifi==2019.11.28
 cffi==1.13.2
 chardet==3.0.4
@@ -13,7 +13,6 @@ MarkupSafe==1.1.1
 pycparser==2.19
 pyOpenSSL==19.1.0
 PySocks==1.7.1
-python-dateutil==2.8.1
 requests==2.22.0
 six==1.13.0
 soupsieve==1.9.5

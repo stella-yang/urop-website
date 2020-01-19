@@ -1,0 +1,12 @@
+name: urop-website
+channels:
+  - anaconda
+  - defaults
+dependencies:
+  - python
+  - requests
+  - flask
+  - waitress
+  - beautifulsoup4
+prefix: C:\Users\yanga\Miniconda3\envs\urop-website
+
