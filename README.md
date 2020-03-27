@@ -1,5 +1,7 @@
 # urop.guide
 
+*This project is not actively maintained.*
+
 Stella Yang, Yang Yan, Alisa Ono, Angela Cai
 
 <https://urop.guide> is a different view of the UROP website for MIT students! Please email us at urop-guide@mit.edu with any feedback, questions, or concerns.
