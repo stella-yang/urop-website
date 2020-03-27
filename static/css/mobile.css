@@ -1,6 +1,10 @@
 :root.mobile {
-  --size: 26px;
+  --size: 30px;
   --starred-border-size: 4px;
+}
+
+.mobile .pane>.right {
+  display: none;
 }
 
 @media screen and (max-width: 1818.75px) {

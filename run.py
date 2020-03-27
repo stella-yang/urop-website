@@ -56,7 +56,8 @@ def scrapeListEmail(old_data):
 
     # if new_entries is non-empty, send an email to all addresses on the subscriber list with the title of each, and a link to the site
     if len(new_entries) != 0:
-        print("Found", len(new_entries), "new postings! Emailing", len(subs), "subscribers...")
+        print("Found", len(new_entries), "new postings! Emailing",
+              len(subs), "subscribers...")
 
         body_main = ""
         for entry in new_entries:
@@ -64,15 +65,20 @@ def scrapeListEmail(old_data):
 
         smtp_server = smtplib.SMTP("outgoing.mit.edu", 587)
         smtp_server.starttls()
-        smtp_server.login(secrets.SMTP_SERVER_USERNAME, secrets.SMTP_SERVER_PASSWORD)
+        smtp_server.login(secrets.SMTP_SERVER_USERNAME,
+                          secrets.SMTP_SERVER_PASSWORD)
         email_msg = MIMEMultipart()
         email_msg["From"] = "urop-guide"
         email_msg["To"] = ""
-        email_msg["Subject"] = "[urop.guide] " + str(len(new_entries)) + " New UROP" + ("s" if len(new_entries) > 1 else "") + " :D"
-        email_msg.attach(MIMEText("Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + body_main, "html"))
-        smtp_server.sendmail("urop-guide@mit.edu", list(subs), email_msg.as_string())
+        email_msg["Subject"] = "[urop.guide] " + \
+            str(len(new_entries)) + " New UROP" + \
+            ("s" if len(new_entries) > 1 else "") + " :D"
+        email_msg.attach(MIMEText(
+            "Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + body_main, "html"))
+        smtp_server.sendmail("urop-guide@mit.edu",
+                             list(subs), email_msg.as_string())
         smtp_server.quit()
-    
+
     return (new_data, new_list)
 
 
@@ -148,6 +154,7 @@ if __name__ == "__main__":
             json.dump(data, data_file)
         with open("db/subscribers.json", "w") as sub_file:
             json.dump(list(subs), sub_file)
+        print("Saved data and subscribers.")
 
     def run_scraper():
         """
@@ -176,6 +183,5 @@ if __name__ == "__main__":
     waitress.serve(app, host="0.0.0.0", port=PORT)
 
     # stop the scraper!
-    print("Saving data and subscribers...")
     running = False
-    save_state()    
+    save_state()

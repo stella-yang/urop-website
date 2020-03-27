@@ -32,7 +32,7 @@ body {
   padding: 0;
 
   overflow-y: scroll;
-  min-width: calc(var(--size) * 36);
+  min-width: calc(var(--size) * 43);
 
   font-family: 'Montserrat', Helvetica, sans-serif;
   font-size: var(--size);

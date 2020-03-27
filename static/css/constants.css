@@ -12,7 +12,7 @@
   --button-purple: #d1bbff;
   --star-yellow: #ffea91;
 
-  --size: 13px;
+  --size: 16px;
   --term-width: calc(var(--size) * 5);
   --starred-border-size: 2px;
 }
