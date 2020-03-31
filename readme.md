@@ -25,18 +25,17 @@ Run the server with:
 
 ```bash
 pip install -r requirements.txt
-python run.py
+python main.py
 ```
 
 The server will periodically scrape the official UROP postings site at <https://urop.mit.edu/jobs-board>. The default interval is 1 hour. The server will run on `:61000` by default.
 
-### Conda
+### `conda`
 
-Alternatively, a run the server under a conda environment:
+Alternatively, a run the server under a `conda` environment:
 
 ```bash
 conda env create --file=environment.yaml
-python run.py
 ```
 
 ## Deployment
@@ -60,6 +59,11 @@ ssh -p 2222 urop_guide@gilgamesh.cc
 The SSH port is password-authenticated. The password is available as the secret `$BACKEND_PASSWORD`. Both the tunnel and server run under a `tmux` session.
 
 ## Changelog
+
+### 1.0.1
+
+* Rename readme to lowercase `readme.md`.
+* Fixed environment and requirements to include `python-dateutil`.
 
 ### 1.0.0
 
