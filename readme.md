@@ -53,12 +53,17 @@ It may be wise to use a more persistent tunnel like `autossh`.
 To perform server maintenance, log in to the server with
 
 ```bash
-ssh -p 2222 urop_guide@gilgamesh.cc
+ssh -p 2222 gilgamesh@gilgamesh.cc
 ```
 
-The SSH port is password-authenticated. The password is available as the secret `$BACKEND_PASSWORD`. Both the tunnel and server run under a `tmux` session.
+Please request access at urop-guide@mit.edu.
 
 ## Changelog
+
+### 1.0.2
+
+* If no SMTP credentials supplied, emails will not be sent.
+* Server maintenance is now not open to collaborators.
 
 ### 1.0.1
 

@@ -4,6 +4,7 @@ import waitress
 import threading
 import time
 import datetime
+import traceback
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -59,20 +60,24 @@ def scrapeListEmail(old_data):
         print("Found", len(new_entries), "new postings! Emailing", len(subs), "subscribers...")
 
         if len(subs) != 0:
-            body_main = ""
-            for entry in new_entries:
-                body_main += "* " + new_data[entry]["title"] + "<br>"
+            try:
+                body_main = ""
+                for entry in new_entries:
+                    body_main += "* " + new_data[entry]["title"] + "<br>"
 
-            smtp_server = smtplib.SMTP("outgoing.mit.edu", 587)
-            smtp_server.starttls()
-            smtp_server.login(secrets.SMTP_SERVER_USERNAME, secrets.SMTP_SERVER_PASSWORD)
-            email_msg = MIMEMultipart()
-            email_msg["From"] = "urop-guide"
-            email_msg["To"] = ""
-            email_msg["Subject"] = "[urop.guide] " + str(len(new_entries)) + " New UROP" + ("s" if len(new_entries) > 1 else "") + " :D"
-            email_msg.attach(MIMEText("Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + body_main, "html"))
-            smtp_server.sendmail("urop-guide@mit.edu", list(subs), email_msg.as_string())
-            smtp_server.quit()
+                smtp_server = smtplib.SMTP("outgoing.mit.edu", 587)
+                smtp_server.starttls()
+                smtp_server.login(secrets.SMTP_SERVER_USERNAME, secrets.SMTP_SERVER_PASSWORD)
+                email_msg = MIMEMultipart()
+                email_msg["From"] = "urop-guide"
+                email_msg["To"] = ""
+                email_msg["Subject"] = "[urop.guide] " + str(len(new_entries)) + " New UROP" + ("s" if len(new_entries) > 1 else "") + " :D"
+                email_msg.attach(MIMEText("Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + body_main, "html"))
+                smtp_server.sendmail("urop-guide@mit.edu", list(subs), email_msg.as_string())
+                smtp_server.quit()
+            except:
+                traceback.print_exc()
+                print("Failed to send email.")
     
     return (new_data, new_list)
 
