@@ -59,6 +59,10 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.0.1
+
+* Add loader.
+
 ### 2.0.0
 
 * Switched to `sqlite3` on-disk database.
