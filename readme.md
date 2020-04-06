@@ -29,7 +29,7 @@ python main.py
 Option|Default|Usage
 -|-|-
 `--port`|`61000`|The port on which to serve.
-`--interval`|`3600`|Seconds before scraping the website.
+`--period`|`3600`|Seconds before rescraping the website.
 `--username`|None|Kerberos, or username to login to MIT SMTP.
 `--password`|None|MIT SMTP password.
 
@@ -58,6 +58,11 @@ ssh -p 2222 gilgamesh@gilgamesh.cc
 Please request access at urop-guide@mit.edu.
 
 ## Changelog
+
+### 2.0.2
+
+* Fix opacity transition on load.
+* Fix scraper not being run due to event loops.
 
 ### 2.0.1
 

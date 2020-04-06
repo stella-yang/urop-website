@@ -38,13 +38,11 @@ body {
   font-size: var(--size);
 
   background-color: var(--viewer-bkgd);
-
-  transition: opacity 1s;
-  opacity: 1;
 }
 
-body.loading > * {
-  opacity: 0
+.main {
+  transition: opacity 1s;
+  opacity: 1;
 }
 
 .loader {
@@ -59,11 +57,15 @@ body.loading > * {
   pointer-events: none;
 }
 
-.loader > img {
+.loader>img {
   margin: auto;
 }
 
-body.loading > .loader {
+body.loading>.main {
+  opacity: 0;
+}
+
+body.loading>.loader {
   opacity: 1;
 }
 

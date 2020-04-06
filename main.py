@@ -291,7 +291,7 @@ def main(argv):
     """
     # Parse command line arguments.
     opts, args = getopt.getopt(
-        argv, "", ["port=", "interval=", "username=", "password="])
+        argv, "", ["port=", "period=", "username=", "password="])
     opts = {opt[0]: opt[1] for opt in opts}
 
     # Default values.
@@ -300,8 +300,8 @@ def main(argv):
     SMTP_PASSWORD = opts["--password"] if "--password" in opts.keys() else \
         getpass.getpass("MIT SMTP password: ")
     PORT = int(opts["--port"]) if "--port" in opts.keys() else 61000
-    SCRAPE_INTERVAL = int(
-        opts["--interval"]) if "--interval" in opts.keys() else 3600
+    SCRAPE_PERIOD = int(
+        opts["--period"]) if "--period" in opts.keys() else 3600
 
     # Load database.
     DB_LOCATION = ".db"
@@ -390,34 +390,31 @@ def main(argv):
 
     # Used in a thread to scrape periodically.
     def scrape_and_update(webapp_context):
-        db_connection = sqlite3.connect(DB_LOCATION)
-        db_cursor = db_connection.cursor()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         while webapp_context["running"]:
-            time.sleep(SCRAPE_INTERVAL)
+            time.sleep(SCRAPE_PERIOD)
+            db_connection = sqlite3.connect(DB_LOCATION)
+            db_cursor = db_connection.cursor()
             previous_scrape_datetime = datetime.datetime.now()
             try:
                 scrape(db_cursor)
+                email_new_urops(
+                    db_cursor,
+                    previous_scrape_datetime,
+                    SMTP_USERNAME,
+                    SMTP_PASSWORD)
+                webapp_context["data_json"] = create_data_json(
+                    db_cursor,
+                    previous_scrape_datetime)
             except:
                 traceback.print_exc()
-            email_new_urops(
-                db_cursor,
-                previous_scrape_datetime,
-                SMTP_USERNAME,
-                SMTP_PASSWORD)
-            webapp_context["data_json"] = create_data_json(
-                db_cursor,
-                previous_scrape_datetime)
-        db_connection.commit()
-        db_connection.close()
+            db_connection.commit()
+            db_connection.close()
 
     # Make initial data_json, start scraping thread, before serving.
     previous_scrape_datetime = datetime.datetime.now()
     scrape(db_cursor)
-    email_new_urops(
-        db_cursor,
-        previous_scrape_datetime,
-        SMTP_USERNAME,
-        SMTP_PASSWORD)
     webapp_context["data_json"] = create_data_json(
         db_cursor,
         previous_scrape_datetime)
