@@ -6,182 +6,436 @@ import time
 import datetime
 import traceback
 import smtplib
+import requests
+import bs4
+import re
+import datetime
+import sys
+import getopt
+import getpass
+import sqlite3
+import asyncio
+from dateutil import parser
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-import secrets
-import scrape
+TERMS = ["fall", "iap", "spring", "summer"]
+TIME_FORMAT = "%m/%d/%y"
 
 
-def parsedata_listFromData(data):
-    TODAY = datetime.datetime.today()
-
-    data_list = []
-
-    # format data dictionary into a list, sorted in the right order
-    for url in data:
-        # only show valid entries
-        if data[url]["valid"] == 0:
-            continue
-
-        # add the detail_url field once we put it into data_list
-        data_list.append(data[url].copy())
-        data_list[-1]["detail_url"] = url
-
-        # if an entry has an apply by date past today, then mark it as not due yet
-        # otherwise, it has been due, or is empty
-        if len(data_list[-1]["apply_by"]) > 0 and datetime.datetime.strptime(data_list[-1]["apply_by"], scrape.TIME_FORMAT) < TODAY:
-            data_list[-1]["due_passed"] = 1
-        else:
-            data_list[-1]["due_passed"] = 0
-
-    # sort data_list by apply by, with empty fields assumed to be right now
-    def compareByApplyBy(this):
-        apply_by = this["apply_by"]
-        if len(apply_by) == 0:
-            return TODAY
-        return datetime.datetime.strptime(this["apply_by"], scrape.TIME_FORMAT)
-    data_list.sort(key=compareByApplyBy, reverse=True)
-
-    # then stable sort data_list by date posted (field is always valid)
-    def compareByPosted(this):
-        return datetime.datetime.strptime(this["posted"], scrape.TIME_FORMAT)
-    data_list.sort(key=compareByPosted, reverse=True)
-
-    return data_list
-
-
-def scrapeListEmail(old_data):
-    new_data, new_entries = scrape.run(old_data)
-    new_list = parsedata_listFromData(new_data)
-
-    # if new_entries is non-empty, send an email to all addresses on the subscriber list with the title of each, and a link to the site
-    if len(new_entries) != 0:
-        print("Found", len(new_entries), "new postings! Emailing", len(subs), "subscribers...")
-
-        if len(subs) != 0:
-            try:
-                body_main = ""
-                for entry in new_entries:
-                    body_main += "* " + new_data[entry]["title"] + "<br>"
-
-                smtp_server = smtplib.SMTP("outgoing.mit.edu", 587)
-                smtp_server.starttls()
-                smtp_server.login(secrets.SMTP_SERVER_USERNAME, secrets.SMTP_SERVER_PASSWORD)
-                email_msg = MIMEMultipart()
-                email_msg["From"] = "urop-guide"
-                email_msg["To"] = ""
-                email_msg["Subject"] = "[urop.guide] " + str(len(new_entries)) + " New UROP" + ("s" if len(new_entries) > 1 else "") + " :D"
-                email_msg.attach(MIMEText("Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + body_main, "html"))
-                smtp_server.sendmail("urop-guide@mit.edu", list(subs), email_msg.as_string())
-                smtp_server.quit()
-            except:
-                traceback.print_exc()
-                print("Failed to send email.")
-    
-    return (new_data, new_list)
-
-
-if __name__ == "__main__":
-    PORT = 61000
-    SCRAPE_INTERVAL = 3600  # 1 hour
-
-    running = True
-
-    # data is a dictionary of urop postings, a mapping from the detail_url to a dictionary with more specifics
-    data = {}
-
-    # data_list is a view on data, presented in the order necessary for the front-end
-    data_list = []
-
-    # subs is a set of emails
-    subs = set()
-
-    # load the saved data if it exists
+def parse_datetime(s):
+    """
+    Convert a time string into a central format.
+    """
     try:
-        with open("db/data.json", "r") as dataFile:
-            data = json.load(dataFile)
-        print("Loaded", len(data), "data entries.")
+        return parser.parse(s).strftime(TIME_FORMAT)
     except:
-        print("Failed to load listings data.")
-    data_list = parsedata_listFromData(data)
+        return ""
+
+
+def unparse_datetime(s):
+    """
+    Parse central format into datetime object.
+    """
+    return datetime.datetime.strptime(s, TIME_FORMAT)
+
+
+def print_with_datetime(s):
+    print("[" + str(datetime.datetime.now()) + "]", s)
+
+
+def scrape(db_cursor):
+    """
+    Updates the database by scraping the UROP postings board.
+    """
+    JOBS_BOARD_URL = "https://urop.mit.edu/jobs-board"
+
+    # Get UROP URLs.
+    board_soup = bs4.BeautifulSoup(
+        requests.get(JOBS_BOARD_URL).text,
+        "html.parser"
+    )
+    urop_doms = board_soup.select("div.site-search-contact")
+    urop_urls = [
+        "https://urop.mit.edu" +
+        urop_dom.select("div.site-search-button>a")[0]["href"]
+        for urop_dom in urop_doms
+    ]
+
+    # Fetch all UROP URLs.
+    async def get_urop_responses(urop_urls):
+        """
+        Concurrently fetch all UROP URLs.
+        """
+        loop = asyncio.get_event_loop()
+        futures = {
+            urop_url: loop.run_in_executor(None, requests.get, urop_url)
+            for urop_url in urop_urls
+        }
+        return {
+            urop_url: await future
+            for urop_url, future in futures.items()
+        }
+
+    loop = asyncio.get_event_loop()
+    urop_responses = loop.run_until_complete(get_urop_responses(urop_urls))
+
+    # Get soups for UROPs.
+    info_soups = {
+        urop_url: bs4.BeautifulSoup(urop_response.text, "html.parser")
+        .select("div.page-intro")[0]
+        for urop_url, urop_response in urop_responses.items()
+    }
+
+    EMAIL_REGEX = "((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))"
+
+    def process_urop_block_text(s):
+        """
+        Replace \r\n and \n with <br>. Highlight hyperlinks and emails. Bold hours and money.
+        """
+        LINK_REGEX = "((http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?)"
+        tmp = s.replace("\r\n", "<br>").replace("\n", "<br>")
+        tmp = re.sub(LINK_REGEX, "<a href=\"\g<1>\">\g<1></a>", tmp)
+        tmp = re.sub(EMAIL_REGEX, "<a href=\"mailto: \g<1>\">\g<1></a>", tmp)
+        tmp = re.sub("(\d+ (hr|hour)s?)", "<b>\g<1></b>", tmp)
+        return re.sub("$\d+(\.\d+)?", "<b>\g<1></b>", tmp)
+
+    # Some preliminary parsing.
+    urop_tdp_fields = {
+        urop_url: {
+            "title": str(info_soup.select("h2")[0].decode_contents())
+            .strip(),
+            "description": process_urop_block_text(
+                info_soup.select("div.row+h3+p")[0]
+                .decode_contents().strip()
+            ),
+            "prereqs": process_urop_block_text(
+                info_soup.select("div.row+h3+p+h3+p")[0]
+                .decode_contents().strip()
+            ),
+        }
+        for urop_url, info_soup in info_soups.items()
+    }
+
+    # Parse other well-formed fields.
+    urop_field_soups = {
+        urop_url: info_soup.select("div.urop-content")
+        for urop_url, info_soup in info_soups.items()
+    }
+    urop_default_fields = {
+        urop_url: {
+            field_soup.select("h3")[0]
+            .decode_contents().strip().lower()
+            .replace(" ", "_").replace(":", ""):
+                field_soup.select("p")[0].decode_contents().strip()
+            for field_soup in field_soups
+        }
+        for urop_url, field_soups in urop_field_soups.items()
+    }
+
+    # Correct some fields in the default field parsing.
+    def parse_contact(s):
+        """
+        Catches exceptions in parsing the contact field.
+        """
+        try:
+            return re.findall(EMAIL_REGEX, s)[0]
+        except:
+            return ""
+
+    urop_corrected_fields = {
+        urop_url: {
+            "term": [
+                term.lower()
+                for term in default_fields["term"].split("/")
+                if term.lower() in TERMS
+            ],
+            "apply_by": parse_datetime(default_fields["apply_by"]),
+            "contact": parse_contact(default_fields["contact"]),
+        }
+        for urop_url, default_fields in urop_default_fields.items()
+    }
+
+    # Merge results from previous parsings.
+    parsed_urops = {}
+    for urop_url in urop_urls:
+        parsed_urops[urop_url] = urop_tdp_fields[urop_url]
+        parsed_urops[urop_url].update(urop_default_fields[urop_url])
+        parsed_urops[urop_url].update(urop_corrected_fields[urop_url])
+
+    # Add parsed UROPs to database. If already exists, update all fields and last_seen. posted should never be updated.
+    now_datetime = datetime.datetime.now()
+    for urop_url, parsed_urop in parsed_urops.items():
+        db_cursor.execute("""
+        INSERT OR REPLACE INTO urops VALUES (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            COALESCE((SELECT posted FROM urops WHERE url = ?), ?),
+            ?
+        );""", (
+            urop_url,
+            parsed_urop["title"],
+            parsed_urop["description"],
+            parsed_urop["prereqs"],
+            int("".join([
+                '1' if TERMS[a] in parsed_urop["term"] else '0'
+                for a in range(0, len(TERMS))
+            ]), 2),  # Term, one bit for each term.
+            parsed_urop["department"],
+            parsed_urop["faculty_supervisor"],
+            parsed_urop["faculty_email"],
+            parsed_urop["apply_by"],
+            parsed_urop["contact"],
+            urop_url,
+            now_datetime,  # Default value for posted.
+            now_datetime
+        ))
+
+
+def email_new_urops(db_cursor, previous_scrape_datetime, SMTP_USERNAME, SMTP_PASSWORD):
+    """
+    Send email about new entries.
+    """
+    urops = db_cursor.execute("""
+    SELECT * FROM urops
+        WHERE posted >= ?
+        ORDER BY posted DESC, apply_by DESC;
+        """, (previous_scrape_datetime,)
+    ).fetchall()
+    if len(urops) == 0:
+        return
+
+    urops_summary = ""
+    for urop in urops:
+        urops_summary += "* " + urop[1] + "<br>"
+
+    subscribers = [
+        result[0] for result in
+        db_cursor.execute("SELECT * FROM subscribers;").fetchall()
+    ]
+    if len(subscribers) == 0:
+        return
+
     try:
-        with open("db/subscribers.json", "r") as subFile:
-            subs = set(json.load(subFile))
-        print("Loaded", len(subs), "subscribers.")
+        smtp_server = smtplib.SMTP("outgoing.mit.edu", 587)
+        smtp_server.starttls()
+        smtp_server.login(SMTP_USERNAME, SMTP_PASSWORD)
+        email_msg = MIMEMultipart()
+        email_msg["From"] = "urop-guide"
+        email_msg["To"] = ""
+        email_msg["Subject"] = "[urop.guide] " + \
+            str(len(urops)) + " New UROP" + \
+            ("" if len(urops) == 1 else "s") + " :D"
+        email_msg.attach(MIMEText(
+            "Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + urops_summary,
+            "html"
+        ))
+        smtp_server.sendmail(
+            "urop-guide@mit.edu",
+            list(subscribers),
+            email_msg.as_string()
+        )
+        smtp_server.quit()
+        print_with_datetime("Emailed " + str(len(subscribers)) +
+                            " subscribers about " + str(len(urops)) +
+                            " new UROPs.")
     except:
-        print("Failed to load subscriber data.")
+        traceback.print_exc()
 
-    app = flask.Flask(__name__, static_url_path="")
 
-    @app.route("/")
+def create_data_json(db_cursor, previous_scrape_datetime):
+    """
+    Scrape and create data_json.
+    """
+    today = datetime.datetime.today()
+    urops = db_cursor.execute("""
+    SELECT * FROM urops
+        WHERE last_seen >= ?
+        ORDER BY posted DESC, apply_by DESC;
+        """, (previous_scrape_datetime,)
+    ).fetchall()
+    return json.dumps([{
+        "url": urop[0],
+        "title": urop[1],
+        "description": urop[2],
+        "prereqs": urop[3],
+        "term": [
+            TERMS[a] for a in range(len(TERMS))
+            if urop[4] & (1 << (len(TERMS) - a - 1))
+        ],
+        "department": urop[5],
+        "faculty_supervisor": urop[6],
+        "faculty_email": urop[7],
+        "apply_by": urop[8],
+        "contact": urop[9],
+        "posted": parse_datetime(urop[10]),
+        "last_seen": parse_datetime(urop[11]),
+        "apply_by_passed": urop[8] != "" and unparse_datetime(urop[8]) < today,
+    } for urop in urops])
+
+
+def main(argv):
+    """
+    Default behavior when run from command line.
+    Runs the urop-website server.
+
+    argv: List of command line arguments (sys.argv[1:])
+    """
+    # Parse command line arguments.
+    opts, args = getopt.getopt(
+        argv, "", ["port=", "interval=", "username=", "password="])
+    opts = {opt[0]: opt[1] for opt in opts}
+
+    # Default values.
+    SMTP_USERNAME = opts["--username"] if "--username" in opts.keys() else \
+        input("MIT SMTP username (Kerberos): ")
+    SMTP_PASSWORD = opts["--password"] if "--password" in opts.keys() else \
+        getpass.getpass("MIT SMTP password: ")
+    PORT = int(opts["--port"]) if "--port" in opts.keys() else 61000
+    SCRAPE_INTERVAL = int(
+        opts["--interval"]) if "--interval" in opts.keys() else 3600
+
+    # Load database.
+    DB_LOCATION = ".db"
+    db_connection = sqlite3.connect(DB_LOCATION)
+    db_cursor = db_connection.cursor()
+    db_cursor.execute("""
+    CREATE TABLE IF NOT EXISTS urops (
+        url TEXT PRIMARY KEY UNIQUE,
+        title TEXT,
+        description TEXT,
+        prereqs TEXT,
+        term INTEGER,
+        department TEXT,
+        faulty_supervisor TEXT,
+        faculty_email TEXT,
+        apply_by TEXT,
+        contact TEXT,
+        posted TIMESTAMP,
+        last_seen TIMESTAMP
+    );""")
+    db_cursor.execute("""
+    CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY)
+    ;""")
+
+    # Setup webserver.
+    webapp = flask.Flask(__name__, static_url_path="")
+    webapp_context = {
+        "running": True,
+        "data_json": "",
+    }
+
+    @webapp.route("/")
     def index_bypass():
         return flask.send_from_directory("static", "index.html")
 
-    @app.route("/data.json")
-    def send_data():
-        return flask.Response(json.dumps(data_list), status=200, mimetype="application/json")
-
-    @app.route("/<path>")
+    @webapp.route("/<path>")
     def send_static(path):
         return flask.send_from_directory("static", path)
 
-    @app.route("/subscription/count.json")
+    @webapp.route("/data.json")
+    def send_data():
+        return flask.Response(
+            webapp_context["data_json"],
+            mimetype="application/json")
+
+    @webapp.route("/subscription/count.json")
     def get_sub_count():
-        return flask.Response(json.dumps(len(subs)), status=200, mimetype="application/json")
+        db_connection = sqlite3.connect(DB_LOCATION)
+        db_cursor = db_connection.cursor()
+        response = json.dumps(db_cursor.execute(
+            "SELECT COUNT(*) FROM subscribers;"
+        ).fetchone()[0])
+        db_connection.commit()
+        db_connection.close()
+        return flask.Response(response, mimetype="application/json")
 
-    @app.route("/subscription/check/<email>")
+    @webapp.route("/subscription/check/<email>")
     def check_sub_email(email):
-        """
-        Returns 0 iff the email is not already subscribed, 1 otherwise.
-        """
-        return flask.Response(json.dumps(1 if email in subs else 0), status=200, mimetype="application/json")
+        db_connection = sqlite3.connect(DB_LOCATION)
+        db_cursor = db_connection.cursor()
+        response = json.dumps(db_cursor.execute(
+            "SELECT COUNT(*) FROM subscribers WHERE email = ?;",
+            (email,)).fetchone()[0] > 0)
+        db_connection.commit()
+        db_connection.close()
+        return flask.Response(response, mimetype="application/json")
 
-    @app.route("/subscription/toggle/<email>")
+    @webapp.route("/subscription/toggle/<email>")
     def toggle_sub_email(email):
-        if email in subs:
-            print("Unsubscribed", email)
-            subs.remove(email)
-        else:
-            print("Subscribed", email)
-            subs.add(email)
+        db_connection = sqlite3.connect(DB_LOCATION)
+        db_cursor = db_connection.cursor()
+        in_subscribers = db_cursor.execute(
+            "SELECT COUNT(*) FROM subscribers WHERE email = ?;",
+            (email,)).fetchone()[0] > 0
+        db_cursor.execute(
+            "DELETE FROM subscribers WHERE email = ?;"
+            if in_subscribers else
+            "INSERT INTO subscribers VALUES (?);",
+            (email,))
+        db_connection.commit()
+        db_connection.close()
+        print_with_datetime((
+            "Unsubscribed " if in_subscribers else "Subscribed "
+        ) + email + ".")
         return flask.Response(status=200)
 
-    def save_state():
-        global data
-        global subs
-        with open("db/data.json", "w") as data_file:
-            json.dump(data, data_file)
-        with open("db/subscribers.json", "w") as sub_file:
-            json.dump(list(subs), sub_file)
-
-    def run_scraper():
-        """
-        Scrape new data, but also autosave the data and subscribers list when this happens.
-        """
-        global data
-        global data_list
-        while running:
+    # Used in a thread to scrape periodically.
+    def scrape_and_update(webapp_context):
+        db_connection = sqlite3.connect(DB_LOCATION)
+        db_cursor = db_connection.cursor()
+        while webapp_context["running"]:
             time.sleep(SCRAPE_INTERVAL)
+            previous_scrape_datetime = datetime.datetime.now()
+            try:
+                scrape(db_cursor)
+            except:
+                traceback.print_exc()
+            email_new_urops(
+                db_cursor,
+                previous_scrape_datetime,
+                SMTP_USERNAME,
+                SMTP_PASSWORD)
+            webapp_context["data_json"] = create_data_json(
+                db_cursor,
+                previous_scrape_datetime)
+        db_connection.commit()
+        db_connection.close()
 
-            # scrape the website!
-            data, data_list = scrapeListEmail(data)
+    # Make initial data_json, start scraping thread, before serving.
+    previous_scrape_datetime = datetime.datetime.now()
+    scrape(db_cursor)
+    email_new_urops(
+        db_cursor,
+        previous_scrape_datetime,
+        SMTP_USERNAME,
+        SMTP_PASSWORD)
+    webapp_context["data_json"] = create_data_json(
+        db_cursor,
+        previous_scrape_datetime)
 
-            # autosave data
-            save_state()
+    # Cleanup.
+    db_connection.commit()
+    db_connection.close()
 
-    # run scraper once so we have some info
-    data, data_list = scrapeListEmail(data)
+    updater = threading.Thread(
+        target=scrape_and_update,
+        args=(webapp_context,)
+    )
+    updater.daemon = True
+    updater.start()
 
-    scraper = threading.Thread(target=run_scraper)
-    scraper.daemon = True
-    scraper.start()
+    waitress.serve(webapp, host="0.0.0.0", port=PORT)
+    webapp_context["running"] = False
 
-    # app.run()
-    # app.run(host="0.0.0.0", port=PORT)
-    waitress.serve(app, host="0.0.0.0", port=PORT)
 
-    # stop the scraper!
-    print("Saving data and subscribers...")
-    running = False
-    save_state()    
+if __name__ == "__main__":
+    main(sys.argv[1:])

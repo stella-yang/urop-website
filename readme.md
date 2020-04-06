@@ -1,42 +1,37 @@
-# urop.guide
+# urop-website
 
 Stella Yang, Yang Yan, Alisa Ono, Angela Cai
 
 <https://urop.guide> is a different view of the UROP website for MIT students! Please email us at urop-guide@mit.edu with any feedback, questions, or concerns.
 
-## Secrets
-
-Secrets are stored in <https://drive.google.com/drive/u/0/folders/149GgVNchNeuyryeI1-OTSWYGok_D3r1J>. Only collaborators have access to this link.
-
-### SMTP authentication
-
-The `secrets` folder is also to contain one Python file named `__init__.py`. It should follow the following format:
-
-```python
-SMTP_SERVER_USERNAME = ""
-SMTP_SERVER_PASSWORD = ""
-```
-
-The first string should be your Kerberos. The latter should be your Kerberos password. This serves as the authentication for MIT SMTP servers for sending emails.
-
 ## Running the server
 
-Run the server with:
+Setup the Python environment with:
 
 ```bash
 pip install -r requirements.txt
-python main.py
 ```
 
-The server will periodically scrape the official UROP postings site at <https://urop.mit.edu/jobs-board>. The default interval is 1 hour. The server will run on `:61000` by default.
-
-### `conda`
-
-Alternatively, a run the server under a `conda` environment:
+Alternatively, use `conda`:
 
 ```bash
 conda env create --file=environment.yaml
 ```
+
+Then,
+
+```bash
+python main.py
+```
+
+### Command line options
+
+Option|Default|Usage
+-|-|-
+`--port`|`61000`|The port on which to serve.
+`--interval`|`3600`|Seconds before scraping the website.
+`--username`|None|Kerberos, or username to login to MIT SMTP.
+`--password`|None|MIT SMTP password.
 
 ## Deployment
 
@@ -47,6 +42,10 @@ ssh -R urop.guide:80:127.0.0.1:61000 gilgamesh.cc
 ```
 
 It may be wise to use a more persistent tunnel like `autossh`.
+
+### Database
+
+`urop-website` uses `sqlite3` to manage an on-disk database containing the UROPs and subscribers at `.db`.
 
 ### Maintenance
 
@@ -59,6 +58,11 @@ ssh -p 2222 gilgamesh@gilgamesh.cc
 Please request access at urop-guide@mit.edu.
 
 ## Changelog
+
+### 2.0.0
+
+* Switched to `sqlite3` on-disk database.
+* Moved secrets to command-line options.
 
 ### 1.0.2
 

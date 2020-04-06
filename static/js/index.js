@@ -110,7 +110,7 @@ function createPane(info) {
   pane.classList.remove(`template`);
 
   pane.querySelector(`.title`).innerHTML = info.title;
-  pane.querySelector(`.detail-link`).href = info.detail_url;
+  pane.querySelector(`.detail-link`).href = info.url;
   pane.querySelector(`.description`).innerHTML = info.description;
   pane.querySelector(`.prereqs`).innerHTML = info.prereqs;
 
@@ -139,7 +139,7 @@ function createPane(info) {
   } else {
     pane.querySelector(`.due`).innerHTML = "Due: " + info.apply_by;
   }
-  if (info.due_passed === 1) {
+  if (info.apply_by_passed) {
     pane.querySelector(`.due`).classList.add(`passed`);
   }
   pane.querySelector(`.posted`).innerHTML = "Posted: " + info.posted;
@@ -288,7 +288,7 @@ function handleSubscribeInput() {
   if (EMAIL_REGEX.test(text)) {
     // if not disabled, check whether it should be selected or not
     requestData(`/subscription/check/${text}`, (responseText) => {
-      const inList = JSON.parse(responseText) === 1;
+      const inList = JSON.parse(responseText);
       subscribeButton.classList.remove(`disabled`);
 
       if (inList) {
@@ -336,7 +336,7 @@ function handleLoadData(data) {
     const starredUrls = JSON.parse(starredCookie);
     console.log("Got starred cookie:", starredUrls);
     for (let a = 0; a < data.length; a++) {
-      if (starredUrls.includes(data[a].detail_url)) {
+      if (starredUrls.includes(data[a].url)) {
         document.querySelector(`.pane-${a}`).classList.add(`starred`);
       }
     }
