@@ -18,7 +18,7 @@ Alternatively, use `conda`:
 conda env create --file=environment.yaml
 ```
 
-Then,
+Run the server with
 
 ```bash
 python main.py
@@ -28,10 +28,19 @@ python main.py
 
 Option|Default|Usage
 -|-|-
-`--port`|`61000`|The port on which to serve.
+`--port`|`80`|The port on which to serve.
 `--period`|`3600`|Seconds before rescraping the website.
 `--username`|None|Kerberos, or username to login to MIT SMTP.
 `--password`|None|MIT SMTP password.
+
+### Submodules
+
+If you haven't done so, you might want to pull the `rain` Git submodule, which is used for CSS styling.
+
+```bash
+git submodule init
+git submodule update
+```
 
 ## Deployment
 
@@ -58,6 +67,12 @@ ssh -p 2222 gilgamesh@gilgamesh.cc
 Please request access at urop-guide@mit.edu.
 
 ## Changelog
+
+### 2.1.0
+
+* Update `conda` and `pip` environments.
+* Add `rain` dependency for CSS styling.
+* Began re-styling for more responsive design.
 
 ### 2.0.2
 

@@ -1,8 +1,8 @@
 .filter {
   flex: 1000 0 auto;
   order: 2;
-  padding-left: calc(var(--size) * 2);
-  padding-right: calc(var(--size) * 2);
+  padding-left: calc(2 * var(--x));
+  padding-right: calc(2 * var(--x));
 
   display: flex;
   justify-content: space-around;
@@ -20,13 +20,13 @@
 
 .filter>.stack>.search {
   width: 100%;
-  padding: calc(var(--size) * 0.46875) calc(var(--size) * 0.7);
-  margin-bottom: calc(var(--size) * 0.625);
+  padding: calc(0.46875 * var(--x)) calc(0.7 * var(--x));
+  margin-bottom: calc(0.625 * var(--x));
 
   font-family: inherit;
   font-size: 100%;
 
-  border-radius: calc(var(--size) * 0.3125);
+  border-radius: calc(0.3125 * var(--x));
   border: 1px black solid;
 }
 
@@ -60,20 +60,20 @@
 }
 
 .filter>.stack>.star-terms>.star>img {
-  height: calc(var(--size) * 1.5625);
-  margin: auto calc(var(--size) * 0.625) auto 0;
+  height: calc(1.5625 * var(--x));
+  margin: auto calc(0.625 * var(--x)) auto 0;
 }
 
 .filter>.stack>.star-terms>.term {
   width: var(--term-width);
-  padding: calc(var(--size) * 0.3125) calc(var(--size) * 0.625);
-  margin: 0 calc(var(--size) * 0.3125);
+  padding: calc(0.3125 * var(--x)) calc(0.625 * var(--x));
+  margin: 0 calc(0.3125 * var(--x));
 
   text-align: center;
   border-style: solid;
   border-width: var(--starred-border-size);
-  border-radius: calc(var(--size) * 0.3125);
-  box-shadow: 0 calc(var(--size) * 0.05) calc(var(--size) * 0.15) rgba(0, 0, 0, 40%);
+  border-radius: calc(0.3125 * var(--x));
+  box-shadow: 0 calc(0.05 * var(--x)) calc(0.15 * var(--x)) rgba(0, 0, 0, 40%);
 
   cursor: pointer;
 }

@@ -1,42 +1,46 @@
+.viewer {
+  padding: 0 calc(1.25 * var(--x));
+}
+
 .pane {
-  width: calc(100% - var(--size) * 3.2);
-  max-width: calc(var(--size) * 75);
-  margin: calc(var(--size) * 1.25) auto;
-  padding: calc(var(--size) * 1.6);
+  width: calc(100% - 3.2 * var(--x));
+  max-width: calc(75 * var(--x));
+  margin: calc(1.25 * var(--x)) auto;
+  padding: calc(1.6 * var(--x));
 
   display: flex;
   flex-flow: row;
 
   background-color: white;
-  border-radius: calc(var(--size) * 0.625);
-  box-shadow: 0 calc(var(--size) * 0.2) calc(var(--size) * 0.3) rgba(0, 0, 0, 40%);
+  border-radius: calc(0.625 * var(--x));
+  box-shadow: 0 calc(0.2 * var(--x)) calc(0.3 * var(--x)) rgba(0, 0, 0, 40%);
 
   cursor: pointer;
 }
 
 .pane.starred {
   border: var(--starred-border-size) solid var(--star-yellow);
-  padding: calc(var(--size) * 1.6 - var(--starred-border-size));
+  padding: calc(1.6 * var(--x) - var(--starred-border-size));
 
   box-shadow: none;
 }
 
 .pane>.left {
   flex: 1 1 65%;
-  margin-right: calc(var(--size) * 1.75);
+  margin-right: calc(1.75 * var(--x));
 
   display: flex;
   flex-flow: column;
 }
 
 .pane .title-wrap {
-  padding-bottom: calc(var(--size) * 0.9);
+  padding-bottom: calc(0.9 * var(--x));
 
   line-height: 1.6;
 }
 
 .pane .detail-link {
-  font-size: 175%;
+  font-size: 150%;
   color: #0400d0;
   text-decoration: none;
 }
@@ -51,7 +55,7 @@
 
 .pane .divider {
   width: 60%;
-  margin: calc(var(--size) * 1.25) auto;
+  margin: calc(1.25 * var(--x)) auto;
 
   border: 1px solid black;
 }
@@ -61,12 +65,12 @@
 }
 
 .pane>.right {
-  flex: 1 0 calc(var(--size) * 10);
+  flex: 1 0 calc(10 * var(--x));
 
   display: flex;
   flex-flow: column;
 
-  font-size: 115%;
+  font-size: 105%;
 }
 
 .pane>.right>.top {
@@ -77,7 +81,7 @@
 }
 
 .pane>.right>.top>.terms {
-  margin: 0 0 calc(var(--size) * 0.625) auto;
+  margin: 0 0 calc(0.625 * var(--x)) auto;
 
   display: flex;
   flex-flow: column wrap;
@@ -85,11 +89,11 @@
 
 .pane>.right>.top>.terms>.term {
   width: var(--term-width);
-  padding: calc(var(--size) * 0.3125);
-  margin-bottom: calc(var(--size) * 0.625);
+  padding: calc(0.3125 * var(--x)) calc(0.625 * var(--x));
+  margin-bottom: calc(0.625 * var(--x));
 
   text-align: center;
-  border-radius: calc(var(--size) * 0.3125);
+  border-radius: calc(0.3125 * var(--x));
 }
 
 .pane>.right>.top>.terms>.term.fall {
@@ -109,7 +113,7 @@
 }
 
 .pane>.right>.top>.natural-word-break {
-  margin-bottom: calc(var(--size) * 0.625);
+  margin-bottom: calc(0.625 * var(--x));
 
   line-height: 1.6;
   text-align: right;
@@ -134,7 +138,7 @@
 }
 
 .pane>.right>.bottom>div {
-  margin-bottom: calc(var(--size) * 0.625);
+  margin-bottom: calc(0.625 * var(--x));
 }
 
 .pane .contact {

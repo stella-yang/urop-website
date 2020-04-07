@@ -4,15 +4,11 @@
   --spring: #ffd4f4;
   --summer: #c2ffd4;
 
-  --top-button: #7c7c7c63;
-  --viewer-bkgd: #f4f4f4;
-
   --logo-blue: #1574cb;
   --logo-red: #ca3b3b;
   --button-purple: #d1bbff;
   --star-yellow: #ffea91;
 
-  --size: 13px;
-  --term-width: calc(var(--size) * 5);
-  --starred-border-size: 2px;
+  --term-width: calc(5 * var(--x));
+  --starred-border-size: calc(var(--x) / 6);
 }

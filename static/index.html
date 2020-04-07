@@ -14,31 +14,28 @@
   <!-- Facebook image preview -->
   <meta property="og:image" content="https://urop.guide/img/favicon.ico" />
 
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
+  <!-- Metadata -->
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="img/favicon.ico" />
   <base target="_blank">
   <title>urop.guide</title>
 
-  <link rel="stylesheet" type="text/css" href="css/common.css">
-  <link rel="stylesheet" type="text/css" href="css/constants.css">
+  <!-- CSS & JS -->
   <link rel="stylesheet" type="text/css" href="css/index.css">
-  <link rel="stylesheet" type="text/css" href="css/splash.css">
-  <link rel="stylesheet" type="text/css" href="css/filter.css">
-  <link rel="stylesheet" type="text/css" href="css/subscribe.css">
-  <link rel="stylesheet" type="text/css" href="css/media.css">
-  <link rel="stylesheet" type="text/css" href="css/mobile.css">
-  <link rel="stylesheet" type="text/css" href="css/pane.css">
-  <script type="text/javascript" src="js/index.js"></script>
+  <script type="module" src="js/index.js"></script>
 </head>
 
-<body class="loading">
-  <div class="loader">
+<body>
+  <div class="preloader">
     <img src="img/loading.gif">
   </div>
-  <div class="main">
-    <button class="top-button no-display"><img src="img/double-up-arrow.png"></button>
+  <div>
+    <button class="return-top no-display">
+      <img src="img/double-up-arrow.png">
+    </button>
     <div class="header">
       <div class="stack">
         <div class="splash">
@@ -78,36 +75,35 @@
         </div>
       </div>
     </div>
-    <div class="notifications no-display">
-      The subscription is WIP.
-    </div>
     <div class="viewer">
-      <div class="template pane">
-        <div class="left">
-          <span class="title-wrap">
-            <a class="detail-link natural-word-break">
-              <span class="title"></span> →
-            </a>
-          </span>
-          <div class="description natural-word-break"></div>
-          <div class="divider"></div>
-          <div class="prereqs natural-word-break"></div>
-        </div>
-        <div class="right">
-          <div class="top">
-            <div class="terms"></div>
-            <div class="due natural-word-break"></div>
-            <div class="posted natural-word-break"></div>
+      <template>
+        <div class="pane">
+          <div class="left">
+            <span class="title-wrap">
+              <a class="detail-link natural-word-break">
+                <span class="title"></span> →
+              </a>
+            </span>
+            <div class="description natural-word-break"></div>
+            <div class="divider"></div>
+            <div class="prereqs natural-word-break"></div>
           </div>
-          <div class="bottom">
-            <div class="contact natural-word-break"></div>
-            <div class="faculty natural-word-break"></div>
-            <div class="department natural-word-break"></div>
+          <div class="right">
+            <div class="top">
+              <div class="terms"></div>
+              <div class="due natural-word-break"></div>
+              <div class="posted natural-word-break"></div>
+            </div>
+            <div class="bottom">
+              <div class="contact natural-word-break"></div>
+              <div class="faculty natural-word-break"></div>
+              <div class="department natural-word-break"></div>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
-    <div class="end">
+    <div class="footer">
       <span class="hint-term no-display"><b>Try clearing the term filters!</b><br></span>
       <span class="hint-star no-display"><b>Click on a post to star it!</b><br></span>
       No more UROPs :')<br>

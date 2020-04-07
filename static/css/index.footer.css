@@ -1,0 +1,7 @@
+.footer {
+  margin: calc(1.25 * var(--x));
+
+  font-size: 100%;
+  text-align: center;
+  line-height: 1.6;
+}

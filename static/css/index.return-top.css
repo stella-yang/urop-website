@@ -1,0 +1,19 @@
+.return-top {
+  position: fixed;
+  top: calc(1.25 * var(--x));
+  right: calc(1.25 * var(--x));
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: #7c7c7c63;
+
+  color: white;
+  cursor: pointer;
+  padding: calc(0.625 * var(--x));
+  border-radius: calc(0.625 * var(--x));
+}
+
+.return-top>img {
+  width: calc(1.25 * var(--x));
+  height: calc(1.25 * var(--x));
+}

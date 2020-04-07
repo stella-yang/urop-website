@@ -25,7 +25,7 @@
 }
 
 .splash>.stack>.acknowledgements {
-  padding: calc(var(--size) * 0.625) 0 0;
+  padding: calc(0.625 * var(--x)) 0 0;
 
   font-size: 50%;
   line-height: 1.6;

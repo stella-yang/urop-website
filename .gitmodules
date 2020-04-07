@@ -1,0 +1,3 @@
+[submodule "static/rain"]
+	path = static/rain
+	url = https://github.com/GilgameshxZero/rain

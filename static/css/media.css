@@ -1,10 +1,10 @@
-@media screen and (max-width: 940px) {
+@media screen and (max-width: 75rem) {
   .header>.stack {
-    flex-wrap: wrap;
+    flex-wrap: wrap !important;
   }
 
   .splash>.stack {
-    margin-right: calc(var(--size) * 0.625);
+    margin-right: calc(0.625 * var(--x));
   }
 
   .filter {
@@ -16,6 +16,6 @@
   }
 
   .subscribe>.stack {
-    margin-left: calc(var(--size) * 0.625);
+    margin-left: calc(0.625 * var(--x));
   }
 }

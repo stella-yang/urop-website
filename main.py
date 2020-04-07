@@ -15,6 +15,7 @@ import getopt
 import getpass
 import sqlite3
 import asyncio
+import mimetypes
 from dateutil import parser
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -299,7 +300,7 @@ def main(argv):
         input("MIT SMTP username (Kerberos): ")
     SMTP_PASSWORD = opts["--password"] if "--password" in opts.keys() else \
         getpass.getpass("MIT SMTP password: ")
-    PORT = int(opts["--port"]) if "--port" in opts.keys() else 61000
+    PORT = int(opts["--port"]) if "--port" in opts.keys() else 80
     SCRAPE_PERIOD = int(
         opts["--period"]) if "--period" in opts.keys() else 3600
 
@@ -327,19 +328,18 @@ def main(argv):
     ;""")
 
     # Setup webserver.
-    webapp = flask.Flask(__name__, static_url_path="")
     webapp_context = {
         "running": True,
         "data_json": "",
     }
+    webapp = flask.Flask(
+        __name__,
+        static_url_path="",
+        static_folder="static")
 
     @webapp.route("/")
     def index_bypass():
-        return flask.send_from_directory("static", "index.html")
-
-    @webapp.route("/<path>")
-    def send_static(path):
-        return flask.send_from_directory("static", path)
+        return webapp.send_static_file("index.html")
 
     @webapp.route("/data.json")
     def send_data():

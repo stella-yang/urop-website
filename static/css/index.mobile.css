@@ -1,15 +1,14 @@
 :root.mobile {
-  --size: 26px;
-  --starred-border-size: 4px;
+  --x: 1.25rem;
 }
 
-@media screen and (max-width: 1818.75px) {
+@media screen and (max-width: 60rem) {
   .mobile .header>.stack {
     flex-wrap: wrap;
   }
 
   .mobile .splash>.stack {
-    margin-right: calc(var(--size) * 0.625);
+    margin-right: calc(0.625 * var(--x));
   }
 
   .mobile .filter {
@@ -21,6 +20,6 @@
   }
 
   .mobile .subscribe>.stack {
-    margin-left: calc(var(--size) * 0.625);
+    margin-left: calc(0.625 * var(--x));
   }
 }
