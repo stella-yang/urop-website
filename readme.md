@@ -68,6 +68,10 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.1.1
+
+* Moved code to separate modules for easier readability.
+
 ### 2.1.0
 
 * Update `conda` and `pip` environments.
