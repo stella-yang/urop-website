@@ -1,0 +1,27 @@
+@import "index.header.splash.css";
+@import "index.header.filter.css";
+@import "index.header.subscribe.css";
+
+.header {
+  display: flex;
+
+  width: calc(100% - 4 * var(--x));
+  padding: calc(1 * var(--x)) calc(2 * var(--x));
+
+  background-color: var(--background-color);
+  font-size: 160%;
+  box-shadow: 0 calc(0.2 * var(--x)) calc(0.3 * var(--x)) var(--shadow-color);
+}
+
+.header>.stack {
+  max-width: calc(75 * var(--x));
+  margin: 0 auto;
+
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.header>.stack>div {
+  padding-top: calc(1 * var(--x));
+  padding-bottom: calc(1 * var(--x));
+}

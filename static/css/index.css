@@ -1,103 +1,27 @@
 @import "/rain/css/base/base.css";
 @import "/rain/css/base/no-classes.css";
 
+@import "index.preloader.css";
 @import "index.return-top.css";
-@import "index.header.splash.css";
-@import "index.header.filter.css";
-@import "index.header.subscribe.css";
+@import "index.header.css";
 @import "index.viewer.css";
 @import "index.footer.css";
 @import "index.constants.css";
-@import "index.mobile.css";
 @import "index.media.css";
 
-/* Preloader. */
-body>* {
-  opacity: 0;
-}
-
-body.loaded>* {
-  transition: opacity 1s;
-  opacity: 1;
-}
-
-body.loaded>.preloader {
-  opacity: 0;
-}
-
-.preloader {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-
-  pointer-events: none;
-  transition: opacity 1s;
-  opacity: 1;
-}
-
-.preloader>img {
-  margin: auto;
-}
-
-/* Main. */
-
-.highlighted {
-  background-color: yellow;
-}
-
-.hidden-by-search {
-  display: none !important;
-}
-
-.hidden-by-term {
-  display: none !important;
-}
-
-.hidden-by-star {
-  display: none !important;
-}
-
-.natural-word-break {
-  word-break: break-word;
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-y: scroll;
   min-width: calc(36 * var(--x));
 
   font-family: 'Montserrat', Helvetica, sans-serif;
-  background-color: #f4f4f4;
-
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  -webkit-text-size-adjust: 80%;
+  color: var(--text-color);
+  background-color: var(--body-background-color);
 }
 
-.header {
-  display: flex;
-
-  width: calc(100% - 4 * var(--x));
-  padding: calc(1 * var(--x)) calc(2 * var(--x));
-
-  background-color: white;
-  font-size: 160%;
-  box-shadow: 0 calc(0.2 * var(--x)) calc(0.3 * var(--x)) rgba(0, 0, 0, 40%);
-}
-
-.header>.stack {
-  max-width: calc(75 * var(--x));
-  margin: 0 auto;
-
-  display: flex;
-  flex-flow: row nowrap;
-}
-
-.header>.stack>div {
-  padding-top: calc(1 * var(--x));
-  padding-bottom: calc(1 * var(--x));
+a {
+  color: var(--link-color);
 }

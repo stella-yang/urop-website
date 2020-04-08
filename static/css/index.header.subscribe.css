@@ -9,6 +9,7 @@
 }
 
 .subscribe>.stack {
+  width: calc(13 * var(--x));
   margin: auto;
 
   display: flex;
@@ -24,7 +25,9 @@
   font-size: 100%;
 
   border-radius: calc(0.3125 * var(--x));
-  border: 1px black solid;
+  border: 1px var(--text-color) solid;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 .subscribe>.stack>.button {
@@ -36,7 +39,7 @@
 
   border: var(--starred-border-size) solid var(--button-purple);
   border-radius: calc(0.3125 * var(--x));
-  box-shadow: 0 calc(0.05 * var(--x)) calc(0.15 * var(--x)) rgba(0, 0, 0, 40%);
+  box-shadow: 0 calc(0.05 * var(--x)) calc(0.15 * var(--x)) var(--shadow-color);
 
   cursor: pointer;
 }
@@ -50,7 +53,7 @@
   padding: calc(0.3125 * var(--x) + var(--starred-border-size));
 
   border: none;
-  box-shadow: 0 calc(0.05 * var(--x)) calc(0.15 * var(--x)) rgba(0, 0, 0, 0%);
+  box-shadow: none;
 }
 
 .subscribe>.stack>.button.selected>.d {
@@ -58,10 +61,10 @@
 }
 
 .subscribe>.stack>.button.disabled {
-  border: calc(var(--starred-border-size) / 2) solid black;
+  border: calc(var(--starred-border-size) / 2) solid var(--text-color);
   padding: calc(0.3125 * var(--x) + var(--starred-border-size) / 2);
 
-  box-shadow: 0 calc(0.05 * var(--x)) calc(0.15 * var(--x)) rgba(0, 0, 0, 0%);
+  box-shadow: none;
   
   cursor: initial;
 }

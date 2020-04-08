@@ -27,7 +27,9 @@
   font-size: 100%;
 
   border-radius: calc(0.3125 * var(--x));
-  border: 1px black solid;
+  border: 1px var(--text-color) solid;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 .filter>.stack>.star-terms {
@@ -39,29 +41,35 @@
 
 .filter>.stack>.star-terms>.star {
   display: flex;
-
   cursor: pointer;
 }
 
-.filter>.stack>.star-terms>.star>.unfilled {
-  display: block;
-}
-
-.filter>.stack>.star-terms>.star>.filled {
+.filter>.stack>.star-terms>.star>.dark {
   display: none;
 }
 
-.filter>.stack>.star-terms>.star.selected>.unfilled {
-  display: none;
-}
-
-.filter>.stack>.star-terms>.star.selected>.filled {
+.filter>.stack>.star-terms>.star .unfilled {
   display: block;
 }
 
-.filter>.stack>.star-terms>.star>img {
-  height: calc(1.5625 * var(--x));
+.filter>.stack>.star-terms>.star .filled {
+  display: none;
+}
+
+.filter>.stack>.star-terms>.star.selected .unfilled {
+  display: none;
+}
+
+.filter>.stack>.star-terms>.star.selected .filled {
+  display: block;
+}
+
+.filter>.stack>.star-terms>.star>div {
   margin: auto calc(0.625 * var(--x)) auto 0;
+}
+
+.filter>.stack>.star-terms>.star img {
+  height: calc(1.5625 * var(--x));
 }
 
 .filter>.stack>.star-terms>.term {
@@ -73,7 +81,7 @@
   border-style: solid;
   border-width: var(--starred-border-size);
   border-radius: calc(0.3125 * var(--x));
-  box-shadow: 0 calc(0.05 * var(--x)) calc(0.15 * var(--x)) rgba(0, 0, 0, 40%);
+  box-shadow: 0 calc(0.1 * var(--x)) calc(0.3 * var(--x)) var(--shadow-color);
 
   cursor: pointer;
 }

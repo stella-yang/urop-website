@@ -16,12 +16,33 @@
   font-size: 150%;
 }
 
-.splash>.stack>.logo>.blue {
+.splash>.stack>.logo>a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.splash>.stack>.logo>a:hover {
+  text-decoration: underline;
+}
+
+.splash>.stack>.logo>a>.blue {
   color: var(--logo-blue);
 }
 
-.splash>.stack>.logo>.red {
+.splash>.stack>.logo>a>.red {
   color: var(--logo-red);
+}
+
+.splash>.stack>.logo>.dark-mode {
+  height: calc(1.5 * var(--x));
+  margin: auto 0 auto calc(0.2 * var(--x));
+
+  cursor: pointer;
+  transition: transform 0.5s;
+}
+
+.splash>.stack>.logo>.dark-mode:hover {
+  transform: scale(1.25);
 }
 
 .splash>.stack>.acknowledgements {

@@ -7,7 +7,7 @@ export function initReturnTop() {
   });
 
   // When the user scrolls down 100px from the top of the document, show the button.
-  document.querySelector(`body`).addEventListener(`scroll`, () => {
+  window.addEventListener(`scroll`, () => {
     if (document.body.scrollTop > TOP_BUTTON_THRESHOLD ||
       document.documentElement.scrollTop > TOP_BUTTON_THRESHOLD)
       document.querySelector(`.return-top`).classList.remove(`no-display`);

@@ -1,0 +1,27 @@
+body>* {
+  opacity: 0;
+}
+
+body.loaded>* {
+  transition: opacity 1s;
+  opacity: 1;
+}
+
+body.loaded>.preloader {
+  opacity: 0;
+}
+
+.preloader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  pointer-events: none;
+  transition: opacity 1s;
+  opacity: 1;
+}
+
+.preloader>img {
+  margin: auto;
+}

@@ -68,6 +68,11 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.1.2
+
+* Added dark mode.
+* Responsive panes move critical information to top on smaller screens.
+
 ### 2.1.1
 
 * Moved code to separate modules for easier readability.
