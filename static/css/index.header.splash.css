@@ -33,15 +33,18 @@
   color: var(--logo-red);
 }
 
-.splash>.stack>.logo>.dark-mode {
-  height: calc(1.5 * var(--x));
-  margin: auto 0 auto calc(0.2 * var(--x));
+.splash>.stack>.logo>.dark-mode-toggle {
+  margin: auto 0 auto 0;
 
   cursor: pointer;
+}
+
+.splash>.stack>.logo>.dark-mode-toggle>img {
+  height: calc(1.5 * var(--x));
   transition: transform 0.5s;
 }
 
-.splash>.stack>.logo>.dark-mode:hover {
+.splash>.stack>.logo>.dark-mode-toggle>img:hover {
   transform: scale(1.25);
 }
 

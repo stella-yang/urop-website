@@ -44,10 +44,6 @@
   cursor: pointer;
 }
 
-.filter>.stack>.star-terms>.star>.dark {
-  display: none;
-}
-
 .filter>.stack>.star-terms>.star .unfilled {
   display: block;
 }

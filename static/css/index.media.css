@@ -46,28 +46,3 @@
     margin-left: calc(0.625 * var(--x));
   }
 }
-
-/* Dark mode. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text-color: white;
-    --background-color: black;
-    --body-background-color: hsl(0, 0%, 15%);
-    --fall: hsl(25, 100%, 25%);
-    --iap: hsl(200, 100%, 25%);
-    --spring: hsl(315, 100%, 25%);
-    --summer: hsl(138, 100%, 25%);
-    --button-purple: hsl(259, 100%, 25%);
-    --star-yellow: #ffea91;
-    --link-color: hsl(241, 100%, 65%);
-    --shadow-color: rgba(255, 255, 255, 40%);
-  }
-  
-  .filter>.stack>.star-terms>.star>.light {
-    display: none;
-  }
-  
-  .filter>.stack>.star-terms>.star>.dark {
-    display: block;
-  }
-}

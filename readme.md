@@ -68,6 +68,10 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.1.3
+
+* Ability to switch between dark/light mode.
+
 ### 2.1.2
 
 * Added dark mode.

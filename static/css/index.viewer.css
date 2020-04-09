@@ -33,7 +33,7 @@
 
   background-color: var(--background-color);
   border-radius: calc(0.625 * var(--x));
-  box-shadow: 0 calc(0.2 * var(--x)) calc(0.3 * var(--x)) rgba(0, 0, 0, 40%);
+  box-shadow: 0 calc(0.2 * var(--x)) calc(0.3 * var(--x)) var(--shadow-color);
 
   cursor: pointer;
 }
