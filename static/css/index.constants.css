@@ -17,7 +17,7 @@
   --shadow-color: rgba(0, 0, 0, 40%);
 
   --term-width: calc(5 * var(--x));
-  --starred-border-size: calc(var(--x) / 6);
+  --starred-border-size: calc(var(--x) / 5);
 }
 
 :root.mobile {
@@ -33,8 +33,8 @@
   --iap: hsl(200, 100%, 25%);
   --spring: hsl(315, 100%, 25%);
   --summer: hsl(138, 100%, 25%);
-  --button-purple: hsl(259, 100%, 25%);
-  --star-yellow: #ffea91;
+  --button-purple: hsl(268, 72%, 30%);
+  --star-yellow: hsl(49, 100%, 78%);
   --link-color: hsl(241, 100%, 65%);
   --shadow-color: rgba(255, 255, 255, 40%);
 }

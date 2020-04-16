@@ -68,6 +68,12 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.1.4
+
+* Slightly modify dark mode colors to better match light mode.
+* Slightly larger spacing on term labels.
+* Apply insets to input elements.
+
 ### 2.1.3
 
 * Ability to switch between dark/light mode.

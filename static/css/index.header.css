@@ -10,7 +10,7 @@
 
   background-color: var(--background-color);
   font-size: 160%;
-  box-shadow: 0 calc(0.2 * var(--x)) calc(0.3 * var(--x)) var(--shadow-color);
+  box-shadow: 0 calc(0.1 * var(--x)) calc(0.15 * var(--x)) var(--shadow-color);
 }
 
 .header>.stack {

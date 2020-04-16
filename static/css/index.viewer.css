@@ -107,6 +107,8 @@
 
 .pane>.right>.top>.terms>.term {
   width: var(--term-width);
+  border-style: solid;
+  border-width: var(--starred-border-size);
   padding: calc(0.3125 * var(--x)) calc(0.625 * var(--x));
   margin-bottom: calc(0.625 * var(--x));
 
