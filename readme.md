@@ -68,6 +68,10 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.1.5
+
+* Better email HTML and added unsubscribe link.
+
 ### 2.1.4
 
 * Slightly modify dark mode colors to better match light mode.

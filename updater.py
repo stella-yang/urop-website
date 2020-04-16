@@ -18,18 +18,17 @@ def email_new_urops(DB_LOCATION, previous_scrape_datetime, SMTP_USERNAME, SMTP_P
     db_connection = sqlite3.connect(DB_LOCATION)
     db_cursor = db_connection.cursor()
 
-    urops = db_cursor.execute("""
-    SELECT * FROM urops
+    urops = db_cursor.execute("""SELECT * FROM urops
         WHERE posted >= ?
-        ORDER BY posted DESC, apply_by DESC;
-        """, (previous_scrape_datetime,)
-    ).fetchall()
+        ORDER BY posted DESC, apply_by DESC
+    ;""", (previous_scrape_datetime,)).fetchall()
     if len(urops) == 0:
         return
 
-    urops_summary = ""
+    urops_summary = "<ul>"
     for urop in urops:
-        urops_summary += "* " + urop[1] + "<br>"
+        urops_summary += "<li>" + urop[1] + "</li>"
+    urops_summary += "</ul>"
 
     subscribers = [
         result[0] for result in
@@ -45,21 +44,22 @@ def email_new_urops(DB_LOCATION, previous_scrape_datetime, SMTP_USERNAME, SMTP_P
         smtp_server = smtplib.SMTP("outgoing.mit.edu", 587)
         smtp_server.starttls()
         smtp_server.login(SMTP_USERNAME, SMTP_PASSWORD)
-        email_msg = MIMEMultipart()
-        email_msg["From"] = "urop-guide"
-        email_msg["To"] = ""
-        email_msg["Subject"] = "[urop.guide] " + \
-            str(len(urops)) + " New UROP" + \
-            ("" if len(urops) == 1 else "s") + " :D"
-        email_msg.attach(MIMEText(
-            "Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details!<br><br>" + urops_summary,
-            "html"
-        ))
-        smtp_server.sendmail(
-            "urop-guide@mit.edu",
-            list(subscribers),
-            email_msg.as_string()
-        )
+        for subscriber in subscribers:
+            email_msg = MIMEMultipart()
+            email_msg["From"] = "urop-guide"
+            email_msg["To"] = subscriber
+            email_msg["Subject"] = "[urop.guide] " + \
+                str(len(urops)) + " New UROP" + \
+                ("" if len(urops) == 1 else "s") + " :D"
+            email_msg.attach(MIMEText(
+                "<p>Visit <a href=\"https://urop.guide\">https://urop.guide</a> for more details! Or, <a href=\"https://urop.guide/subscription/toggle/" + subscriber + "\">unsubscribe</a> from urop.guide.</p>" + urops_summary,
+                "html"
+            ))
+            smtp_server.sendmail(
+                "urop-guide@mit.edu",
+                subscriber,
+                email_msg.as_string()
+            )
         smtp_server.quit()
         print_with_datetime("Emailed " + str(len(subscribers)) +
                             " subscribers about " + str(len(urops)) +
@@ -76,12 +76,10 @@ def create_data_json(DB_LOCATION, previous_scrape_datetime):
     db_cursor = db_connection.cursor()
 
     today = datetime.datetime.today()
-    urops = db_cursor.execute("""
-    SELECT * FROM urops
+    urops = db_cursor.execute("""SELECT * FROM urops
         WHERE last_seen >= ?
-        ORDER BY posted DESC, apply_by DESC;
-        """, (previous_scrape_datetime,)
-    ).fetchall()
+        ORDER BY posted DESC, apply_by DESC
+    ;""", (previous_scrape_datetime,)).fetchall()
 
     db_connection.commit()
     db_connection.close()
@@ -133,6 +131,11 @@ def start_updater(DB_LOCATION, SCRAPE_PERIOD, SMTP_USERNAME, SMTP_PASSWORD, weba
     # Make initial data_json, start scraping thread, before serving.
     previous_scrape_datetime = datetime.datetime.now()
     scrape(DB_LOCATION)
+    email_new_urops(
+        DB_LOCATION,
+        previous_scrape_datetime,
+        SMTP_USERNAME,
+        SMTP_PASSWORD)
     webapp_context["data_json"] = create_data_json(
         DB_LOCATION,
         previous_scrape_datetime)

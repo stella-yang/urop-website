@@ -34,8 +34,7 @@ def main(argv):
     DB_LOCATION = ".db"
     db_connection = sqlite3.connect(DB_LOCATION)
     db_cursor = db_connection.cursor()
-    db_cursor.execute("""
-    CREATE TABLE IF NOT EXISTS urops (
+    db_cursor.execute("""CREATE TABLE IF NOT EXISTS urops (
         url TEXT PRIMARY KEY UNIQUE,
         title TEXT,
         description TEXT,
@@ -49,9 +48,9 @@ def main(argv):
         posted TIMESTAMP,
         last_seen TIMESTAMP
     );""")
-    db_cursor.execute("""
-    CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY)
-    ;""")
+    db_cursor.execute("""CREATE TABLE IF NOT EXISTS subscribers (
+        email TEXT PRIMARY KEY
+    );""")
     db_connection.commit()
     db_connection.close()
 

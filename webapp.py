@@ -58,9 +58,9 @@ def run_webapp(DB_LOCATION, PORT, webapp_context):
             (email,))
         db_connection.commit()
         db_connection.close()
-        print_with_datetime((
-            "Unsubscribed " if in_subscribers else "Subscribed "
-        ) + email + ".")
-        return flask.Response(status=200)
+        response = ("Unsubscribed " if in_subscribers else "Subscribed ") \
+            + email + "."
+        print_with_datetime(response)
+        return flask.Response(response, mimetype="text/html")
 
     waitress.serve(webapp, host="0.0.0.0", port=PORT)
