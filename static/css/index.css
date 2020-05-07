@@ -1,6 +1,3 @@
-@import "/rain/css/base/base.css";
-@import "/rain/css/base/no-classes.css";
-
 @import "index.preloader.css";
 @import "index.return-top.css";
 @import "index.header.css";
@@ -8,6 +5,10 @@
 @import "index.footer.css";
 @import "index.constants.css";
 @import "index.media.css";
+
+:root {
+  --x: 1rem;
+}
 
 html {
   scroll-behavior: smooth;

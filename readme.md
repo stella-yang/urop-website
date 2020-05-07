@@ -68,6 +68,11 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.1.6
+
+* Remove `rain` dependency; point instead to static hosted CSS.
+* Update `python` packages to latest.
+
 ### 2.1.5
 
 * Better email HTML and added unsubscribe link.

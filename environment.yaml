@@ -9,5 +9,7 @@ dependencies:
   - flask
   - requests
   - python-dateutil
+  - autopep8
+  - pylint
 prefix: C:\Users\yanga\miniconda3\envs\urop-website
 
