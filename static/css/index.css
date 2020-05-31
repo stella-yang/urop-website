@@ -6,6 +6,53 @@
 @import "index.constants.css";
 @import "index.media.css";
 
+/* Classes. */
+.no-display {
+	display: none !important;
+}
+
+.no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.no-focus {
+	outline-style: none;
+	box-shadow: none;
+	border-color: transparent;
+}
+
+.no-scrollbar {
+	-ms-overflow-style: none;
+	overflow: -moz-scrollbars-none;
+	scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+/* HTML defaults. */
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	position: relative;
+	overflow-x: hidden;
+
+	font-family: Georgia, serif;
+	line-height: 1.25;
+	font-size: 1rem;
+}
+
+/* Other. */
 :root {
   --x: 1rem;
 }

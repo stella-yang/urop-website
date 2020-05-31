@@ -68,6 +68,11 @@ Please request access at urop-guide@mit.edu.
 
 ## Changelog
 
+### 2.1.8
+
+* Removed dependency on external CSS.
+* Updated python packages.
+
 ### 2.1.7
 
 * Fix mobile `font-size` issue.
