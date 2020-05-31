@@ -33,15 +33,6 @@ Option|Default|Usage
 `--username`|None|Kerberos, or username to login to MIT SMTP.
 `--password`|None|MIT SMTP password.
 
-### Submodules
-
-If you haven't done so, you might want to pull the `rain` Git submodule, which is used for CSS styling.
-
-```bash
-git submodule init
-git submodule update
-```
-
 ## Deployment
 
 <https://urop.guide> points to an HTTP multiplexer located at <https://gilgamesh.cc>. The multiplexer can be tunneled to the `urop.guide` server via an SSH tunnel:
@@ -67,6 +58,10 @@ ssh -p 2222 gilgamesh@gilgamesh.cc
 Please request access at urop-guide@mit.edu.
 
 ## Changelog
+
+### 2.1.9
+
+* Clean up readme.
 
 ### 2.1.8
 
